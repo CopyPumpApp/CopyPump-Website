@@ -12,8 +12,10 @@ const forbidText = (source, text, message) => {
 }
 
 requireText(landing, 'https://discord.gg/WS95eXrGB', 'Landing page must use the current official Discord invite.')
-requireText(landing, 'faqItems', 'Landing page must apply the public FAQ filter.')
-requireText(landing, 'Change the capital limit, signal age or emergency stop.', 'Decision demo must explain how to interact with it.')
+requireText(landing, "navigateLocal('/project')", 'Landing page must link to the dedicated Project page.')
+requireText(landing, 'decision-demo', 'Landing page must retain the interactive decision demo.')
+forbidText(landing, 'Change the capital limit, signal age or emergency stop.', 'Decision demo must not render redundant operating instructions.')
+forbidText(landing, 'Измените лимит капитала', 'Decision demo must not render redundant operating instructions.')
 forbidText(landing, 'DNBQtqw6R', 'Stale Discord invite is still rendered.')
 forbidText(landing, 'useSystem', 'Developer-facing website API status hook is still wired into the landing page.')
 forbidText(landing, 'c.journal.updateTitle', 'Non-CopyPump ecosystem update is still rendered in public progress.')
