@@ -1,0 +1,60 @@
+/* Decision demo readability fix: keep labels and values safely inside the glass panels. */
+.cinematic-v47 .decision-controls,
+.cinematic-v47 .decision-outcome {
+  padding: clamp(28px, 2.2vw, 38px);
+}
+
+.cinematic-v47 .decision-controls {
+  gap: 28px;
+}
+
+.cinematic-v47 .example-amount {
+  padding-bottom: 24px;
+  gap: 24px;
+}
+
+.cinematic-v47 .range-control {
+  row-gap: 15px;
+}
+
+.cinematic-v47 .stop-control {
+  gap: 24px;
+}
+
+.cinematic-v47 .decision-outcome:before {
+  left: clamp(28px, 2.2vw, 38px);
+  right: clamp(28px, 2.2vw, 38px);
+}
+
+.cinematic-v47 .decision-trace {
+  margin-top: 34px;
+}
+
+.cinematic-v47 .decision-trace > div {
+  padding-block: 14px;
+}
+
+@media (max-width: 1000px) {
+  .cinematic-v47 .decision-controls,
+  .cinematic-v47 .decision-outcome {
+    padding: 28px;
+  }
+}
+
+@media (max-width: 760px) {
+  .cinematic-v47 .decision-controls,
+  .cinematic-v47 .decision-outcome {
+    padding: 24px 22px;
+  }
+
+  .cinematic-v47 .decision-desk {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 390px) {
+  .cinematic-v47 .decision-controls,
+  .cinematic-v47 .decision-outcome {
+    padding: 21px 18px;
+  }
+}
