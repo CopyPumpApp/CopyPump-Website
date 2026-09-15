@@ -1,6 +1,6 @@
 import { useI18n } from '../i18n'
 import { AutoRail } from './AutoRail'
-const docs = 'https://github.com/CopyPumpApp/CopyPump/blob/main/docs/'
+
 export function ProjectRail({ variant }: { variant: 'journey' | 'roadmap' }) {
   const { dict, locale } = useI18n(), c = dict.explore[variant]
   const titleId = `${variant}-title`
@@ -14,7 +14,7 @@ export function ProjectRail({ variant }: { variant: 'journey' | 'roadmap' }) {
           <div className="rail-item-outcome"><span>{item.output}</span><small>{item.detail}</small></div>
         </article>)}
       </AutoRail>
-      <div className="rail-source-row"><p>{c.note}</p><a className="text-link" href={`${docs}${variant === 'journey' ? 'ARCHITECTURE.md' : 'ROADMAP.md'}`} target="_blank" rel="noopener noreferrer">{variant === 'journey' ? dict.explore.source : dict.explore.roadmapSource} <span>↗</span></a></div>
+      <div className="rail-source-row"><p>{c.note}</p></div>
     </div>
   </section>
 }
