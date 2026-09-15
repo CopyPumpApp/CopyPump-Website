@@ -1,15 +1,14 @@
 {
   "name": "copypump-site",
   "private": true,
-  "version": "47.4.0-review",
+  "version": "48.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "dev:web": "vite",
-    "dev:api": "node server/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "vite build",
-    "preview": "node server/index.mjs --serve-dist",
-    "start": "node server/index.mjs --serve-dist",
+    "preview": "vite preview",
     "check:clean": "node scripts/clean-public-audit.mjs",
     "check": "npm run typecheck && npm run check:clean && npm run build"
   },
