@@ -1,0 +1,18 @@
+node_modules
+.git
+.env
+.env.*
+!.env.example
+data
+logs
+backups
+.cache
+qa-results
+preview
+docs
+# Keep dist: the Docker image deliberately uses the verified prebuilt release.
+deploy/.env
+
+.runtime/
+
+node_modules/
