@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Sitemap: https://copypump-website.copypumphq.workers.dev/sitemap.xml
