@@ -17,7 +17,7 @@ Before merging public-site changes, run:
 npm run check
 ```
 
-The check runs TypeScript validation, the public-surface regression audit, and a production Vite build. A GitHub Actions workflow is included so the same validation can run automatically once Actions/workflow execution is enabled for the repository/default branch.
+The check runs TypeScript validation, the public-surface regression audit, and a production Vite build. The repository also contains a GitHub Actions workflow for the same validation.
 
 ## Public positioning
 
