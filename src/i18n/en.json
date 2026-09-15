@@ -1,0 +1,1241 @@
+{
+  "common": {
+    "language": "Language",
+    "switchToEnglish": "Switch language to English",
+    "switchToRussian": "Switch language to Russian",
+    "backToSite": "Back to site",
+    "skip": "Skip to content",
+    "loading": "Loading…",
+    "public": "PUBLIC",
+    "locked": "LOCKED",
+    "ready": "READY",
+    "standby": "STANDBY",
+    "online": "ONLINE",
+    "unavailable": "UNAVAILABLE",
+    "connecting": "CONNECTING",
+    "stage": "STAGE",
+    "home": "CopyPump home",
+    "fatalTitle": "The interface is temporarily unavailable.",
+    "fatalCopy": "Reload the page. If the problem continues, contact the CopyPump team.",
+    "reload": "Reload",
+    "contactAction": "Contact",
+    "notFoundSeoTitle": "Page not found — CopyPump",
+    "notFoundSeoDescription": "The requested CopyPump page does not exist.",
+    "notFoundTitle": "Nothing lives here.",
+    "notFoundCopy": "The URL is invalid or the page has moved.",
+    "backHome": "Back home",
+    "previous": "Previous",
+    "next": "Next",
+    "explore": "Explore",
+    "close": "Close",
+    "illustrative": "Illustrative flow",
+    "current": "Current",
+    "pauseMotion": "Pause motion",
+    "resumeMotion": "Resume motion",
+    "railInstructions": "Carousel. Drag the card surface, use the wheel, swipe, or focus the rail and press the left/right keys. Use Pause motion to read and select text.",
+    "statuses": {
+      "PUBLIC": "PUBLIC",
+      "HARDENING": "HARDENING",
+      "VALIDATING": "VALIDATING",
+      "LOCKED": "LOCKED",
+      "STANDBY": "STANDBY",
+      "PREVIEW": "PREVIEW",
+      "NOT LIVE": "NOT LIVE",
+      "NOT CONNECTED": "NOT CONNECTED",
+      "LIVE": "LIVE",
+      "CONNECTED": "CONNECTED",
+      "PENDING": "PENDING",
+      "NEXT": "NEXT",
+      "CURRENT": "CURRENT",
+      "FUTURE": "FUTURE",
+      "COMPLETED": "COMPLETED",
+      "READY": "READY",
+      "VERIFIED": "VERIFIED",
+      "ONLINE": "ONLINE",
+      "UNAVAILABLE": "UNAVAILABLE",
+      "Technical alpha": "Technical alpha",
+      "NOT_CONNECTED": "NOT CONNECTED",
+      "NOT_LIVE": "NOT LIVE"
+    }
+  },
+  "header": {
+    "product": "Product",
+    "architecture": "Architecture",
+    "workflow": "Workflow",
+    "evidence": "Evidence",
+    "validation": "Validation",
+    "signedIn": "Account signed in",
+    "navLabel": "Primary navigation",
+    "toggle": "Toggle navigation",
+    "roadmap": "Roadmap",
+    "journey": "Journey",
+    "previewTag": "Preview"
+  },
+  "footer": {
+    "tagline": "Non-custodial · bounded authority · evidence-first",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "security": "Security",
+    "contact": "Contact",
+    "navLabel": "Legal and project links",
+    "discord": "Discord",
+    "discordAria": "Open the official CopyPump Discord community"
+  },
+  "landing": {
+    "seo": {
+      "title": "CopyPump — Follow smart money. Keep control.",
+      "description": "We’re building autonomous trading on Solana. Your wallet stays yours. Your rules define what automation is allowed to do."
+    },
+    "hero": {
+      "eyebrow": "Solana · Your assets. Your control.",
+      "title": "Follow smart money.",
+      "gradient": "Keep control.",
+      "copy": "Building automated trading on Solana, within limits you set. CopyPump evaluates selected wallet activity; you keep your keys, and every action must pass the risk rules.",
+      "primary": "Explore a decision",
+      "secondary": "Follow development",
+      "facts": [
+        {
+          "title": "Your keys",
+          "copy": "Phantom wallet"
+        },
+        {
+          "title": "Your limits",
+          "copy": "capital and risk"
+        },
+        {
+          "title": "Clear decisions",
+          "copy": "reason, action, outcome"
+        }
+      ],
+      "stage": "Technical alpha · Devnet validation · Mainnet not open",
+      "demoHint": "Interactive example · no wallet connection"
+    },
+    "trust": [
+      "Architecture documented",
+      "Technical alpha",
+      "Devnet verification ongoing",
+      "User-controlled keys",
+      "Mandatory risk rules",
+      "Mainnet blocked"
+    ],
+    "architecture": {
+      "eyebrow": "Trust architecture",
+      "title": "Your wallet.",
+      "gradient": "Your rules.",
+      "copy": "CopyPump separates analysis, authorization and execution. Neither connecting a wallet nor receiving an AI recommendation grants unlimited access to assets.",
+      "cards": [
+        {
+          "eyebrow": "Custody",
+          "title": "Assets stay under user custody.",
+          "copy": "Private keys remain with the user. CopyPump is designed around explicit authority rather than asset possession.",
+          "deepDive": {
+            "meaning": "The wallet and its private keys remain under the user’s control.",
+            "matters": "Automation should not require transferring ownership of assets to the platform.",
+            "can": [
+              "Observe approved public activity",
+              "Request bounded execution authority",
+              "Operate only inside the configured envelope"
+            ],
+            "cannot": [
+              "Take custody of wallet assets",
+              "Export private keys",
+              "Silently move funds outside defined authority"
+            ]
+          }
+        },
+        {
+          "eyebrow": "Authority",
+          "title": "Execution authority is bounded.",
+          "copy": "Allowed actions, capital limits and revocable permissions define the automation envelope.",
+          "deepDive": {
+            "meaning": "Automation receives only the permissions required for an allowed action.",
+            "matters": "Authority should be explicit, revocable and smaller than the wallet itself.",
+            "can": [
+              "Use bounded session authority",
+              "Respect capital and action limits",
+              "Stop when authority is invalid or expired"
+            ],
+            "cannot": [
+              "Expand its own permissions",
+              "Bypass a revoked session",
+              "Treat wallet connection as unlimited authority"
+            ]
+          }
+        },
+        {
+          "eyebrow": "Policy",
+          "title": "Safety gates are deterministic.",
+          "copy": "AI-assisted analysis can inform a candidate but cannot bypass capital, exposure or permission controls.",
+          "deepDive": {
+            "meaning": "Every candidate must pass deterministic safety rules before execution.",
+            "matters": "AI can assist analysis, but it must not overrule hard risk boundaries.",
+            "can": [
+              "Apply exposure and slippage limits",
+              "Block disallowed candidates",
+              "Record the reason for a decision"
+            ],
+            "cannot": [
+              "Convert a failed policy into an approval",
+              "Ignore capital limits",
+              "Hide a rejected decision"
+            ]
+          }
+        },
+        {
+          "eyebrow": "Evidence",
+          "title": "Material states are inspectable.",
+          "copy": "Signal, decision, execution and reconciliation states are designed to produce an auditable trail.",
+          "deepDive": {
+            "meaning": "Important state changes are designed to leave inspectable evidence.",
+            "matters": "A trustworthy automation system should be able to explain what happened and why.",
+            "can": [
+              "Record signal and decision state",
+              "Link execution to policy context",
+              "Reconcile expected and observed state"
+            ],
+            "cannot": [
+              "Pretend a failed action succeeded",
+              "Replace missing evidence with a marketing claim",
+              "Hide an unreconciled state"
+            ]
+          }
+        }
+      ],
+      "deepDive": {
+        "meaning": "What it means",
+        "matters": "Why it matters",
+        "can": "Designed to allow",
+        "cannot": "Outside its authority"
+      }
+    },
+    "stack": {
+      "eyebrow": "Control stack",
+      "title": "AI informs.",
+      "gradient": "Rules decide.",
+      "copy": "AI assists research and explains decisions. It does not sign or submit transactions, grant wallet permissions, or override a rejection from the risk rules.",
+      "boundaryTitle": "Execution boundary",
+      "boundaryCopy": "Signing stays at the wallet boundary. Risk checks remain mandatory.",
+      "rows": [
+        {
+          "title": "Signal intelligence",
+          "detail": "Observe · normalize · classify",
+          "tag": "ASSISTIVE"
+        },
+        {
+          "title": "Strategy qualification",
+          "detail": "Liquidity · wallet · market criteria",
+          "tag": "FILTERED"
+        },
+        {
+          "title": "Policy engine",
+          "detail": "Capital · slippage · exposure · permissions",
+          "tag": "DETERMINISTIC"
+        },
+        {
+          "title": "Execution engine",
+          "detail": "Allowed action → signed transaction path",
+          "tag": "BOUNDED"
+        },
+        {
+          "title": "Reconciliation + audit",
+          "detail": "Position · fees · PnL · evidence",
+          "tag": "TRACEABLE"
+        }
+      ]
+    },
+    "workflow": {
+      "eyebrow": "Execution workflow",
+      "title": "From signal to trade.",
+      "gradient": "Control at every step.",
+      "copy": "The intended flow: detect, qualify, constrain, then execute a permitted action. Confirmation, position reconciliation and fee accounting follow. The full lifecycle is still being verified on Devnet.",
+      "cards": [
+        {
+          "title": "Detect",
+          "copy": "Observe selected smart-money activity and normalize candidate signals.",
+          "foot": "SIGNAL INPUT"
+        },
+        {
+          "title": "Qualify",
+          "copy": "Reject weak candidates before capital is considered.",
+          "foot": "QUALITY FILTER"
+        },
+        {
+          "title": "Constrain",
+          "copy": "Apply deterministic capital, slippage, exposure and permission gates.",
+          "foot": "POLICY GATE"
+        },
+        {
+          "title": "Execute + prove",
+          "copy": "Only permitted actions proceed; the resulting state is reconciled and evidenced.",
+          "foot": "AUDIT OUTPUT"
+        }
+      ]
+    },
+    "evidence": {
+      "eyebrow": "Build evidence",
+      "title": "Beyond promises.",
+      "gradient": "Open to inspection.",
+      "copy": "Website health and trading readiness are separate. A working site and a successful build do not prove that the product is ready to trade with real funds.",
+      "terminalTitle": "PUBLIC SYSTEM STATE",
+      "labels": {
+        "website": "website",
+        "runtime": "runtime",
+        "network": "network",
+        "product": "product",
+        "mainnet": "mainnet",
+        "fingerprint": "BUILD FINGERPRINT",
+        "commit": "commit",
+        "generated": "generated",
+        "serverStart": "on server start",
+        "technicalAlpha": "Technical alpha"
+      },
+      "note": "The fingerprint identifies this website build only. Trading proof requires reviewed Devnet transactions, position reconciliation and fee accounting. Profitability is neither verified nor guaranteed.",
+      "gates": {
+        "website": {
+          "label": "Website",
+          "detail": "Public product and evidence surface"
+        },
+        "wallet-surface": {
+          "label": "Wallet surface",
+          "detail": "Phantom · authorization and sign-in hardening"
+        },
+        "policy-risk": {
+          "label": "Policy + risk",
+          "detail": "Deterministic execution controls"
+        },
+        "devnet-lifecycle": {
+          "label": "Devnet lifecycle",
+          "detail": "BUY → PARTIAL SELL → FULL SELL · being verified"
+        },
+        "mainnet-access": {
+          "label": "Mainnet access",
+          "detail": "Blocked until validation gates pass"
+        },
+        "audit-evidence": {
+          "label": "Audit evidence",
+          "detail": "Decision, execution and reconciliation trace"
+        }
+      },
+      "errorTitle": "Status could not be refreshed",
+      "errorCopy": "Conservative project statuses are shown below. They do not confirm server availability or integration readiness.",
+      "retry": "Try again",
+      "sourcesLabel": "Project documentation",
+      "sources": [
+        "Architecture",
+        "Security model",
+        "Devnet status"
+      ]
+    },
+    "validation": {
+      "eyebrow": "Validation path",
+      "title": "Verify first.",
+      "gradient": "Then move forward.",
+      "copy": "The next proof target is a reviewed full Devnet lifecycle. Separate safety gates still follow. A successful test-network trade alone does not unlock Mainnet.",
+      "roadmap": [
+        {
+          "label": "NOW",
+          "title": "Full Devnet lifecycle",
+          "copy": "BUY → POSITION → PARTIAL SELL → FULL SELL. Confirm transactions, reconcile state, account for fees and review the execution record."
+        },
+        {
+          "label": "HARDENING",
+          "title": "Safety under failure",
+          "copy": "Repeated requests, revoked permissions, emergency stops, recovery and backups. Close the required engineering safety gates."
+        },
+        {
+          "label": "PUBLISH",
+          "title": "Reviewable technical evidence",
+          "copy": "Publish evidence, selected tests and source only after security, privacy and licensing review."
+        },
+        {
+          "label": "AFTER THE GATES",
+          "title": "Limited production preparation",
+          "copy": "Evaluate readiness for tightly constrained Mainnet operation. This is a conditional next step, not an access or launch-date promise."
+        }
+      ]
+    },
+    "contact": {
+      "eyebrow": "Follow the build",
+      "title": "Built in the open.",
+      "gradient": "Follow what comes next.",
+      "x": "@CopyPumpAI · development updates",
+      "github": "Documentation and reviewed public releases",
+      "email": "Get in touch with the team",
+      "discord": "Community and project discussion",
+      "discordAria": "Open the official CopyPump Discord invite"
+    },
+    "demo": {
+      "micro": "Interactive model · Not live trading",
+      "title": "A decision, under control",
+      "allow": "Allowed",
+      "block": "Blocked",
+      "ariaScenario": "Demo scenario",
+      "rail": [
+        "Overview",
+        "Smart Money",
+        "Positions",
+        "Risk Policy",
+        "Audit"
+      ],
+      "signal": "SIGNAL",
+      "asset": "ASSET",
+      "qualified": "qualified",
+      "qualification": "QUALIFICATION",
+      "signalScore": "Signal score",
+      "liquidity": "Liquidity",
+      "sourceState": "Source state",
+      "normalized": "normalized",
+      "policyEnvelope": "Risk limits",
+      "exposure": "Trade size",
+      "slippage": "Slippage",
+      "decision": "Decision",
+      "evidence": "EVIDENCE",
+      "noTx": "No transaction is created by this website demo.",
+      "run": "Replay the check",
+      "ariaRail": "Control plane sections",
+      "ariaLifecycle": "Execution lifecycle",
+      "allowedTitle": "Action permitted",
+      "blockedTitle": "Action blocked",
+      "allowedReason": "Slippage of 0.8% is within the 1% limit. The candidate can move to preparation.",
+      "blockedReason": "Slippage of 3.2% exceeds the 1% limit. The request does not reach execution.",
+      "pendingTitle": "Checking the boundaries",
+      "pendingReason": "The signal moves through qualification and risk checks.",
+      "flow": [
+        "Signal",
+        "Qualify",
+        "Policy",
+        "Prepare",
+        "Audit"
+      ],
+      "blockedFlow": "Rejected",
+      "pass": "OK",
+      "allowValue": "Allow",
+      "blockValue": "Block"
+    },
+    "trustAria": "Public product status",
+    "history": {
+      "eyebrow": "Project history",
+      "title": "From idea to system.",
+      "gradient": "Without giving up control.",
+      "copy": "From watching wallets to a system that separates insight from permission to act. The architecture is publicly documented; the complete trading lifecycle still needs reviewed evidence.",
+      "items": [
+        {
+          "label": "THE IDEA",
+          "title": "Follow activity without giving up custody.",
+          "copy": "CopyPump began with a simple question: can selected smart-money activity be followed automatically while the wallet remains under the user’s control?",
+          "status": "PAST"
+        },
+        {
+          "label": "CONTROL",
+          "title": "Automation needed explicit authority.",
+          "copy": "The architecture specifies bounded authority, capital limits and revocation. Documenting these boundaries does not replace verifying execution.",
+          "status": "PAST"
+        },
+        {
+          "label": "SAFETY",
+          "title": "Safety came before scale.",
+          "copy": "Fail-closed behavior, reconciliation and a decision trail became system requirements. Readiness depends on verification, not on the interface.",
+          "status": "PAST"
+        },
+        {
+          "label": "TECHNICAL ALPHA",
+          "title": "Harden. Verify. Share the evidence.",
+          "copy": "The September 8 public update reports expanded Price Alerts checks. Final browser QA and independent review are still required. Mainnet remains blocked.",
+          "status": "CURRENT"
+        },
+        {
+          "label": "NEXT",
+          "title": "The next milestone is evidence.",
+          "copy": "The next goal is a reviewed Devnet lifecycle. Mandatory safety checks and an assessment of strictly limited real-network operation follow. No launch date is claimed.",
+          "status": "NEXT"
+        }
+      ],
+      "closing": "The next milestone is not more promises. It is evidence.",
+      "hint": "The project story. The rail keeps moving; drag or swipe at any time to explore."
+    },
+    "currentState": {
+      "eyebrow": "Current state",
+      "title": "Where we stand.",
+      "gradient": "What comes next.",
+      "copy": "Technical alpha on Solana, with a Phantom-focused wallet flow. Devnet verification is underway; public real-fund trading is not available.",
+      "rows": [
+        {
+          "id": "website",
+          "label": "Project website",
+          "value": "PUBLIC",
+          "tone": "good"
+        },
+        {
+          "id": "product",
+          "label": "Product",
+          "value": "TECHNICAL ALPHA",
+          "tone": "warn"
+        },
+        {
+          "id": "custody",
+          "label": "Asset control",
+          "value": "USER CONTROLLED",
+          "tone": "good"
+        },
+        {
+          "id": "wallet",
+          "label": "Primary wallet",
+          "value": "PHANTOM",
+          "tone": "good"
+        },
+        {
+          "id": "network",
+          "label": "Network validation",
+          "value": "DEVNET · IN PROGRESS",
+          "tone": "warn"
+        },
+        {
+          "id": "mainnet",
+          "label": "Mainnet access",
+          "value": "LOCKED",
+          "tone": "locked"
+        },
+        {
+          "id": "x",
+          "label": "This website’s X API",
+          "value": "NOT CONNECTED",
+          "tone": "locked"
+        }
+      ],
+      "note": "Statuses describe the public project site and current technical validation. They are not claims of production readiness, profitability or Mainnet availability.",
+      "update": {
+        "eyebrow": "LATEST PUBLIC UPDATE",
+        "date": "September 8, 2026",
+        "dateIso": "2026-09-08",
+        "title": "Price Alerts · in progress",
+        "copy": "Automated checks have been expanded. Final browser QA and independent review are still required; the milestone is not declared complete.",
+        "nextLabel": "Next proof target",
+        "next": "A complete Devnet lifecycle: BUY → PARTIAL SELL → FULL SELL, with confirmation, reconciliation and fee accounting.",
+        "sourceLabel": "Read the source update",
+        "sourceNote": "This is the date of the public project report, not a live product verification."
+      }
+    },
+    "projectRoadmap": {
+      "eyebrow": "Project roadmap",
+      "title": "Progress by evidence.",
+      "gradient": "Not by a countdown.",
+      "copy": "Every stage has an exit condition. We publish the work and the checks — not a launch date before the result is validated.",
+      "phases": [
+        {
+          "label": "DOCUMENTED",
+          "title": "Architecture and boundaries",
+          "copy": "Custody, authority, AI boundaries and risk principles are documented. This describes the model; it is not a completed security audit.",
+          "state": "complete",
+          "gate": "Boundaries and architecture documented."
+        },
+        {
+          "label": "CURRENT",
+          "title": "Technical alpha",
+          "copy": "Devnet validation, execution safety, alerts, EN/RU public experience, evidence surfaces and product hardening.",
+          "state": "current",
+          "gate": "Review Devnet transactions, reconciled positions and fee accounting."
+        },
+        {
+          "label": "NEXT",
+          "title": "Bounded Mainnet evaluation",
+          "copy": "Only after mandatory safety gates close: evaluate owner-only operation with small personal capital. No third-party funds or public access.",
+          "state": "next",
+          "gate": "First close safety, authorization, recovery and capital-limit gates."
+        },
+        {
+          "label": "EVIDENCE",
+          "title": "Measure actual outcomes",
+          "copy": "The planned measurement window is 30 / 60 / 90 days after limited real-network operation is permitted. This is future work, not an existing performance record.",
+          "state": "future",
+          "gate": "30 / 60 / 90-day results available for review."
+        },
+        {
+          "label": "DECIDE",
+          "title": "Expansion decision",
+          "copy": "Only after evidence exists: decide company/legal structure, broader access and production operating scope.",
+          "state": "future",
+          "gate": "Legal and operating requirements assessed."
+        }
+      ],
+      "note": "The next phase opens after the previous one is validated.",
+      "hint": "The rail keeps moving continuously. Drag, wheel or swipe at any time to explore.",
+      "gateLabel": "Exit condition"
+    },
+    "why": {
+      "eyebrow": "Why copy pump",
+      "title": "A signal is a start.",
+      "gradient": "Control makes it matter.",
+      "copy": "Smart money means wallet activity the system studies for potential signals. CopyPump is designed to qualify that activity, check your limits and permissions, and only then prepare an allowed action.",
+      "principles": [
+        {
+          "left": "Signal",
+          "right": "Permission to trade"
+        },
+        {
+          "left": "Performance",
+          "right": "Unlimited risk"
+        },
+        {
+          "left": "Automation",
+          "right": "Giving up control"
+        }
+      ],
+      "isTitle": "COPY PUMP IS",
+      "notTitle": "COPY PUMP IS NOT",
+      "isItems": [
+        "Bounded autonomous execution",
+        "User-controlled custody",
+        "Deterministic policy gates",
+        "Evidence-driven operation"
+      ],
+      "notItems": [
+        "A custodial fund",
+        "Unlimited wallet access",
+        "Blind copy trading",
+        "A promise of profit"
+      ]
+    },
+    "journey": {
+      "eyebrow": "One signal · end to end",
+      "title": "One signal.",
+      "gradient": "Every decision.",
+      "copy": "A simplified illustrative flow showing where CopyPump adds qualification, policy, reconciliation and proof. It is not a live transaction or performance claim.",
+      "steps": [
+        {
+          "label": "SIGNAL",
+          "title": "Activity is detected.",
+          "copy": "A monitored source produces a candidate event. Detection alone does not authorize execution.",
+          "facts": [
+            "Source · monitored wallet",
+            "Asset · candidate token",
+            "State · observed"
+          ]
+        },
+        {
+          "label": "QUALIFY",
+          "title": "The candidate is evaluated.",
+          "copy": "Freshness, market conditions and quality checks decide whether the signal is worth considering.",
+          "facts": [
+            "Signal age · checked",
+            "Liquidity · checked",
+            "Risk flags · checked"
+          ]
+        },
+        {
+          "label": "POLICY",
+          "title": "Hard boundaries decide.",
+          "copy": "Capital, exposure, slippage and authority rules must allow the action before execution can proceed.",
+          "facts": [
+            "Capital limit · applied",
+            "Authority · bounded",
+            "Decision · allow / block"
+          ]
+        },
+        {
+          "label": "EXECUTE",
+          "title": "Only an allowed action is prepared.",
+          "copy": "A valid candidate is converted into an execution request inside the permitted envelope.",
+          "facts": [
+            "Route · selected",
+            "Transaction · prepared",
+            "Authority · verified"
+          ]
+        },
+        {
+          "label": "RECONCILE",
+          "title": "Expected and observed state are compared.",
+          "copy": "The system checks what actually happened instead of assuming that submission means success.",
+          "facts": [
+            "Expected state",
+            "Observed state",
+            "Mismatch · surfaced"
+          ]
+        },
+        {
+          "label": "PROVE",
+          "title": "The decision leaves evidence.",
+          "copy": "Policy context, transaction state, timestamps and reconciliation outcome become part of the audit trail.",
+          "facts": [
+            "Decision context",
+            "Execution state",
+            "Fingerprint · traceable"
+          ]
+        }
+      ],
+      "closing": "Nothing jumps directly from signal to wallet."
+    },
+    "failure": {
+      "eyebrow": "Failure by design",
+      "title": "When in doubt.",
+      "gradient": "Keep capital out.",
+      "copy": "The intended safety model stops execution when required data, authority or confirmation is missing. These failure paths are part of the ongoing verification work.",
+      "cards": [
+        {
+          "title": "RPC unavailable",
+          "copy": "Execution does not silently continue without the network state it requires.",
+          "result": "STOP / RETRY SAFELY"
+        },
+        {
+          "title": "Policy fails",
+          "copy": "The candidate is blocked. A failed rule cannot be converted into an approval.",
+          "result": "BLOCK"
+        },
+        {
+          "title": "State cannot reconcile",
+          "copy": "The system surfaces the mismatch instead of pretending the expected result occurred.",
+          "result": "UNRESOLVED"
+        },
+        {
+          "title": "Authority invalid",
+          "copy": "Execution stops when the required permission is missing, expired or revoked.",
+          "result": "DENY"
+        }
+      ]
+    },
+    "philosophy": {
+      "eyebrow": "Build philosophy",
+      "title": "Less noise.",
+      "gradient": "Stronger foundations.",
+      "copy": "Clear boundaries are more useful than big claims. They help you decide whether to follow the project now, and understand what it does not offer yet.",
+      "items": [
+        {
+          "title": "Prove before expansion",
+          "copy": "New scope follows evidence, not pressure to announce more."
+        },
+        {
+          "title": "Control before convenience",
+          "copy": "Automation remains bounded even when removing a boundary would feel easier."
+        },
+        {
+          "title": "Evidence before claims",
+          "copy": "If a capability is not connected and proven end to end, the public site says so."
+        }
+      ],
+      "faq": {
+        "title": "Before you get started",
+        "items": [
+          {
+            "question": "Can I trade through CopyPump today?",
+            "answer": "No. The product is in technical alpha, full Devnet verification is ongoing, and Mainnet is intentionally blocked. This website lets you explore the model and an illustrative demo, not start trading with real funds."
+          },
+          {
+            "question": "Do I have to hand over my wallet or keys?",
+            "answer": "No. The intended model does not require your seed phrase or private key. Signing stays at the supported Phantom wallet boundary. AI analysis does not grant transaction-signing authority or permission to expand wallet access."
+          },
+          {
+            "question": "What proves the next milestone?",
+            "answer": "A Devnet buy, partial sell and full sell, with transaction confirmation, position reconciliation and fee accounting. Separate safety gates still follow: a successful demonstration alone does not close them."
+          }
+        ]
+      }
+    },
+    "nextCues": {
+      "stack": "Next · follow one signal end to end",
+      "journey": "Next · see how failure is handled",
+      "evidence": "Next · see what is being validated",
+      "validation": "Next · see how CopyPump evolved",
+      "history": "Next · see the project state today",
+      "status": "Next · explore the roadmap"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy",
+      "eyebrow": "PRIVACY",
+      "description": "How the public CopyPump project website handles basic technical data.",
+      "intro": "The public CopyPump website is designed to explain the project with minimal data collection.",
+      "sections": [
+        {
+          "heading": "Data used by the website",
+          "paragraphs": [
+            "The website may process standard technical request data needed for security, reliability and diagnostics, such as IP-derived network information, request timestamps, user-agent information and server logs."
+          ],
+          "bullets": [
+            "No seed phrase or private key is requested.",
+            "The public project site does not require a wallet connection.",
+            "External links are governed by the privacy practices of their respective services."
+          ]
+        },
+        {
+          "heading": "Purpose",
+          "paragraphs": [
+            "Technical data is used to operate, secure and diagnose the public website and to prevent abuse. CopyPump does not sell personal information."
+          ]
+        },
+        {
+          "heading": "Contact",
+          "paragraphs": [
+            "Privacy questions: copypumphq@gmail.com"
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of Use",
+      "eyebrow": "TERMS",
+      "description": "Terms governing use of the public CopyPump website and technical-alpha information.",
+      "intro": "The public CopyPump website is an informational and experimental technical-alpha surface. It is not a promise that public trading access, mainnet execution or any commercial service is available.",
+      "sections": [
+        {
+          "heading": "Technical-alpha status",
+          "paragraphs": [
+            "CopyPump is under active development. Features, architecture, interfaces, status indicators and validation plans may change."
+          ]
+        },
+        {
+          "heading": "No investment or financial advice",
+          "paragraphs": [
+            "Nothing on the website is investment, legal, tax or financial advice."
+          ]
+        },
+        {
+          "heading": "No public mainnet promise",
+          "paragraphs": [
+            "Mainnet access remains locked unless and until the project explicitly changes that status."
+          ]
+        },
+        {
+          "heading": "Acceptable use",
+          "paragraphs": [
+            "Do not attempt to bypass authentication, overload the service, exploit vulnerabilities or interfere with other users."
+          ]
+        },
+        {
+          "heading": "Availability and changes",
+          "paragraphs": [
+            "The website may be changed, paused or withdrawn without notice while the project is in technical alpha."
+          ]
+        },
+        {
+          "heading": "Contact",
+          "paragraphs": [
+            "Questions about these terms: copypumphq@gmail.com"
+          ]
+        }
+      ]
+    },
+    "security": {
+      "title": "Security & Responsible Disclosure",
+      "eyebrow": "SECURITY",
+      "description": "How to report a potential security issue affecting the public CopyPump website.",
+      "intro": "Security reports are welcome. Please disclose vulnerabilities privately so the project can investigate before technical details are made public.",
+      "sections": [
+        {
+          "heading": "Report privately",
+          "paragraphs": [
+            "Send a concise report to copypumphq@gmail.com with the subject “CopyPump Security”. Include the affected URL or component, reproduction steps and expected impact."
+          ]
+        },
+        {
+          "heading": "Safe research",
+          "paragraphs": [
+            "Do not access data belonging to other users, degrade service availability, perform social engineering or use a vulnerability beyond what is needed to demonstrate it safely."
+          ]
+        },
+        {
+          "heading": "Authentication safety",
+          "paragraphs": [
+            "CopyPump will never ask you to send a seed phrase or private key. The public project website never requires a seed phrase or private key."
+          ]
+        },
+        {
+          "heading": "Current public boundary",
+          "paragraphs": [
+            "The public website is separate from any future real-funds execution surface. Mainnet trading remains locked unless explicitly announced."
+          ]
+        }
+      ]
+    },
+    "contact": {
+      "title": "Contact CopyPump",
+      "eyebrow": "CONTACT",
+      "description": "Official ways to follow the CopyPump build or contact the project.",
+      "intro": "Use official channels for project questions, collaboration, security reports and development updates.",
+      "sections": [
+        {
+          "heading": "Official channels",
+          "paragraphs": [
+            "X: @CopyPumpAI",
+            "Discord: https://discord.gg/DNBQtqw6R",
+            "GitHub: CopyPumpApp/CopyPump",
+            "Email: copypumphq@gmail.com"
+          ]
+        },
+        {
+          "heading": "Before you contact us",
+          "paragraphs": [
+            "For security issues, use the Security page and avoid posting vulnerability details publicly. Never send a seed phrase or private key."
+          ]
+        }
+      ]
+    },
+    "_meta": {
+      "back": "Back to CopyPump",
+      "updated": "Last updated: 10 September 2026."
+    }
+  },
+  "studio": {
+    "nav": {
+      "product": "How it works",
+      "controls": "Your control",
+      "progress": "Progress",
+      "menu": "Open navigation",
+      "close": "Close",
+      "home": "Back to site"
+    },
+    "hero": {
+      "eyebrow": "AUTONOMY, WITH BOUNDARIES",
+      "stage": "Technical alpha · Solana Devnet",
+      "first": "Follow smart money.",
+      "second": "Keep",
+      "accent": "control.",
+      "description": "We’re building autonomous trading on Solana. Your wallet stays yours. Your rules define what automation is allowed to do.",
+      "primary": "Explore the decision",
+      "secondary": "See what’s verified",
+      "objectLabel": "Authority belongs to you",
+      "objectNote": "Not to a signal. Not to an AI.",
+      "route": [
+        "Observe the signal",
+        "Check your rules",
+        "Explain the decision"
+      ],
+      "foot": "An independent project. A deliberately constrained system.",
+      "scroll": "Explore"
+    },
+    "demo": {
+      "eyebrow": "02 / THE DECISION",
+      "title": "A signal is not permission.",
+      "intro": "Change the rules. See exactly why an example action stops—or passes these checks.",
+      "disclaimer": "Interactive example · synthetic inputs · no wallet or transaction",
+      "steps": [
+        "Detect",
+        "Qualify",
+        "Constrain",
+        "Explain"
+      ],
+      "stepNotes": [
+        "An action is proposed",
+        "Check data freshness",
+        "Apply your boundaries",
+        "Make the reason visible"
+      ],
+      "amount": "Proposed action",
+      "limit": "Your capital limit",
+      "age": "Signal age",
+      "ageUnit": "seconds",
+      "stop": "Emergency stop",
+      "stopHelp": "Overrides both example checks.",
+      "reset": "Reset example",
+      "statusLabel": "EXAMPLE RESULT",
+      "blocked": "Blocked.",
+      "allowed": "Within these limits.",
+      "allowReason": "This example passes the capital and freshness checks. Real execution requires additional authorizations and safety checks.",
+      "stopReason": "Emergency stop is on. No example action can proceed.",
+      "limitReason": "The proposed action exceeds your capital limit.",
+      "ageReason": "The signal is older than the example’s 30-second freshness limit.",
+      "trace": "Decision trace",
+      "signal": "Observed",
+      "fresh": "Freshness",
+      "capital": "Capital",
+      "authority": "Stop control",
+      "pass": "Pass",
+      "fail": "Blocked",
+      "paused": "Stopped",
+      "constraint": "Your rules are the boundary.",
+      "notTrade": "A passing example is not permission to trade."
+    },
+    "boundary": {
+      "eyebrow": "03 / YOUR AUTHORITY",
+      "title": "Your wallet.",
+      "accent": "Your authority.",
+      "intro": "Automation should never mean giving up control. CopyPump is being designed around a clear separation of responsibilities.",
+      "labels": [
+        "You authorize.",
+        "Rules constrain.",
+        "AI assists."
+      ],
+      "texts": [
+        "Wallet ownership stays with you. The site never asks for your seed phrase or private key.",
+        "Capital, exposure, permitted actions and session limits bound what automation may do.",
+        "Research and explanations can support a decision. AI cannot sign transactions or override a risk rejection."
+      ],
+      "note": "These are the intended security boundaries of a product under development—not a claim of completed production validation.",
+      "more": "Read the security model",
+      "details": [
+        {
+          "q": "What does signing in authorize?",
+          "a": "Only proof that you control the Phantom address. Website sign-in does not approve a transaction, transfer funds, or grant trading permissions."
+        },
+        {
+          "q": "What happens when required information is missing?",
+          "a": "The intended trading model is fail-closed: missing authorization, conflicting data or uncertain confirmation must stop the action rather than silently permit it."
+        }
+      ]
+    },
+    "journal": {
+      "eyebrow": "04 / VERIFIED PROGRESS",
+      "title": "Progress,",
+      "accent": "with a paper trail.",
+      "intro": "A clear view of what we’re building, what still needs review, and the evidence that comes next.",
+      "date": "September 10, 2026",
+      "dateIso": "2026-09-10",
+      "dated": "Latest verified public-safe project update included in this release. Not a live trading feed.",
+      "currentLabel": "VERIFIED PUBLIC STATUS",
+      "currentTitle": "Technical alpha. Solana Devnet hardening continues.",
+      "currentText": "The current verified baseline keeps CopyPump in technical alpha while Solana Devnet hardening continues. Mainnet remains blocked until documented safety prerequisites are completed and independently verified.",
+      "nextLabel": "NEXT PROOF TARGET",
+      "nextTitle": "The full lifecycle. Not just a green interface.",
+      "nextText": "Buy → position → partial sell → full sell, with transaction confirmation, reconciliation, fees and an auditable record.",
+      "lockedLabel": "MAINNET",
+      "lockedTitle": "Intentionally blocked.",
+      "lockedText": "No claim of production readiness or verified returns. UI demos, successful builds and simulations do not prove real execution.",
+      "source": "Public project status",
+      "roadmap": "Roadmap",
+      "architecture": "Architecture",
+      "api": "Website service",
+      "online": "Responding",
+      "offline": "Unavailable",
+      "loading": "Checking",
+      "retry": "Check again",
+      "apiNote": "This checks the website API only. It says nothing about trading readiness.",
+      "updateLabel": "ECOSYSTEM ALPHA",
+      "updateTitle": "CopyCube has moved to a website-only alpha path.",
+      "updateText": "CopyCube 3.2 Alpha 2 is now scoped as a website-only, cube-only game in the CopyPump ecosystem. Its source and architecture gates pass, while a clean production Next.js build and browser QA remain unverified—so it is still Alpha, not a production release."
+    },
+    "faq": {
+      "eyebrow": "05 / THE ESSENTIALS",
+      "title": "Good questions.",
+      "items": [
+        {
+          "q": "Can I trade with CopyPump today?",
+          "a": "Public Mainnet trading is not available. The project is in technical alpha and is hardening its Solana Devnet lifecycle. This website explains the product, boundaries and current development status."
+        },
+        {
+          "q": "Do I need a wallet to explore the site?",
+          "a": "No. The product explanation, interactive example and public project documents are open without a wallet connection."
+        },
+        {
+          "q": "How are CopyPump development updates published?",
+          "a": "CopyPump now uses a public-safe milestone feed for development announcements. A milestone must be verified and explicitly approved for public announcement; private engineering progress is not automatically presented as a public milestone."
+        },
+        {
+          "q": "Is CopyPump affiliated with pump.fun?",
+          "a": "No. CopyPump is an independent project. Official channels, technical documentation and contact details are linked below."
+        },
+        {
+          "q": "Can AI override my limits?",
+          "a": "The described architecture does not give AI that authority. AI can assist with research, classification, diagnostics and explanations; deterministic risk and policy checks remain authoritative."
+        },
+        {
+          "q": "Why is confirmation not the end of a trade?",
+          "a": "CopyPump’s target model also checks the resulting balances and position, and records fees and the decision trail. A correct interface message alone does not establish that the position is reconciled."
+        },
+        {
+          "q": "What is the current status of CopyCube?",
+          "a": "CopyCube 3.2 Alpha 2 is a separate website-only game in the CopyPump ecosystem. Its active path is cube-only and no longer depends on Telegram or TON Connect. Production build and browser QA are still required, so it is not presented as production-ready and this site does not expose CopyCube reward mechanics or game-point earning."
+        },
+        {
+          "q": "Where can I check the claims on this page?",
+          "a": "The architecture, security model, project status and roadmap are linked beside the relevant sections. They describe a technical alpha and intended boundaries, not verified profitability or production Mainnet readiness."
+        }
+      ]
+    },
+    "community": {
+      "eyebrow": "STAY CLOSE TO THE BUILD",
+      "title": "Follow the work.",
+      "accent": "Not the noise.",
+      "description": "Project updates, technical context and a place to meet the people following CopyPump.",
+      "x": "Updates on X",
+      "discord": "Join Discord",
+      "github": "Explore GitHub",
+      "email": "Talk to the project",
+      "footer": "User custody. Bounded automation. Traceable decisions."
+    }
+  },
+  "cinema": {
+    "motion": {
+      "pause": "Pause animations",
+      "play": "Play animations",
+      "reduced": "Reduced motion is enabled in your device settings",
+      "label": "Motion",
+      "on": "On",
+      "off": "Off"
+    },
+    "hero": {
+      "lead": "Follow",
+      "focus": "smart money.",
+      "end": "Keep control.",
+      "eyebrow": "AUTONOMOUS TRADING, ON YOUR TERMS",
+      "intro": "CopyPump is building a way to follow experienced wallets on Solana—without handing over your funds or giving automation unlimited authority.",
+      "primary": "See how it works",
+      "secondary": "What we are building",
+      "scene": "A signal becomes a decision",
+      "sceneNote": "Product concept · not live trading",
+      "loop": "Play sequence",
+      "hold": "Pause sequence",
+      "stages": [
+        "Detect",
+        "Qualify",
+        "Constrain",
+        "Execute"
+      ],
+      "notes": [
+        "Observe wallet activity.",
+        "Separate a signal from noise.",
+        "Apply the limits you set.",
+        "Only inside permitted authority."
+      ],
+      "captions": [
+        "SMART-MONEY SIGNAL",
+        "QUALIFIED INTENT",
+        "YOUR RISK BOUNDARY",
+        "PERMITTED EXECUTION"
+      ],
+      "floor": "Your rules remain in the loop.",
+      "network": "Network",
+      "wallet": "Wallet sign-in",
+      "community": "Community activity",
+      "servicesNote": "Network, wallet and community services. Logos do not imply a partnership."
+    },
+    "problem": {
+      "eyebrow": "WHY COPYPUMP",
+      "title": "Following a wallet is easy.",
+      "accent": "Keeping control is the hard part.",
+      "intro": "Monitoring every move takes time. Copying every move ignores your own limits. Giving a bot broad permissions creates a different problem. CopyPump is being built to bring observation, risk rules and traceable execution into one system.",
+      "before": "The problem",
+      "after": "The CopyPump approach",
+      "rows": [
+        {
+          "title": "Always watching. Always reacting.",
+          "before": "Wallets, signals and positions compete for your attention.",
+          "after": "Bring observation and qualified signals into one decision flow."
+        },
+        {
+          "title": "A good signal. The wrong risk.",
+          "before": "Another wallet’s trade may exceed your capital or exposure limits.",
+          "after": "Check your own limits before an action can be permitted."
+        },
+        {
+          "title": "Automation without visibility.",
+          "before": "It is hard to trust a result when the reason is hidden.",
+          "after": "Keep an inspectable trail from signal to decision and outcome."
+        }
+      ],
+      "for": "Designed for people who want to follow on-chain activity without surrendering custody.",
+      "note": "The product is in technical alpha. These are the intended capabilities—not an invitation to trade with real funds.",
+      "cta": "Explore the decision model"
+    },
+    "guard": {
+      "notice": "Copying site text is restricted. Account details and form fields remain available."
+    },
+    "proof": {
+      "eyebrow": "ENGINEERING, NOT PROMISES",
+      "heading": "Built to be inspected.",
+      "sub": "The status is dated. The next milestone is explicit. The evidence stays accessible."
+    },
+    "studio": {
+      "product": "How it works",
+      "controls": "Your control",
+      "progress": "Progress"
+    }
+  },
+  "explore": {
+    "hint": "Moves automatically · hover to read · drag or swipe to explore. Keyboard: focus to stop, ← → to browse.",
+    "source": "Read the architecture",
+    "roadmapSource": "Read the full roadmap",
+    "journey": {
+      "eyebrow": "INSIDE THE PRODUCT",
+      "title": "Not just a copied trade.",
+      "accent": "A complete decision trail.",
+      "intro": "CopyPump is being built to connect market observation, your rules and the entire life of a position. Here is the intended journey — not a live trading feed.",
+      "label": "Explore the intended trading lifecycle",
+      "note": "Designed workflow. Completion still requires reviewed Devnet transactions, reconciliation and fee evidence.",
+      "items": [
+        {
+          "tag": "OBSERVE",
+          "title": "Find activity worth understanding.",
+          "text": "Smart-money discovery starts with wallet and transaction activity. An interesting move is an observation, not an instruction to buy.",
+          "output": "On-chain observation",
+          "detail": "Wallet and transaction analysis"
+        },
+        {
+          "tag": "QUALIFY",
+          "title": "Context before copying.",
+          "text": "The intended qualification layer looks at the opportunity and manipulation signals before preparing an action. Following a wallet is not blind execution.",
+          "output": "Qualified signal",
+          "detail": "Research + deterministic checks"
+        },
+        {
+          "tag": "CONSTRAIN",
+          "title": "Their move. Your limits.",
+          "text": "Capital, exposure, daily loss boundaries, token restrictions, liquidity and slippage checks define the permitted scope. A strategy cannot grant itself more authority.",
+          "output": "Bounded trade intent",
+          "detail": "Your policy remains authoritative"
+        },
+        {
+          "tag": "AUTHORIZE",
+          "title": "Your wallet is a boundary.",
+          "text": "A permitted intent still needs the required wallet or session authority. AI may explain and propose; it cannot sign, submit or override a rejection.",
+          "output": "Explicit authorization",
+          "detail": "No seed phrase or private-key custody"
+        },
+        {
+          "tag": "MANAGE",
+          "title": "Buying is only the beginning.",
+          "text": "The target lifecycle includes position creation, partial selling and full closing. The remaining position has to stay consistent after every action.",
+          "output": "BUY → POSITION → SELL",
+          "detail": "Partial exit and full exit"
+        },
+        {
+          "tag": "RECONCILE",
+          "title": "The receipt matters too.",
+          "text": "Transaction confirmation, balances, positions, fees and the audit trail belong to the result. A submitted request alone is not proof of correct execution.",
+          "output": "Confirmed, reconciled evidence",
+          "detail": "Fees, PnL and decision records"
+        }
+      ]
+    },
+    "roadmap": {
+      "eyebrow": "WHAT COMES NEXT",
+      "title": "Progress with conditions.",
+      "accent": "Not countdowns.",
+      "intro": "The public roadmap links each stage to engineering evidence. Documentation work can run alongside verification; Mainnet does not open because a date arrives.",
+      "label": "Explore the four public roadmap phases",
+      "note": "Direction, not guaranteed release dates or returns. Source: public roadmap; project status dated September 8, 2026.",
+      "items": [
+        {
+          "tag": "PHASE 01 · VERIFICATION",
+          "title": "Prove the Devnet lifecycle.",
+          "text": "Phantom flow, qualified signals, BUY, a position, partial and full exits — with confirmation, reconciliation and fee accounting.",
+          "output": "Evidence required",
+          "detail": "A reviewed real-Devnet execution trail, including failures and restart behavior."
+        },
+        {
+          "tag": "PHASE 02 · HARDENING",
+          "title": "Make recovery part of safety.",
+          "text": "Close the gaps around duplicate execution, session replay, emergency stops, ownership of execution and operational recovery.",
+          "output": "Transition condition",
+          "detail": "Required safety checks closed; backup and restore behavior verified."
+        },
+        {
+          "tag": "PHASE 03 · PUBLIC EVIDENCE",
+          "title": "Build in the open, carefully.",
+          "text": "Keep architecture and security documentation reviewable. Publish selected source and tests only after security, privacy and licensing review.",
+          "output": "Available vs planned",
+          "detail": "Public documentation is available. Selected reviewed code and reproducible evidence remain milestones."
+        },
+        {
+          "tag": "PHASE 04 · CONDITIONAL",
+          "title": "Evaluate limited operation.",
+          "text": "Only after the safety gates: assess bounded production limits, staged rollout, monitoring, incident response and provider redundancy.",
+          "output": "Not a launch promise",
+          "detail": "Mainnet remains intentionally blocked. This stage needs a separate evidence-based decision."
+        }
+      ]
+    },
+    "brief": {
+      "title": "What you can do here today",
+      "text": "Explore the interactive product example, review the public technical documents, follow project progress and use the official community channels below."
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "websiteStatus": "PUBLIC",
+  "stage": "Technical alpha",
+  "network": "Solana",
+  "mainnetLocked": true,
+  "headline": "Your wallet. Your rules.",
+  "summary": "CopyPump is a non-custodial Solana automation project focused on bounded authority, deterministic risk controls and traceable execution. Mainnet remains intentionally blocked while the technical alpha is validated.",
+  "gates": [
+    {"id":"website","label":"Website","detail":"Public product, architecture and evidence surface","status":"PUBLIC","tone":"good"},
+    {"id":"policy-risk","label":"Policy + risk","detail":"Deterministic capital, slippage, exposure and permission controls","status":"HARDENING","tone":"warn"},
+    {"id":"audit-evidence","label":"Audit evidence","detail":"Decision, execution, reconciliation and accounting trace","status":"HARDENING","tone":"warn"},
+    {"id":"devnet-lifecycle","label":"Devnet lifecycle","detail":"BUY → partial sell → full sell with failure-path validation","status":"VALIDATING","tone":"warn"},
+    {"id":"mainnet-access","label":"Mainnet access","detail":"Blocked until required validation gates pass","status":"LOCKED","tone":"locked"}
+  ],
+  "roadmap": [
+    {"label":"NOW","title":"Full Devnet lifecycle","copy":"BUY → POSITION → PARTIAL SELL → FULL SELL. Confirm transactions, reconcile state, account for fees and review the execution record.","phase":"01","state":"active"},
+    {"label":"HARDENING","title":"Safety under failure","copy":"Repeated requests, revoked permissions, emergency stops and recovery. Close the required engineering safety gates.","phase":"02","state":"next"},
+    {"label":"PUBLISH","title":"Reviewable technical evidence","copy":"Publish evidence, selected tests and source after security, privacy and licensing review.","phase":"03","state":"future"},
+    {"label":"AFTER THE GATES","title":"Limited production preparation","copy":"Evaluate readiness for tightly constrained Mainnet operation. This is a conditional next step, not an access or launch-date promise.","phase":"04","state":"future"}
+  ],
+  "sourceUpdatedAt": "2026-09-14",
+  "sourceUrl": "https://github.com/CopyPumpApp/CopyPump/blob/main/docs/PROJECT_STATUS.md"
+}
