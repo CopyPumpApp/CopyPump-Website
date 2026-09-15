@@ -20,6 +20,8 @@ forbidText(landing, 'c.journal.updateTitle', 'Non-CopyPump ecosystem update is s
 forbidText(landing, 'PROJECT_STATUS.md', 'Developer source controls should not be rendered in the marketing flow.')
 forbidText(landing, 'SECURITY_MODEL.md', 'Developer source controls should not be rendered in the marketing flow.')
 forbidText(rails, 'github.com/CopyPumpApp/CopyPump/blob/main/docs/', 'Roadmap rail must not expose developer documentation controls in the marketing flow.')
+forbidText(rails, 'ROADMAP.md', 'Roadmap rail must not expose a developer-document link.')
+forbidText(rails, 'ARCHITECTURE.md', 'Roadmap rail must not expose a developer-document link.')
 
 if (failures.length) {
   console.error('Public-site audit failed:')
