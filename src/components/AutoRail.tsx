@@ -1,8 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react'
-import { useMotion } from './Experience'
 
 export function AutoRail({id,label,speed=20,children}:{id:string;label:string;hint?:string;speed?:number;children:ReactNode}){
-  const motion=useMotion(),viewport=useRef<HTMLDivElement>(null),track=useRef<HTMLDivElement>(null)
+  const viewport=useRef<HTMLDivElement>(null),track=useRef<HTMLDivElement>(null)
   useEffect(()=>{
     const el=viewport.current,rail=track.current
     if(!el||!rail)return
@@ -11,7 +10,8 @@ export function AutoRail({id,label,speed=20,children}:{id:string;label:string;hi
     const duration=()=>unit&&speed>0?Math.max(8000,unit/speed*1000):60000
     const currentOffset=()=>{if(!animation||!unit)return manualOffset||unit;const d=duration(),time=Number(animation.currentTime||0),phase=((time%d)+d)%d/d;return unit+phase*unit}
     const paint=(value:number)=>{manualOffset=wrap(value);rail.style.transform=`translate3d(${-manualOffset}px,0,0)`}
-    const canRun=()=>motion.running&&inView&&!focused&&!dragging&&!motion.modal&&!document.hidden
+    const globalMotionOn=()=>document.documentElement.dataset.motion==='on'&&!document.documentElement.classList.contains('nav-open')&&!document.hidden
+    const canRun=()=>globalMotionOn()&&inView&&!focused&&!dragging
     const sync=()=>{if(!animation)return;if(canRun()){rail.style.transform='';animation.play();el.dataset.railState='moving'}else{animation.pause();el.dataset.railState=inView?'reading':'sleeping'}}
     const build=()=>{if(disposed||!unit||animation)return;const d=duration();animation=rail.animate([{transform:`translate3d(${-unit}px,0,0)`},{transform:`translate3d(${-2*unit}px,0,0)`}],{duration:d,iterations:Infinity,easing:'linear'});animation.currentTime=((wrap(manualOffset||unit)-unit)/unit)*d;animation.pause();rail.style.transform='';sync()}
     const destroy=()=>{if(!animation)return;manualOffset=currentOffset();animation.cancel();animation=null;paint(manualOffset)}
@@ -30,9 +30,11 @@ export function AutoRail({id,label,speed=20,children}:{id:string;label:string;hi
     io?.observe(el)
     const ro='ResizeObserver'in window?new ResizeObserver(queueMeasure):null
     ro?.observe(el)
+    const motionObserver=new MutationObserver(sync)
+    motionObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-motion','class']})
     document.addEventListener('visibilitychange',sync);el.addEventListener('focusin',focusIn);el.addEventListener('focusout',focusOut);el.addEventListener('pointerdown',down);el.addEventListener('pointermove',move);el.addEventListener('pointerup',release);el.addEventListener('pointercancel',release);el.addEventListener('wheel',wheel,{passive:false});el.addEventListener('keydown',key)
     queueMeasure()
-    return()=>{disposed=true;clearTimeout(resumeTimer);if(resizeRaf)cancelAnimationFrame(resizeRaf);animation?.cancel();io?.disconnect();ro?.disconnect();document.removeEventListener('visibilitychange',sync);el.removeEventListener('focusin',focusIn);el.removeEventListener('focusout',focusOut);el.removeEventListener('pointerdown',down);el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',release);el.removeEventListener('pointercancel',release);el.removeEventListener('wheel',wheel);el.removeEventListener('keydown',key)}
-  },[id,motion.running,motion.modal,speed])
+    return()=>{disposed=true;clearTimeout(resumeTimer);if(resizeRaf)cancelAnimationFrame(resizeRaf);animation?.cancel();io?.disconnect();ro?.disconnect();motionObserver.disconnect();document.removeEventListener('visibilitychange',sync);el.removeEventListener('focusin',focusIn);el.removeEventListener('focusout',focusOut);el.removeEventListener('pointerdown',down);el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',release);el.removeEventListener('pointercancel',release);el.removeEventListener('wheel',wheel);el.removeEventListener('keydown',key)}
+  },[id,speed])
   return <div className="auto-rail" data-rail={id}><div className="rail-viewport" ref={viewport} role="region" tabIndex={0} aria-label={label}><div className="rail-track" ref={track}><div className="rail-copy" aria-hidden="true" inert>{children}</div><div className="rail-copy" role="list">{children}</div><div className="rail-copy" aria-hidden="true" inert>{children}</div></div></div></div>
 }
