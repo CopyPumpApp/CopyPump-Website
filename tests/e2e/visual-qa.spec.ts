@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 
 const shot = (project:string, name:string) => `test-results/visual-qa/${project}/${name}.png`
 
-async function captureViewport(page: Parameters<typeof test>[0] extends never ? never : any, project:string, name:string){
+async function captureViewport(page:Page, project:string, name:string){
   await page.screenshot({ path: shot(project, name), fullPage:false })
 }
 
