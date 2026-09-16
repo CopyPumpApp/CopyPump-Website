@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useI18n } from '../i18n'
 import { useMotion } from './Experience'
-export const workflowObjects = ['detect-cutout-final', 'qualify-cutout-final', 'constrain-cutout-final', 'execute-prove-cutout-final']
-const workflowAsset = (name:string) => `/workflow-objects/${name}.webp?v=20260916-light`
+export const workflowObjects = ['detect-cutout-final-v47', 'qualify-cutout-final-v47', 'constrain-cutout-final-v47', 'execute-prove-cutout-final-v47']
+const workflowAsset = (name:string) => `/workflow-objects/${name}.webp?v=20260915-canonical`
 export function HeroScene() {
   const { dict } = useI18n(), c = dict.cinema.hero, motion = useMotion()
   const [stage, setStage] = useState(0), [held, setHeld] = useState(false), [inView, setInView] = useState(true), [firstReady, setFirstReady] = useState(false)
