@@ -6,6 +6,17 @@ async function settle(page:Page, ms=850){ await page.waitForTimeout(ms) }
 async function captureViewport(page:Page, project:string, name:string){
   await page.screenshot({ path: shot(project, name), fullPage:false })
 }
+async function captureMenu(page:Page, project:string, name:string){
+  await page.locator('.menu-button').click()
+  await expect(page.locator('.mobile-nav__panel')).toBeVisible()
+  await expect(page.locator('.mobile-nav__top')).toBeVisible()
+  await expect(page.locator('.mobile-nav nav button').first()).toBeVisible()
+  await expect(page.locator('.mobile-nav__footer')).toBeVisible()
+  await settle(page,650)
+  await captureViewport(page, project, name)
+  await page.keyboard.press('Escape')
+  await expect(page.locator('#mobile-navigation')).toHaveCount(0)
+}
 
 test('capture Home, Project and mobile menu recovery surfaces', async ({ page, isMobile }, testInfo) => {
   const project = testInfo.project.name
@@ -14,6 +25,7 @@ test('capture Home, Project and mobile menu recovery surfaces', async ({ page, i
   await expect(page.locator('#main-content')).toBeVisible()
   await settle(page)
   await captureViewport(page, project, 'home-top')
+  if(isMobile) await captureMenu(page, project, 'mobile-menu-top')
 
   await page.locator('.product-story').scrollIntoViewIfNeeded()
   await settle(page)
@@ -26,17 +38,7 @@ test('capture Home, Project and mobile menu recovery surfaces', async ({ page, i
   await page.locator('#journal').scrollIntoViewIfNeeded()
   await settle(page)
   await captureViewport(page, project, 'home-progress')
-
-  if (isMobile) {
-    await page.locator('.menu-button').click()
-    await expect(page.locator('.mobile-nav__panel')).toBeVisible()
-    await expect(page.locator('.mobile-nav__top')).toBeVisible()
-    await expect(page.locator('.mobile-nav nav button').first()).toBeVisible()
-    await expect(page.locator('.mobile-nav__footer')).toBeVisible()
-    await settle(page,650)
-    await captureViewport(page, project, 'mobile-menu')
-    await page.keyboard.press('Escape')
-  }
+  if(isMobile) await captureMenu(page, project, 'mobile-menu-scrolled')
 
   await page.goto('/project')
   await expect(page.locator('.project-page')).toBeVisible()
