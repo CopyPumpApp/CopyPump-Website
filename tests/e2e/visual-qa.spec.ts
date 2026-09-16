@@ -30,6 +30,9 @@ test('capture Home, Project and mobile menu recovery surfaces', async ({ page, i
   if (isMobile) {
     await page.locator('.menu-button').click()
     await expect(page.locator('.mobile-nav__panel')).toBeVisible()
+    await expect(page.locator('.mobile-nav__top')).toBeVisible()
+    await expect(page.locator('.mobile-nav nav button').first()).toBeVisible()
+    await expect(page.locator('.mobile-nav__footer')).toBeVisible()
     await settle(page,650)
     await captureViewport(page, project, 'mobile-menu')
     await page.keyboard.press('Escape')
