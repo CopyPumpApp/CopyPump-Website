@@ -2,9 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import pkg from '../package.json'
 import './styles/index.css'
 
-export const SITE_RELEASE = '47.4.0-review'
+export const SITE_RELEASE = pkg.version
 
 // Locale is determined only by the URL. The root is always English.
 document.documentElement.dataset.build = SITE_RELEASE
