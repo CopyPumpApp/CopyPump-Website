@@ -1,0 +1,19 @@
+/* Mobile navigation readability hotfix for embedded/mobile browsers. */
+@media (max-width:760px){
+  .mobile-nav{
+    position:fixed;inset:0;width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;border:0;border-radius:0;
+    background:#050810;color:var(--ink);opacity:1;filter:none;backdrop-filter:none;-webkit-backdrop-filter:none;transform:none;isolation:isolate;
+  }
+  .mobile-nav::backdrop{background:#02040a;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .mobile-nav__ambient{z-index:0;opacity:.72;filter:none}
+  .mobile-nav__top,.mobile-nav__body,.mobile-nav__footer{position:relative;z-index:2;opacity:1;filter:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .mobile-nav__top{display:flex;align-items:center;justify-content:space-between}
+  .mobile-nav__body{max-width:none;width:100%}
+  .mobile-nav nav{display:grid;width:100%}
+  .mobile-nav nav button{display:flex;align-items:center;justify-content:space-between;width:100%;opacity:1;filter:none;color:var(--ink)}
+  .mobile-nav nav button strong{color:var(--ink);opacity:1}
+  .mobile-nav__eyebrow{opacity:.82}
+  .mobile-nav[open]{animation:nav-sheet-clean-in .28s both var(--ease)}
+}
+@keyframes nav-sheet-clean-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.mobile-nav[open]{animation:none}}
