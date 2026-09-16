@@ -55,7 +55,9 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     if(!running||reduced||!('IntersectionObserver'in window)){forceVisible();return}
     const observer=new IntersectionObserver(entries=>{
       for(const entry of entries){
-        if(!entry.isIntersecting||entry.intersectionRatio<.06)continue
+        // A heading already at the viewport edge must not wait for another scroll.
+        // A percentage threshold can also strand tall grouped content indefinitely.
+        if(!entry.isIntersecting)continue
         const node=entry.target as HTMLElement
         observer.unobserve(node)
         if(node.dataset.revealed==='true'){makeVisible(node);continue}
@@ -66,10 +68,10 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
         animations.set(node,animation);activeAnimations.current.add(animation)
         animation.finished.then(()=>makeVisible(node),()=>makeVisible(node)).finally(()=>{animations.delete(node);activeAnimations.current.delete(animation)})
       }
-    },{threshold:[0,.06,.2],rootMargin:'0px 0px -5% 0px'})
+    },{threshold:0,rootMargin:'80px 0px 80px 0px'})
     for(const node of nodes){
       const rect=node.getBoundingClientRect()
-      if(rect.bottom>=0&&rect.top<=innerHeight*.94){makeVisible(node);node.dataset.revealed='true'}
+      if(rect.bottom>=0&&rect.top<=innerHeight){makeVisible(node);node.dataset.revealed='true'}
       else{const profile=revealProfile(node);node.style.opacity='0';node.style.transform=String(profile.from.transform||'none');node.style.willChange='opacity, transform';node.dataset.revealed='false';observer.observe(node)}
     }
     const focus=(event:FocusEvent)=>{const node=(event.target as Element|null)?.closest<HTMLElement>('[data-reveal]');if(!node)return;observer.unobserve(node);animations.get(node)?.cancel();makeVisible(node)}
