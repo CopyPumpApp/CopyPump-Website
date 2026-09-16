@@ -23,6 +23,8 @@
 .home-summary__details{margin-top:28px}
 .home-community{padding-block:clamp(36px,4vw,58px) 32px}.home-community__heading{max-width:850px}.home-community__heading h2{font-size:clamp(34px,4.2vw,62px);line-height:1.05;margin:18px 0 14px}.home-community__heading h2 em{color:var(--mint)}.home-community__heading p{max-width:620px;font-size:15px;line-height:1.7}.home-community .community-bottom{grid-template-columns:1fr;margin-top:28px;padding-top:0!important}.home-community .community-bottom nav{max-width:760px}
 
+/* Readable brand/navigation while content scrolls behind it; no button container. */
+@media(max-width:1000px){.cinematic-v47 .site-header{background:rgba(5,10,19,.94)!important}}
 @media(max-width:760px){
   .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46-mobile.webp');background-position:50% 0;opacity:.68;filter:none;transform:none}
   .community-bottom nav{grid-template-columns:1fr}.community-bottom nav>a{grid-template-columns:38px minmax(0,1fr)}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:30px!important;height:30px!important}
