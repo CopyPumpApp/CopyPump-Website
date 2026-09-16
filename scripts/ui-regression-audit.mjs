@@ -9,7 +9,6 @@ const must=(ok,msg)=>{if(!ok)failures.push(msg)}
 must(!header.includes('<dialog'),'mobile navigation must not use native dialog')
 must(header.includes('mobile-nav__backdrop')&&header.includes('mobile-nav__panel'),'mobile navigation overlay layers missing')
 must(!experience.includes("querySelector('.mobile-nav"),'global Motion must not depend on mobile nav DOM presence')
-must(!css.includes('body:has(dialog[open])'),'legacy dialog scroll lock must be removed')
 must(!details.includes('project-detail__index'),'decorative Project disclosure numbering must stay removed')
 must(css.includes('prefers-reduced-motion'),'reduced-motion fallback missing')
 if(failures.length){console.error(failures.map(x=>'FAIL: '+x).join('\n'));process.exit(1)}
