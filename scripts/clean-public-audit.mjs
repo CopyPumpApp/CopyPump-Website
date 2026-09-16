@@ -24,6 +24,7 @@ requireText(hero, 'detect-cutout-final-v47', 'Canonical uploaded Detect cutout m
 requireText(hero, 'qualify-cutout-final-v47', 'Canonical uploaded Qualify cutout must remain active.')
 requireText(hero, 'constrain-cutout-final-v47', 'Canonical uploaded Constrain cutout must remain active.')
 requireText(hero, 'execute-prove-cutout-final-v47', 'Canonical uploaded Execute/Prove cutout must remain active.')
+forbidText(hero, 'requestIdleCallback', 'Hero must not eagerly prefetch the full heavy workflow asset set during idle time.')
 
 requireText(uiCleanup, 'copypump-cinematic-environment-v46.webp', 'Desktop must use the responsive cinematic environment baseline.')
 requireText(uiCleanup, 'copypump-cinematic-environment-v46-mobile.webp', 'Mobile must use its responsive cinematic environment baseline.')
