@@ -16,15 +16,13 @@ export function Header({simple=false}:{simple?:boolean}){
   useLayoutEffect(()=>{
     if(!open)return
     const root=document.documentElement,body=document.body,targetY=lockedScrollY.current
-    const previous={position:body.style.position,top:body.style.top,left:body.style.left,right:body.style.right,width:body.style.width,overflow:body.style.overflow}
+    const previous={rootOverflow:root.style.overflow,rootOverscroll:root.style.overscrollBehavior,bodyOverflow:body.style.overflow,bodyTouch:body.style.touchAction}
     const onKey=(event:KeyboardEvent)=>{if(event.key==='Escape')close()}
-    root.classList.add('nav-open')
-    body.style.position='fixed';body.style.top=`-${targetY}px`;body.style.left='0';body.style.right='0';body.style.width='100%';body.style.overflow='hidden'
+    root.classList.add('nav-open');root.style.overflow='hidden';root.style.overscrollBehavior='none';body.style.overflow='hidden';body.style.touchAction='none'
     window.addEventListener('keydown',onKey)
     return()=>{
-      window.removeEventListener('keydown',onKey);root.classList.remove('nav-open')
-      body.style.position=previous.position;body.style.top=previous.top;body.style.left=previous.left;body.style.right=previous.right;body.style.width=previous.width;body.style.overflow=previous.overflow
-      window.scrollTo({top:targetY,left:0,behavior:'auto'})
+      window.removeEventListener('keydown',onKey);root.classList.remove('nav-open');root.style.overflow=previous.rootOverflow;root.style.overscrollBehavior=previous.rootOverscroll;body.style.overflow=previous.bodyOverflow;body.style.touchAction=previous.bodyTouch
+      if(Math.abs(window.scrollY-targetY)>2)window.scrollTo({top:targetY,left:0,behavior:'auto'})
     }
   },[open])
 
