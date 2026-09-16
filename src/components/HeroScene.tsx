@@ -20,8 +20,12 @@ export function HeroScene() {
     if (typeof first.decode === 'function') first.decode().then(ready, ready)
     else { first.onload = ready; first.onerror = ready }
     const warmRest = () => workflowObjects.slice(1).forEach(name => { const image = new Image(); image.src = workflowAsset(name); image.decoding = 'async' })
-    const idle = 'requestIdleCallback' in window ? window.requestIdleCallback(warmRest, { timeout: 1800 }) : window.setTimeout(warmRest, 700)
-    return () => { cancelled = true; if ('cancelIdleCallback' in window) window.cancelIdleCallback(idle as number); else clearTimeout(idle as number) }
+    const win = window as Window & typeof globalThis & { requestIdleCallback?: (cb: IdleRequestCallback, options?: IdleRequestOptions) => number; cancelIdleCallback?: (id:number) => void }
+    let idleId: number | undefined
+    let timeoutId: number | undefined
+    if (win.requestIdleCallback) idleId = win.requestIdleCallback(warmRest, { timeout: 1800 })
+    else timeoutId = globalThis.setTimeout(warmRest, 700) as unknown as number
+    return () => { cancelled = true; if (idleId !== undefined) win.cancelIdleCallback?.(idleId); if (timeoutId !== undefined) globalThis.clearTimeout(timeoutId) }
   }, [])
   const cycling = motion.running && inView && !held && firstReady
   useEffect(() => { if (!cycling) return; const id = setInterval(() => setStage(n => (n + 1) % 4), 5200); return () => clearInterval(id) }, [cycling])
