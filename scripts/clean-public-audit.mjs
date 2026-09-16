@@ -7,6 +7,7 @@ const en = await readFile(new URL('../src/i18n/en.json', import.meta.url), 'utf8
 const ru = await readFile(new URL('../src/i18n/ru.json', import.meta.url), 'utf8')
 const uiCleanup = await readFile(new URL('../src/styles/ui-cleanup.css', import.meta.url), 'utf8')
 const projectCss = await readFile(new URL('../src/styles/project-page.css', import.meta.url), 'utf8')
+const mobileNav = await readFile(new URL('../src/styles/mobile-nav-hotfix.css', import.meta.url), 'utf8')
 const failures = []
 
 const requireText = (source, text, message) => {
@@ -25,6 +26,10 @@ requireText(landing, 'id="journal"', 'Recovered public Progress journal must sta
 requireText(landing, 'ProjectRail variant="roadmap"', 'Public roadmap rail must stay on Home.')
 requireText(uiCleanup, 'copypump-global-market-background.png', 'Home must keep the approved CopyPump background asset.')
 requireText(projectCss, 'copypump-global-market-background.png', 'Project must keep the approved CopyPump background asset.')
+requireText(mobileNav, 'backdrop-filter:blur(10px) saturate(118%)', 'Mobile header must keep the approved light crystal blur.')
+requireText(mobileNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Mobile menu must keep the approved light glass blur.')
+requireText(mobileNav, 'background:rgba(2,7,15,.42)', 'Mobile menu backdrop must remain translucent rather than opaque black.')
+requireText(mobileNav, 'background:linear-gradient(150deg,rgba(9,20,35,.58)', 'Mobile menu panel must keep the translucent premium glass gradient.')
 
 forbidText(landing, 'Change the capital limit, signal age or emergency stop.', 'Decision demo must not render redundant operating instructions.')
 forbidText(landing, 'Измените лимит капитала', 'Decision demo must not render redundant operating instructions.')
