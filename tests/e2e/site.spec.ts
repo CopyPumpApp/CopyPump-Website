@@ -29,6 +29,6 @@ test('motion toggle never hides reveal content',async({page,isMobile})=>{
    toggle=page.locator('.mobile-nav__footer .motion-toggle')
  }
  await expect(toggle).toBeVisible(); await toggle.click()
- const hidden=await page.locator('[data-reveal]').evaluateAll(nodes=>nodes.some(n=>getComputedStyle(n).opacity==='0'))
- expect(hidden).toBeFalsy()
+ await expect(page.locator('html')).toHaveAttribute('data-motion','off')
+ await expect.poll(async()=>page.locator('[data-reveal]').evaluateAll(nodes=>nodes.every(n=>getComputedStyle(n).opacity!=='0'))).toBeTruthy()
 })
