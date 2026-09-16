@@ -5,6 +5,8 @@ const rails = await readFile(new URL('../src/components/ProjectRails.tsx', impor
 const hero = await readFile(new URL('../src/components/HeroScene.tsx', import.meta.url), 'utf8')
 const en = await readFile(new URL('../src/i18n/en.json', import.meta.url), 'utf8')
 const ru = await readFile(new URL('../src/i18n/ru.json', import.meta.url), 'utf8')
+const appCss = await readFile(new URL('../src/styles/app.css', import.meta.url), 'utf8')
+const indexCss = await readFile(new URL('../src/styles/index.css', import.meta.url), 'utf8')
 const uiCleanup = await readFile(new URL('../src/styles/ui-cleanup.css', import.meta.url), 'utf8')
 const projectCss = await readFile(new URL('../src/styles/project-page.css', import.meta.url), 'utf8')
 const mobileNav = await readFile(new URL('../src/styles/mobile-nav-hotfix.css', import.meta.url), 'utf8')
@@ -24,8 +26,10 @@ requireText(landing, '<ProductStory/>', 'Recovered Product Story section must st
 requireText(landing, 'ProjectRail variant="journey"', 'Recovered signal journey rail must stay on Home.')
 requireText(landing, 'id="journal"', 'Recovered public Progress journal must stay on Home.')
 requireText(landing, 'ProjectRail variant="roadmap"', 'Public roadmap rail must stay on Home.')
+requireText(appCss, 'copypump-global-market-background.png', 'Core cinematic canvas must keep the approved CopyPump background asset.')
 requireText(uiCleanup, 'copypump-global-market-background.png', 'Home must keep the approved CopyPump background asset.')
 requireText(projectCss, 'copypump-global-market-background.png', 'Project must keep the approved CopyPump background asset.')
+requireText(indexCss, "@import './mobile-nav-hotfix.css';", 'Responsive navigation source of truth must remain imported.')
 requireText(mobileNav, 'backdrop-filter:blur(10px) saturate(118%)', 'Mobile header must keep the approved light crystal blur.')
 requireText(mobileNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Mobile menu must keep the approved light glass blur.')
 requireText(mobileNav, 'background:rgba(2,7,15,.42)', 'Mobile menu backdrop must remain translucent rather than opaque black.')
@@ -43,6 +47,8 @@ forbidText(rails, 'ROADMAP.md', 'Roadmap rail must not expose a developer-docume
 forbidText(rails, 'ARCHITECTURE.md', 'Roadmap rail must not expose a developer-document link.')
 forbidText(`${en}\n${ru}`, 'CopyCube', 'CopyCube must remain completely absent from public EN/RU content.')
 forbidText(`${landing}\n${hero}`, '-cutout-final-v47', 'Obsolete v47 workflow cutouts must not return to active UI code.')
+forbidText(appCss, 'copypump-cinematic-environment-v46', 'Stale v46 background references must never return to the active CSS cascade.')
+forbidText(indexCss, 'premium-navigation.css', 'Superseded navigation stylesheet must not return to the CSS import graph.')
 
 if (failures.length) {
   console.error('Public-site audit failed:')
