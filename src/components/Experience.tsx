@@ -4,13 +4,22 @@ import { useI18n } from '../i18n'
 const MotionContext=createContext({running:false,paused:false,reduced:false,modal:false,toggle:()=>{}})
 export const useMotion=()=>useContext(MotionContext)
 
+type RevealProfile={from:Keyframe;duration:number;easing:string}
+function revealProfile(target:HTMLElement):RevealProfile{
+  if(target.dataset.revealKind==='hero')return{from:{opacity:0,transform:'translate3d(0,20px,0) scale(.994)'},duration:760,easing:'cubic-bezier(.22,1,.36,1)'}
+  if(target.dataset.revealKind==='title')return{from:{opacity:0,transform:'translate3d(0,22px,0)'},duration:660,easing:'cubic-bezier(.22,1,.36,1)'}
+  if(target.classList.contains('problem-row'))return{from:{opacity:0,transform:'translate3d(-18px,0,0)'},duration:600,easing:'cubic-bezier(.22,1,.36,1)'}
+  if(target.classList.contains('workflow-node'))return{from:{opacity:0,transform:'translate3d(0,22px,0) scale(.985)'},duration:640,easing:'cubic-bezier(.22,1,.36,1)'}
+  return{from:{opacity:0,transform:'translate3d(0,14px,0)'},duration:520,easing:'cubic-bezier(.22,1,.36,1)'}
+}
+function makeVisible(node:HTMLElement){node.style.opacity='1';node.style.transform='none';node.style.willChange='';node.dataset.revealed='true'}
+
 export function Experience({children,routeKey}:{children:ReactNode;routeKey:string}){
   const[paused,setPaused]=useState(()=>{try{return localStorage.getItem('copypump.motion')==='paused'}catch{return false}})
   const[reduced,setReduced]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   const[visible,setVisible]=useState(!document.hidden)
   const[modal,setModal]=useState(()=>document.documentElement.classList.contains('nav-open'))
   const running=!paused&&!reduced&&visible&&!modal
-  const runningRef=useRef(running);runningRef.current=running
   const activeAnimations=useRef(new Set<Animation>())
 
   useEffect(()=>{
@@ -24,10 +33,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
 
   useEffect(()=>{
     document.documentElement.dataset.motion=running?'on':'off'
-    if(!running){
-      activeAnimations.current.forEach(a=>a.cancel());activeAnimations.current.clear()
-      document.querySelectorAll<HTMLElement>('[data-reveal]').forEach(node=>{node.style.opacity='1';node.style.transform='none';node.style.willChange='';node.dataset.revealed='true'})
-    }
+    if(!running){activeAnimations.current.forEach(a=>a.cancel());activeAnimations.current.clear();document.querySelectorAll<HTMLElement>('[data-reveal]').forEach(makeVisible)}
     return()=>{delete document.documentElement.dataset.motion}
   },[running])
 
@@ -35,58 +41,51 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     if(!running||reduced)return
     const main=document.querySelector<HTMLElement>('.app-shell main')
     if(!main||typeof main.animate!=='function')return
-    const animation=main.animate([{opacity:.72,transform:'translate3d(0,10px,0)'},{opacity:1,transform:'translate3d(0,0,0)'}],{duration:520,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'})
+    const animation=main.animate([{opacity:.84,transform:'translate3d(0,7px,0)'},{opacity:1,transform:'none'}],{duration:380,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'})
     activeAnimations.current.add(animation)
-    animation.finished.then(()=>activeAnimations.current.delete(animation),()=>activeAnimations.current.delete(animation))
+    animation.finished.finally(()=>activeAnimations.current.delete(animation)).catch(()=>{})
     return()=>{animation.cancel();activeAnimations.current.delete(animation)}
   },[routeKey,running,reduced])
 
   useLayoutEffect(()=>{
     const nodes=[...document.querySelectorAll<HTMLElement>('[data-reveal]')]
     if(!nodes.length)return
-    const forceVisible=()=>nodes.forEach(node=>{node.style.opacity='1';node.style.transform='none';node.style.willChange='';node.dataset.revealed='true'})
-    if(paused||reduced||modal||!('IntersectionObserver'in window)){forceVisible();return forceVisible}
-
-    type Profile={from:Keyframe;duration:number;easing:string}
-    const profileFor=(target:HTMLElement):Profile=>{
-      if(target.dataset.revealKind==='hero')return{from:{opacity:0,transform:'translate3d(0,24px,0) scale(.991)'},duration:940,easing:'cubic-bezier(.22,1,.36,1)'}
-      if(target.dataset.revealKind==='title')return{from:{opacity:0,transform:'translate3d(0,28px,0) scale(.994)'},duration:760,easing:'cubic-bezier(.22,1,.36,1)'}
-      if(target.classList.contains('problem-row'))return{from:{opacity:0,transform:'translate3d(-24px,0,0)'},duration:680,easing:'cubic-bezier(.22,1,.36,1)'}
-      if(target.classList.contains('workflow-node'))return{from:{opacity:0,transform:'translate3d(0,30px,0) scale(.974)'},duration:740,easing:'cubic-bezier(.22,1,.36,1)'}
-      if(target.closest('.authority-columns'))return{from:{opacity:0,transform:'translate3d(0,24px,0)'},duration:700,easing:'cubic-bezier(.22,1,.36,1)'}
-      if(target.closest('.journal-entries'))return{from:{opacity:0,transform:'translate3d(24px,0,0)'},duration:700,easing:'cubic-bezier(.22,1,.36,1)'}
-      if(target.closest('.project-rail-section'))return{from:{opacity:0,transform:'translate3d(0,20px,0)'},duration:660,easing:'cubic-bezier(.22,1,.36,1)'}
-      return{from:{opacity:0,transform:'translate3d(0,18px,0)'},duration:560,easing:'cubic-bezier(.22,1,.36,1)'}
+    const animations=new Map<HTMLElement,Animation>()
+    const forceVisible=()=>nodes.forEach(makeVisible)
+    if(!running||reduced||!('IntersectionObserver'in window)){forceVisible();return}
+    const observer=new IntersectionObserver(entries=>{
+      for(const entry of entries){
+        if(!entry.isIntersecting||entry.intersectionRatio<.06)continue
+        const node=entry.target as HTMLElement
+        observer.unobserve(node)
+        if(node.dataset.revealed==='true'){makeVisible(node);continue}
+        const profile=revealProfile(node),raw=Number(node.dataset.reveal||0),delay=Number.isFinite(raw)?Math.min(220,Math.max(0,raw)):0
+        if(typeof node.animate!=='function'){makeVisible(node);continue}
+        node.style.opacity='1';node.style.transform='none';node.style.willChange='opacity, transform'
+        const animation=node.animate([profile.from,{opacity:1,transform:'none'}],{duration:profile.duration,delay,easing:profile.easing,fill:'both'})
+        animations.set(node,animation);activeAnimations.current.add(animation)
+        animation.finished.then(()=>makeVisible(node),()=>makeVisible(node)).finally(()=>{animations.delete(node);activeAnimations.current.delete(animation)})
+      }
+    },{threshold:[0,.06,.2],rootMargin:'0px 0px -5% 0px'})
+    for(const node of nodes){
+      const rect=node.getBoundingClientRect()
+      if(rect.bottom>=0&&rect.top<=innerHeight*.94){makeVisible(node);node.dataset.revealed='true'}
+      else{const profile=revealProfile(node);node.style.opacity='0';node.style.transform=String(profile.from.transform||'none');node.style.willChange='opacity, transform';node.dataset.revealed='false';observer.observe(node)}
     }
-
-    const animations=new WeakMap<HTMLElement,Animation>(),profiles=new WeakMap<HTMLElement,Profile>(),played=new WeakMap<HTMLElement,boolean>()
-    const delayFor=(target:HTMLElement)=>{const raw=Number(target.dataset.reveal||0);return Number.isFinite(raw)?Math.min(300,Math.max(0,raw)):0}
-    const setHidden=(target:HTMLElement)=>{const profile=profiles.get(target)||profileFor(target);profiles.set(target,profile);target.style.opacity='0';target.style.transform=String(profile.from.transform||'none');target.style.willChange='opacity, transform';target.dataset.revealed='false'}
-    const setVisible=(target:HTMLElement)=>{target.style.opacity='1';target.style.transform='none';target.style.willChange='';target.dataset.revealed='true'}
-    const cancel=(target:HTMLElement)=>{const a=animations.get(target);if(!a)return;a.cancel();activeAnimations.current.delete(a);animations.delete(target)}
-    const reveal=(target:HTMLElement)=>{if(played.get(target))return;played.set(target,true);cancel(target);const profile=profiles.get(target)||profileFor(target);profiles.set(target,profile);if(!runningRef.current||typeof target.animate!=='function'){setVisible(target);return}const animation=target.animate([profile.from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],{duration:profile.duration,delay:delayFor(target),easing:profile.easing,fill:'forwards'});animations.set(target,animation);activeAnimations.current.add(animation);animation.finished.then(()=>{activeAnimations.current.delete(animation);if(animations.get(target)===animation)animations.delete(target);setVisible(target)},()=>activeAnimations.current.delete(animation))}
-    const reset=(target:HTMLElement)=>{if(!played.get(target)||target.contains(document.activeElement))return;cancel(target);played.set(target,false);runningRef.current?setHidden(target):setVisible(target)}
-
-    nodes.forEach(node=>{profiles.set(node,profileFor(node));played.set(node,false);const rect=node.getBoundingClientRect();if(rect.top>window.innerHeight*.92||rect.bottom<0)setHidden(node);else setVisible(node)})
-    const enterObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting&&entry.intersectionRatio>=.08)reveal(entry.target as HTMLElement)}),{threshold:[0,.08,.22],rootMargin:'0px 0px -6% 0px'})
-    const resetObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)reset(entry.target as HTMLElement)}),{threshold:0,rootMargin:'260px 0px 260px 0px'})
-    nodes.forEach(node=>{enterObserver.observe(node);resetObserver.observe(node)})
-    const focus=(event:FocusEvent)=>{const node=(event.target as Element|null)?.closest<HTMLElement>('[data-reveal]');if(!node)return;cancel(node);played.set(node,true);setVisible(node)}
+    const focus=(event:FocusEvent)=>{const node=(event.target as Element|null)?.closest<HTMLElement>('[data-reveal]');if(!node)return;observer.unobserve(node);animations.get(node)?.cancel();makeVisible(node)}
     document.addEventListener('focusin',focus)
-    return()=>{enterObserver.disconnect();resetObserver.disconnect();nodes.forEach(node=>{cancel(node);setVisible(node)});document.removeEventListener('focusin',focus)}
-  },[routeKey,paused,reduced,modal])
+    return()=>{observer.disconnect();animations.forEach(animation=>{animation.cancel();activeAnimations.current.delete(animation)});animations.clear();forceVisible();document.removeEventListener('focusin',focus)}
+  },[routeKey,running,reduced])
 
   useEffect(()=>{
-    if(!running||reduced)return
-    const root=document.querySelector<HTMLElement>('.cinematic-v47'),hero=document.querySelector<HTMLElement>('.hero'),decision=document.querySelector<HTMLElement>('.decision-section')
-    if(!root)return
-    let raf=0,mx=0,my=0,scrollDirty=true
-    const commit=()=>{raf=0;const heroRect=hero?hero.getBoundingClientRect():null,decisionRect=decision&&scrollDirty?decision.getBoundingClientRect():null,viewportHeight=window.innerHeight;if(hero&&heroRect){const p=Math.max(0,Math.min(1,-heroRect.top/Math.max(1,heroRect.height)));hero.style.setProperty('--pointer-x-small',`${(mx*5).toFixed(2)}px`);hero.style.setProperty('--pointer-y-small',`${(my*4).toFixed(2)}px`);hero.style.setProperty('--hero-aura-scale',(1+p*.035).toFixed(4));hero.style.setProperty('--hero-object-scale',(1+p*.045).toFixed(4))}if(decision&&decisionRect){const span=Math.max(1,decisionRect.height+viewportHeight),p=Math.max(0,Math.min(1,(viewportHeight-decisionRect.top)/span));decision.style.setProperty('--story-y',`${((.5-p)*10).toFixed(2)}px`);decision.style.setProperty('--story-scale',(0.985+p*.035).toFixed(4))}scrollDirty=false}
-    const queue=()=>{if(!raf)raf=requestAnimationFrame(commit)},pointer=(e:PointerEvent)=>{if(e.pointerType!=='mouse'||innerWidth<900)return;mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;queue()},scroll=()=>{scrollDirty=true;queue()}
-    window.addEventListener('pointermove',pointer,{passive:true});window.addEventListener('scroll',scroll,{passive:true});window.addEventListener('resize',scroll,{passive:true});queue()
-    const cards=[...document.querySelectorAll<HTMLElement>('[data-tilt]')],cleanups:Array<()=>void>=[]
-    for(const card of cards){let cr=0,x=0,y=0;const draw=()=>{cr=0;card.style.setProperty('--tilt-x',`${y*-3.5}deg`);card.style.setProperty('--tilt-y',`${x*3.5}deg`)},move=(e:PointerEvent)=>{if(e.pointerType!=='mouse')return;const b=card.getBoundingClientRect();x=Math.max(-1,Math.min(1,((e.clientX-b.left)/b.width-.5)*2));y=Math.max(-1,Math.min(1,((e.clientY-b.top)/b.height-.5)*2));if(!cr)cr=requestAnimationFrame(draw)},leave=()=>{if(cr)cancelAnimationFrame(cr);cr=0;card.style.setProperty('--tilt-x','0deg');card.style.setProperty('--tilt-y','0deg')};card.addEventListener('pointermove',move,{passive:true});card.addEventListener('pointerleave',leave);cleanups.push(()=>{if(cr)cancelAnimationFrame(cr);card.removeEventListener('pointermove',move);card.removeEventListener('pointerleave',leave)})}
-    return()=>{if(raf)cancelAnimationFrame(raf);window.removeEventListener('pointermove',pointer);window.removeEventListener('scroll',scroll);window.removeEventListener('resize',scroll);cleanups.forEach(fn=>fn());for(const k of ['--pointer-x-small','--pointer-y-small','--hero-aura-scale','--hero-object-scale'])hero?.style.removeProperty(k);decision?.style.removeProperty('--story-y');decision?.style.removeProperty('--story-scale')}
+    if(!running||reduced||innerWidth<900||!matchMedia('(pointer:fine)').matches)return
+    const hero=document.querySelector<HTMLElement>('.hero'),decision=document.querySelector<HTMLElement>('.decision-section')
+    if(!hero&&!decision)return
+    let raf=0,mx=0,my=0,dirty=true
+    const draw=()=>{raf=0;if(!dirty)return;dirty=false;const vh=innerHeight;if(hero){const r=hero.getBoundingClientRect(),p=Math.max(0,Math.min(1,-r.top/Math.max(1,r.height)));hero.style.setProperty('--pointer-x-small',`${(mx*4).toFixed(2)}px`);hero.style.setProperty('--pointer-y-small',`${(my*3).toFixed(2)}px`);hero.style.setProperty('--hero-aura-scale',(1+p*.025).toFixed(4));hero.style.setProperty('--hero-object-scale',(1+p*.032).toFixed(4))}if(decision){const r=decision.getBoundingClientRect(),span=Math.max(1,r.height+vh),p=Math.max(0,Math.min(1,(vh-r.top)/span));decision.style.setProperty('--story-y',`${((.5-p)*7).toFixed(2)}px`);decision.style.setProperty('--story-scale',(0.992+p*.018).toFixed(4))}}
+    const queue=()=>{dirty=true;if(!raf)raf=requestAnimationFrame(draw)},pointer=(e:PointerEvent)=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;queue()}
+    addEventListener('pointermove',pointer,{passive:true});addEventListener('scroll',queue,{passive:true});addEventListener('resize',queue,{passive:true});queue()
+    return()=>{if(raf)cancelAnimationFrame(raf);removeEventListener('pointermove',pointer);removeEventListener('scroll',queue);removeEventListener('resize',queue);for(const k of ['--pointer-x-small','--pointer-y-small','--hero-aura-scale','--hero-object-scale'])hero?.style.removeProperty(k);decision?.style.removeProperty('--story-y');decision?.style.removeProperty('--story-scale')}
   },[running,reduced,routeKey])
 
   const value=useMemo(()=>({running,paused,reduced,modal,toggle:()=>setPaused(old=>{const next=!old;try{localStorage.setItem('copypump.motion',next?'paused':'playing')}catch{}return next})}),[running,paused,reduced,modal])
