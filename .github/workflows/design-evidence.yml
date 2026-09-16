@@ -1,0 +1,27 @@
+name: Design baseline evidence
+on:
+  push:
+    branches: [feat/premium-v48]
+    paths: [.github/workflows/design-evidence.yml]
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false
+      - run: npm run build
+      - name: Package allowlisted website sources and locked build dependencies
+        run: |
+          tar -czf /tmp/website-baseline.tar.gz src public scripts tests node_modules dist index.html package.json package-lock.json tsconfig.json vite.config.ts playwright.config.ts README.md
+      - uses: actions/upload-artifact@v7
+        with:
+          name: website-design-baseline
+          path: /tmp/website-baseline.tar.gz
+          retention-days: 2
