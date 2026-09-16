@@ -16,11 +16,27 @@ export function Header({simple=false}:{simple?:boolean}){
     const onKey=(event:KeyboardEvent)=>{if(event.key==='Escape')close()}
     const onPageShow=(event:PageTransitionEvent)=>{if(event.persisted)close()}
     const onVisibility=()=>{if(document.visibilityState==='visible'&&!document.getElementById('mobile-navigation'))root.classList.remove('nav-open')}
-    if(open) window.addEventListener('keydown',onKey)
+    const blockPageGesture=(event:TouchEvent|WheelEvent)=>{
+      const target=event.target
+      if(target instanceof Element&&target.closest('.mobile-nav__body'))return
+      event.preventDefault()
+    }
+    if(open){
+      window.addEventListener('keydown',onKey)
+      document.addEventListener('touchmove',blockPageGesture,{passive:false})
+      document.addEventListener('wheel',blockPageGesture,{passive:false})
+    }
     window.addEventListener('pageshow',onPageShow)
     document.addEventListener('visibilitychange',onVisibility)
     if(!open) requestAnimationFrame(()=>trigger.current?.focus({preventScroll:true}))
-    return()=>{root.classList.remove('nav-open');window.removeEventListener('keydown',onKey);window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisibility)}
+    return()=>{
+      root.classList.remove('nav-open')
+      window.removeEventListener('keydown',onKey)
+      document.removeEventListener('touchmove',blockPageGesture)
+      document.removeEventListener('wheel',blockPageGesture)
+      window.removeEventListener('pageshow',onPageShow)
+      document.removeEventListener('visibilitychange',onVisibility)
+    }
   },[open])
   const homeLinks=[['why-copypump',c.product],['authority',c.controls],['journal',c.progress]]
   const projectLabel=locale==='ru'?'О проекте':'Project'
