@@ -21,9 +21,26 @@ test('mobile navigation stays inside the visual viewport', async ({ page, isMobi
   await page.locator('.menu-button').click()
   const panel = page.locator('.mobile-nav__panel')
   await expect(panel).toBeVisible()
-  const fits = await panel.evaluate((node) => {
+  const geometry = await panel.evaluate((node) => {
     const r = node.getBoundingClientRect()
-    return r.left >= -1 && r.top >= -1 && r.right <= window.innerWidth + 1 && r.bottom <= window.innerHeight + 1
+    return {
+      left: r.left,
+      top: r.top,
+      right: r.right,
+      bottom: r.bottom,
+      width: r.width,
+      height: r.height,
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+      visualWidth: window.visualViewport?.width ?? null,
+      visualHeight: window.visualViewport?.height ?? null,
+      visualOffsetLeft: window.visualViewport?.offsetLeft ?? null,
+      visualOffsetTop: window.visualViewport?.offsetTop ?? null,
+    }
   })
-  expect(fits).toBeTruthy()
+  console.log('mobile-nav-geometry', JSON.stringify(geometry))
+  expect(geometry.left, JSON.stringify(geometry)).toBeGreaterThanOrEqual(-1)
+  expect(geometry.top, JSON.stringify(geometry)).toBeGreaterThanOrEqual(-1)
+  expect(geometry.right, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.innerWidth + 1)
+  expect(geometry.bottom, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.innerHeight + 1)
 })
