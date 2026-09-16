@@ -12,13 +12,13 @@ async function captureMenu(page:Page, project:string, name:string){
   await expect(page.locator('.mobile-nav__top')).toBeVisible()
   await expect(page.locator('.mobile-nav nav button').first()).toBeVisible()
   await expect(page.locator('.mobile-nav__footer')).toBeVisible()
-  await settle(page,650)
+  await settle(page,500)
   await captureViewport(page, project, name)
   await page.keyboard.press('Escape')
   await expect(page.locator('#mobile-navigation')).toHaveCount(0)
 }
 
-test('capture Home, Project and mobile menu recovery surfaces', async ({ page, isMobile }, testInfo) => {
+test('capture focused Home, expanded Project and mobile menu surfaces', async ({ page, isMobile }, testInfo) => {
   const project = testInfo.project.name
 
   await page.goto('/')
@@ -27,17 +27,13 @@ test('capture Home, Project and mobile menu recovery surfaces', async ({ page, i
   await captureViewport(page, project, 'home-top')
   if(isMobile) await captureMenu(page, project, 'mobile-menu-top')
 
-  await page.locator('.product-story').scrollIntoViewIfNeeded()
+  await page.locator('#why-copypump').scrollIntoViewIfNeeded()
   await settle(page)
-  await captureViewport(page, project, 'home-product-story')
+  await captureViewport(page, project, 'home-summary')
 
-  await page.locator('#journey').scrollIntoViewIfNeeded()
+  await page.locator('#community').scrollIntoViewIfNeeded()
   await settle(page)
-  await captureViewport(page, project, 'home-journey')
-
-  await page.locator('#journal').scrollIntoViewIfNeeded()
-  await settle(page)
-  await captureViewport(page, project, 'home-progress')
+  await captureViewport(page, project, 'home-community')
   if(isMobile) await captureMenu(page, project, 'mobile-menu-scrolled')
 
   await page.goto('/project')
@@ -45,9 +41,17 @@ test('capture Home, Project and mobile menu recovery surfaces', async ({ page, i
   await settle(page)
   await captureViewport(page, project, 'project-top')
 
-  await page.locator('.project-details').scrollIntoViewIfNeeded()
+  await page.locator('#product-story').scrollIntoViewIfNeeded()
   await settle(page)
-  await captureViewport(page, project, 'project-details')
+  await captureViewport(page, project, 'project-product-story')
+
+  await page.locator('#decision-demo').scrollIntoViewIfNeeded()
+  await settle(page)
+  await captureViewport(page, project, 'project-decision')
+
+  await page.locator('#journal').scrollIntoViewIfNeeded()
+  await settle(page)
+  await captureViewport(page, project, 'project-progress')
 
   const faq = page.locator('.project-faq__item').first()
   if (await faq.count()) {
