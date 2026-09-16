@@ -14,9 +14,15 @@ for (const path of ['/', '/project']) {
   })
 }
 
-test('Home keeps the recovered premium information sections', async ({ page }) => {
+test('Home stays focused and excludes extended project sections', async ({ page }) => {
   await page.goto('/')
-  for (const selector of ['#why-copypump', '.product-story', '#decision-demo', '#authority', '#journey', '#journal', '#roadmap', '#community']) await expect(page.locator(selector), selector).toHaveCount(1)
+  for (const selector of ['#product', '#why-copypump', '#community']) await expect(page.locator(selector), selector).toHaveCount(1)
+  for (const selector of ['#product-story', '#decision-demo', '#journey', '#journal', '#roadmap', '#questions']) await expect(page.locator(selector), selector).toHaveCount(0)
+})
+
+test('Project page hosts all extended information destinations', async ({ page }) => {
+  await page.goto('/project')
+  for (const selector of ['#product-story', '#learn-more', '#decision-demo', '#journey', '#journal', '#roadmap', '#questions']) await expect(page.locator(selector), selector).toHaveCount(1)
 })
 
 test('responsive cinematic CopyPump background is active on Home and Project', async ({ page, isMobile }) => {
@@ -30,15 +36,25 @@ test('responsive cinematic CopyPump background is active on Home and Project', a
 
 test('workflow surfaces use the canonical uploaded v47 cutouts', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('img[src*="/workflow-objects/"]')).toHaveCount(8)
-  const sources = await page.locator('img[src*="/workflow-objects/"]').evaluateAll(nodes => nodes.map(node => (node as HTMLImageElement).getAttribute('src') || ''))
-  expect(sources.every(src => /(?:detect|qualify|constrain|execute-prove)-cutout-final-v47\.webp/.test(src))).toBeTruthy()
+  const homeSources = await page.locator('img[src*="/workflow-objects/"]').evaluateAll(nodes => nodes.map(node => (node as HTMLImageElement).getAttribute('src') || ''))
+  expect(homeSources.length).toBeGreaterThanOrEqual(4)
+  expect(homeSources.every(src => /(?:detect|qualify|constrain|execute-prove)-cutout-final-v47\.webp/.test(src))).toBeTruthy()
+  await page.goto('/project')
+  const projectSources = await page.locator('img[src*="/workflow-objects/"]').evaluateAll(nodes => nodes.map(node => (node as HTMLImageElement).getAttribute('src') || ''))
+  expect(projectSources.length).toBeGreaterThanOrEqual(4)
+  expect(projectSources.every(src => /(?:detect|qualify|constrain|execute-prove)-cutout-final-v47\.webp/.test(src))).toBeTruthy()
 })
 
-test('Progress navigation reaches the restored journal', async ({ page, isMobile }) => {
+test('Progress navigation reaches the project journal', async ({ page, isMobile }) => {
   await page.goto('/')
-  if (isMobile) { await page.locator('.menu-button').click(); await page.locator('.mobile-nav nav button').filter({ hasText: /Progress|Прогресс/ }).click(); await expect(page.locator('#mobile-navigation')).toHaveCount(0) }
-  else await page.locator('.desktop-nav button').filter({ hasText: /Progress|Прогресс/ }).click()
+  if (isMobile) {
+    await page.locator('.menu-button').click()
+    await page.locator('.mobile-nav nav button').filter({ hasText: /Progress|Прогресс/ }).click()
+    await expect(page.locator('#mobile-navigation')).toHaveCount(0)
+  } else {
+    await page.locator('.desktop-nav button').filter({ hasText: /Progress|Прогресс/ }).click()
+  }
+  await expect(page).toHaveURL(/\/project/)
   await expect(page.locator('#journal')).toBeVisible()
   await expect.poll(async () => page.locator('#journal').evaluate(node => Math.abs(node.getBoundingClientRect().top) < window.innerHeight)).toBeTruthy()
 })
@@ -52,17 +68,40 @@ test('Motion off never leaves reveal content hidden', async ({ page, isMobile })
 })
 
 async function waitForMenuSettled(page:any){
-  await page.locator('.mobile-nav__panel').evaluate((node:HTMLElement)=>node.getAnimations({subtree:true}).map(a=>a.finished.catch(()=>undefined)))
-  await page.waitForTimeout(520)
+  await page.waitForTimeout(420)
 }
 
-test('mobile header and menu keep the crystal glass treatment', async ({ page, isMobile }) => {
-  test.skip(!isMobile); await page.goto('/')
-  const header = await page.locator('.site-header').evaluate(node => { const style=getComputedStyle(node); const webkit=(style as CSSStyleDeclaration & {webkitBackdropFilter?:string}).webkitBackdropFilter||''; return {backgroundImage:style.backgroundImage,backgroundColor:style.backgroundColor,backdrop:`${style.backdropFilter||''} ${webkit}`} })
-  expect(header.backgroundImage).toContain('linear-gradient'); expect(header.backdrop).toContain('blur('); expect(header.backgroundColor).not.toContain('0.985')
-  await page.locator('.menu-button').click(); const firstItem=page.locator('.mobile-nav nav button').first(); await expect(page.locator('.mobile-nav__top')).toBeVisible(); await expect(firstItem).toBeVisible(); await expect(page.locator('.mobile-nav__footer')).toBeVisible(); await waitForMenuSettled(page)
-  const glassBackground=await page.locator('.mobile-nav__backdrop').evaluate(node=>getComputedStyle(node).backgroundColor),panelBackground=await page.locator('.mobile-nav__panel').evaluate(node=>getComputedStyle(node).backgroundImage),itemOpacity=await firstItem.evaluate(node=>Number(getComputedStyle(node).opacity))
-  expect(glassBackground).not.toBe('rgb(1, 4, 10)'); expect(glassBackground).not.toBe('rgba(1, 4, 10, 0.96)'); expect(panelBackground).toContain('linear-gradient'); expect(itemOpacity).toBeGreaterThan(.95)
+test('mobile menu trigger is visually containerless and overlay opens', async ({ page, isMobile }) => {
+  test.skip(!isMobile)
+  await page.goto('/')
+  const trigger = page.locator('.menu-button')
+  await expect(trigger).toBeVisible()
+  const triggerStyle = await trigger.evaluate(node => { const s=getComputedStyle(node); return {background:s.backgroundColor,borderTop:s.borderTopWidth,borderRight:s.borderRightWidth,borderBottom:s.borderBottomWidth,borderLeft:s.borderLeftWidth,boxShadow:s.boxShadow} })
+  expect(triggerStyle.background).toBe('rgba(0, 0, 0, 0)')
+  expect([triggerStyle.borderTop,triggerStyle.borderRight,triggerStyle.borderBottom,triggerStyle.borderLeft].every(v=>v==='0px')).toBeTruthy()
+  expect(triggerStyle.boxShadow).toBe('none')
+  await trigger.click()
+  await expect(page.locator('#mobile-navigation')).toBeVisible()
+  await expect(page.locator('.mobile-nav__panel')).toBeVisible()
+  await expect(page.locator('.mobile-nav nav button')).toHaveCount(8)
+})
+
+test('mobile menu exposes the extended information architecture', async ({ page, isMobile }) => {
+  test.skip(!isMobile)
+  await page.goto('/')
+  await page.locator('.menu-button').click()
+  const labels = await page.locator('.mobile-nav nav button strong').allTextContents()
+  for (const expected of ['How it works','Controls & safety','Decision demo','Progress','Roadmap','FAQ']) expect(labels.join(' ')).toContain(expected)
+})
+
+test('decorative horizontal stripe dividers are removed from extended content', async ({ page }) => {
+  await page.goto('/project')
+  const selectors=['.story-flow','.story-flow article:nth-child(2)','.story-list','.story-list>div:first-child','.story-note','.decision-section','.decision-desk','.workflow-caption','.journal-section']
+  for(const selector of selectors){
+    const locator=page.locator(selector).first(); await expect(locator,selector).toBeVisible()
+    const borders=await locator.evaluate(node=>{const s=getComputedStyle(node);return[s.borderTopWidth,s.borderRightWidth,s.borderBottomWidth,s.borderLeftWidth]})
+    expect(borders,selector).toEqual(['0px','0px','0px','0px'])
+  }
 })
 
 test('mobile navigation stays inside the visual viewport', async ({ page, isMobile }) => {
@@ -73,7 +112,7 @@ test('mobile navigation stays inside the visual viewport', async ({ page, isMobi
 })
 
 test('mobile navigation remains viewport-pinned after deep scroll', async ({ page, isMobile }) => {
-  test.skip(!isMobile); await page.goto('/'); await page.locator('#journal').scrollIntoViewIfNeeded(); const before=await page.evaluate(()=>window.scrollY); expect(before).toBeGreaterThan(100); const menuButton=page.locator('.menu-button'); await expect(menuButton).toBeVisible(); await menuButton.evaluate(node=>(node as HTMLButtonElement).click()); const panel=page.locator('.mobile-nav__panel'),firstItem=page.locator('.mobile-nav nav button').first(),footer=page.locator('.mobile-nav__footer'); await expect(panel).toBeVisible(); await waitForMenuSettled(page)
+  test.skip(!isMobile); await page.goto('/'); await page.locator('#community').scrollIntoViewIfNeeded(); const before=await page.evaluate(()=>window.scrollY); expect(before).toBeGreaterThan(100); const menuButton=page.locator('.menu-button'); await expect(menuButton).toBeVisible(); await menuButton.click(); const panel=page.locator('.mobile-nav__panel'),firstItem=page.locator('.mobile-nav nav button').first(),footer=page.locator('.mobile-nav__footer'); await expect(panel).toBeVisible(); await waitForMenuSettled(page)
   const state=await panel.evaluate(node=>{const r=node.getBoundingClientRect();return{top:r.top,bottom:r.bottom,height:window.innerHeight,scrollY:window.scrollY}}); expect(state.top,JSON.stringify(state)).toBeGreaterThanOrEqual(-1); expect(state.top,JSON.stringify(state)).toBeLessThanOrEqual(1); expect(state.bottom,JSON.stringify(state)).toBeLessThanOrEqual(state.height+1); expect(Math.abs(state.scrollY-before)).toBeLessThanOrEqual(2)
   for(const locator of [firstItem,footer]){const box=await locator.boundingBox();expect(box).not.toBeNull();expect(box!.y).toBeGreaterThanOrEqual(0);expect(box!.y+box!.height).toBeLessThanOrEqual(state.height+1)}
   await page.keyboard.press('Escape'); await expect(page.locator('#mobile-navigation')).toHaveCount(0); await expect.poll(async()=>Math.abs((await page.evaluate(()=>window.scrollY))-before)).toBeLessThanOrEqual(2)
