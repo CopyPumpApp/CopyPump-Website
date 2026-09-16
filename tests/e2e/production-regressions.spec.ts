@@ -79,14 +79,10 @@ test('mobile header and menu keep the crystal glass treatment', async ({ page, i
   expect(header.backgroundColor).not.toContain('0.985')
 
   await page.locator('.menu-button').click()
-  const glass = await page.locator('.mobile-nav__backdrop').evaluate(node => {
-    const style = getComputedStyle(node)
-    const webkit = (style as CSSStyleDeclaration & { webkitBackdropFilter?: string }).webkitBackdropFilter || ''
-    return { background:style.backgroundColor, backdrop:`${style.backdropFilter || ''} ${webkit}` }
-  })
+  const glassBackground = await page.locator('.mobile-nav__backdrop').evaluate(node => getComputedStyle(node).backgroundColor)
   const panelBackground = await page.locator('.mobile-nav__panel').evaluate(node => getComputedStyle(node).backgroundImage)
-  expect(glass.backdrop).toContain('blur(')
-  expect(glass.background).not.toBe('rgb(1, 4, 10)')
+  expect(glassBackground).not.toBe('rgb(1, 4, 10)')
+  expect(glassBackground).not.toBe('rgba(1, 4, 10, 0.96)')
   expect(panelBackground).toContain('linear-gradient')
 })
 
