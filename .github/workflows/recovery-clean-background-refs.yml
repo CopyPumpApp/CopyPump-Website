@@ -1,0 +1,42 @@
+name: Recovery clean stale background refs
+
+on:
+  push:
+    branches: [recovery/premium-restoration]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: recovery/premium-restoration
+      - name: Replace stale background references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('src/styles/app.css')
+          text = path.read_text()
+          stale = [
+              '/backgrounds/copypump-cinematic-environment-v46.webp',
+              '/backgrounds/copypump-cinematic-environment-v46-mobile.webp',
+          ]
+          for value in stale:
+              text = text.replace(value, '/backgrounds/copypump-global-market-background.png')
+          path.write_text(text)
+          PY
+          git diff --check
+      - name: Commit cleanup
+        run: |
+          if git diff --quiet -- src/styles/app.css; then
+            echo 'No stale background references remain.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/styles/app.css
+          git commit -m 'chore: remove stale v46 background references'
+          git push origin HEAD:recovery/premium-restoration
