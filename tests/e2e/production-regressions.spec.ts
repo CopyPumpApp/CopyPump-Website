@@ -52,12 +52,17 @@ test('Progress navigation reaches the restored journal', async ({ page, isMobile
   await expect.poll(async () => page.locator('#journal').evaluate(node => Math.abs(node.getBoundingClientRect().top) < window.innerHeight)).toBeTruthy()
 })
 
-test('Motion off never leaves reveal content hidden', async ({ page }) => {
+test('Motion off never leaves reveal content hidden', async ({ page, isMobile }) => {
   await page.goto('/')
-  const toggle = page.locator('.site-header .motion-toggle')
+  let toggle = page.locator('.site-header .motion-toggle')
+  if (isMobile) {
+    await page.locator('.menu-button').click()
+    toggle = page.locator('.mobile-nav__footer .motion-toggle')
+  }
   await expect(toggle).toBeVisible()
   const pressed = await toggle.getAttribute('aria-pressed')
   if (pressed === 'true') await toggle.click()
+  if (isMobile) await page.keyboard.press('Escape')
   await expect.poll(async () => page.evaluate(() => [...document.querySelectorAll<HTMLElement>('[data-reveal]')].every(node => getComputedStyle(node).opacity !== '0'))).toBeTruthy()
 })
 
