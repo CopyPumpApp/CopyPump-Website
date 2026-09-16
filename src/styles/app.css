@@ -4,7 +4,7 @@
 /* Full-page cinematic depth layer. It sits under the existing atmosphere and content,
    so the original motion system and section structure remain untouched. */
 .site-scroll-background{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#050814}
-.site-scroll-background:before{content:"";position:absolute;inset:0;background-image:url("/backgrounds/copypump-cinematic-environment-v46.webp");background-repeat:no-repeat;background-position:center center;background-size:cover;opacity:.58;filter:saturate(.9) brightness(.78);transform:translateZ(0)}
+.site-scroll-background:before{content:"";position:absolute;inset:0;background-image:url("/backgrounds/copypump-global-market-background.png");background-repeat:no-repeat;background-position:center center;background-size:cover;opacity:.58;filter:saturate(.9) brightness(.78);transform:translateZ(0)}
 .site-scroll-background:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,17,.20) 0%,rgba(5,7,17,.36) 16%,rgba(5,7,17,.48) 38%,rgba(5,7,17,.56) 62%,rgba(5,7,17,.72) 100%),linear-gradient(90deg,rgba(5,7,17,.40) 0%,rgba(5,7,17,.10) 27%,rgba(5,7,17,.08) 68%,rgba(5,7,17,.36) 100%)}
 @media(max-width:760px){.site-scroll-background:before{background-position:50% 0;opacity:.48;filter:saturate(.86) brightness(.68)}.site-scroll-background:after{background:linear-gradient(180deg,rgba(5,7,17,.28),rgba(5,7,17,.58) 45%,rgba(5,7,17,.78)),linear-gradient(90deg,rgba(5,7,17,.44),rgba(5,7,17,.12) 50%,rgba(5,7,17,.44))}}
 /* Ambient light is a composited background, never a filter over the typography. */
@@ -143,7 +143,7 @@ html[data-motion=off] *,html[data-motion=off] *:before,html[data-motion=off] *:a
 
 /* One continuous lightweight environment. No full-page CSS filters. */
 .cinematic-v47 .site-scroll-background{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#02040a}
-.cinematic-v47 .site-scroll-background:before{content:"";position:absolute;inset:0;background-image:url('/backgrounds/copypump-cinematic-environment-v46.webp');background-repeat:no-repeat;background-position:center center;background-size:cover;opacity:.82;filter:none;transform:none}
+.cinematic-v47 .site-scroll-background:before{content:"";position:absolute;inset:0;background-image:url('/backgrounds/copypump-global-market-background.png');background-repeat:no-repeat;background-position:center center;background-size:cover;opacity:.82;filter:none;transform:none}
 .cinematic-v47 .site-scroll-background:after{content:"";position:absolute;inset:0;background:radial-gradient(70% 46% at 56% 26%,rgba(29,93,172,.14),transparent 72%),linear-gradient(90deg,rgba(1,3,10,.78),rgba(1,3,10,.22) 31%,rgba(1,3,10,.14) 63%,rgba(1,3,10,.56)),linear-gradient(180deg,rgba(1,3,10,.03),rgba(1,3,10,.18) 48%,rgba(1,3,10,.56))}
 .cinematic-v47 .cinematic-atmosphere{opacity:.28;mix-blend-mode:normal;contain:strict}
 .cinematic-v47 .cinematic-atmosphere>i{inset:-8%;animation:none;will-change:auto}
@@ -202,7 +202,7 @@ html[data-motion=off] *,html[data-motion=off] *:before,html[data-motion=off] *:a
   .cinematic-v47 .scene-space{height:420px}
 }
 @media(max-width:760px){
-  .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46.webp');background-position:center center;background-size:cover;opacity:.72}
+  .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-global-market-background.png');background-position:center center;background-size:cover;opacity:.72}
   .cinematic-v47 .site-header{backdrop-filter:none;-webkit-backdrop-filter:none}
   .cinematic-v47 .cinematic-atmosphere>i{animation:none;opacity:.40}.cinematic-v47 .cinematic-atmosphere>div{display:none}
   .cinematic-v47 .hero-composition{grid-template-columns:1fr;gap:18px}

@@ -19,17 +19,27 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
       - name: Install locked dependencies
-        run: npm ci
+        run: npm ci --audit=false
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
       - name: Typecheck, public/UI audit, and production build
         run: npm run check
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
       - name: Browser smoke — desktop, iPhone WebKit, Android
         run: npm run test:e2e
+      - name: Upload recovery visual QA
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: recovery-visual-qa
+          path: test-results/visual-qa
+          if-no-files-found: ignore
+          retention-days: 7
