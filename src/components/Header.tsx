@@ -12,7 +12,28 @@ export function Header({simple=false}:{simple?:boolean}){
   const close=()=>setOpen(false)
   useEffect(()=>{
     const root=document.documentElement
+    const body=document.body
     root.classList.toggle('nav-open',open)
+    const lockedY=open?window.scrollY:0
+    const previous={position:body.style.position,top:body.style.top,left:body.style.left,right:body.style.right,width:body.style.width,overflow:body.style.overflow}
+    if(open){
+      body.style.position='fixed'
+      body.style.top=`-${lockedY}px`
+      body.style.left='0'
+      body.style.right='0'
+      body.style.width='100%'
+      body.style.overflow='hidden'
+    }
+    const restoreScrollLock=()=>{
+      if(!open)return
+      body.style.position=previous.position
+      body.style.top=previous.top
+      body.style.left=previous.left
+      body.style.right=previous.right
+      body.style.width=previous.width
+      body.style.overflow=previous.overflow
+      window.scrollTo(0,lockedY)
+    }
     const onKey=(event:KeyboardEvent)=>{if(event.key==='Escape')close()}
     const onPageShow=(event:PageTransitionEvent)=>{if(event.persisted)close()}
     const onVisibility=()=>{if(document.visibilityState==='visible'&&!document.getElementById('mobile-navigation'))root.classList.remove('nav-open')}
@@ -20,7 +41,7 @@ export function Header({simple=false}:{simple?:boolean}){
     window.addEventListener('pageshow',onPageShow)
     document.addEventListener('visibilitychange',onVisibility)
     if(!open) requestAnimationFrame(()=>trigger.current?.focus({preventScroll:true}))
-    return()=>{root.classList.remove('nav-open');window.removeEventListener('keydown',onKey);window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisibility)}
+    return()=>{root.classList.remove('nav-open');restoreScrollLock();window.removeEventListener('keydown',onKey);window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisibility)}
   },[open])
   const homeLinks=[['why-copypump',c.product],['authority',c.controls],['journal',c.progress]]
   const projectLabel=locale==='ru'?'О проекте':'Project'
