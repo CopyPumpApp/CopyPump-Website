@@ -1,0 +1,41 @@
+/* Desktop premium density pass: stronger visual change, not a spacing patch. */
+@media (min-width:761px){
+  .project-page{overflow:hidden;background:#04070d}
+  .project-page:before{z-index:-3;background:radial-gradient(70% 52% at 74% 9%,rgba(0,189,255,.16),transparent 66%),radial-gradient(52% 44% at 10% 39%,rgba(119,74,255,.12),transparent 68%),radial-gradient(42% 38% at 82% 72%,rgba(30,255,194,.075),transparent 72%),linear-gradient(180deg,#04070d 0%,#07111d 38%,#050a13 72%,#04070d 100%)}
+  .project-page:after{z-index:-2;opacity:.32;background-image:linear-gradient(rgba(102,221,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(102,221,255,.026) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse 86% 74% at 54% 42%,#000 20%,transparent 82%)}
+  .project-page main:before{content:'';position:absolute;z-index:-1;left:50%;top:86px;width:min(1180px,88vw);height:520px;transform:translateX(-50%);pointer-events:none;background:linear-gradient(110deg,transparent 0 12%,rgba(65,216,255,.08) 34%,transparent 58%),radial-gradient(circle at 74% 38%,rgba(100,245,208,.1),transparent 28%);filter:blur(24px);opacity:.8}
+  .project-page-hero{padding-top:52px;padding-bottom:44px;display:grid;grid-template-columns:minmax(170px,.34fr) minmax(0,1.66fr);column-gap:clamp(42px,6vw,96px);align-items:start}
+  .project-page-hero>.eyebrow{padding-top:15px}
+  .project-page-hero h1{grid-column:2;font-size:clamp(52px,5vw,76px);max-width:900px;margin:0;line-height:.94}
+  .project-page-hero>p{grid-column:2;font-size:17px;max-width:690px;margin-top:20px}
+  .project-page .product-story{padding-block:42px 48px}
+  .project-page .product-story__head{margin-bottom:26px}
+  .project-page .story-flow{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .project-page .story-flow article{padding:24px 22px!important;border-radius:18px;background:linear-gradient(150deg,rgba(10,25,43,.78),rgba(5,10,19,.58));box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 22px 70px rgba(0,0,0,.12)}
+  .project-page .story-flow article:hover{transform:translateY(-3px);border-color:rgba(96,230,255,.24)!important;background:linear-gradient(150deg,rgba(12,31,51,.88),rgba(6,13,24,.68))}
+  .project-page .story-list{margin-top:28px}
+  .project-page .project-details{padding-block:46px 50px}
+  .project-page .project-details__head{grid-template-columns:minmax(170px,.34fr) minmax(0,1.66fr);column-gap:clamp(42px,6vw,96px)}
+  .project-page .project-details__head h2{font-size:clamp(42px,4vw,58px)}
+  .project-page .project-details__head>p{margin-top:14px}
+  .project-page .project-details__list{margin-top:24px;grid-template-columns:1fr 1fr;gap:10px}
+  .project-page .project-detail{border-radius:16px;background:linear-gradient(135deg,rgba(9,22,39,.76),rgba(5,10,20,.52));box-shadow:inset 0 1px 0 rgba(255,255,255,.02)}
+  .project-page .project-detail summary{min-height:72px;padding:15px 18px}
+  .project-page .project-detail__summary strong{font-size:16px}
+  .project-page .project-detail__summary small{font-size:12px}
+  .project-page .project-detail[open]{grid-column:span 2;border-color:rgba(100,245,208,.2)}
+  .project-page .project-detail[open] summary{min-height:68px}
+  .project-page .project-detail__body{grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr)}
+  .project-faq{padding-block:46px 56px}
+  .project-faq__head{grid-template-columns:minmax(170px,.34fr) minmax(0,1.66fr);column-gap:clamp(42px,6vw,96px);margin-bottom:22px}
+  .project-faq__head h2{font-size:clamp(40px,3.8vw,56px)}
+  .project-faq__grid{gap:9px}
+  .project-faq__item{border-radius:15px;background:linear-gradient(135deg,rgba(8,20,35,.72),rgba(5,10,19,.48))}
+  .project-faq__item summary{min-height:62px;padding:14px 17px}
+  .project-faq__item summary strong{font-size:14px}
+  .project-page footer{margin-top:10px}
+}
+@media (min-width:1280px){
+  .project-page-hero,.project-page .product-story,.project-page .project-details,.project-page .project-faq{max-width:1500px;margin-inline:auto}
+}
+@media(prefers-reduced-motion:reduce){.project-page .story-flow article{transition:none}}
