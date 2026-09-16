@@ -20,8 +20,15 @@ test('project disclosures open and close',async({page})=>{
  await item.locator('summary').click(); await expect(item).not.toHaveAttribute('open','')
 })
 
-test('motion toggle never hides reveal content',async({page})=>{
- await page.goto('/'); const toggle=page.locator('.motion-toggle').first(); await toggle.click()
+test('motion toggle never hides reveal content',async({page,isMobile})=>{
+ await page.goto('/')
+ let toggle=page.locator('.header-actions .motion-toggle')
+ if(isMobile){
+   await page.locator('.menu-button').click()
+   await expect(page.locator('#mobile-navigation')).toBeVisible()
+   toggle=page.locator('.mobile-nav__footer .motion-toggle')
+ }
+ await expect(toggle).toBeVisible(); await toggle.click()
  const hidden=await page.locator('[data-reveal]').evaluateAll(nodes=>nodes.some(n=>getComputedStyle(n).opacity==='0'))
  expect(hidden).toBeFalsy()
 })
