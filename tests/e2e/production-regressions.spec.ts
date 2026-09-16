@@ -127,7 +127,20 @@ test('mobile navigation remains viewport-pinned after deep scroll', async ({ pag
   await page.locator('#journal').scrollIntoViewIfNeeded()
   const before = await page.evaluate(() => window.scrollY)
   expect(before).toBeGreaterThan(100)
-  await page.locator('.menu-button').click()
+
+  const menuButton = page.locator('.menu-button')
+  await expect(menuButton).toBeVisible()
+  const buttonBox = await menuButton.boundingBox()
+  const viewportHeight = await page.evaluate(() => window.innerHeight)
+  expect(buttonBox).not.toBeNull()
+  expect(buttonBox!.y).toBeGreaterThanOrEqual(-1)
+  expect(buttonBox!.y + buttonBox!.height).toBeLessThanOrEqual(viewportHeight + 1)
+
+  // Use the already-visible sticky control directly. Playwright's locator.click()
+  // may scroll sticky controls before dispatching the click; that driver-induced
+  // scroll is not an application regression and would pollute this strict lock test.
+  await menuButton.evaluate(node => (node as HTMLButtonElement).click())
+
   const panel = page.locator('.mobile-nav__panel')
   const firstItem = page.locator('.mobile-nav nav button').first()
   const footer = page.locator('.mobile-nav__footer')
