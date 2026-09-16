@@ -53,6 +53,8 @@ requireText(responsiveNav, '.site-header .menu-button{display:block', 'Mobile me
 requireText(responsiveNav, 'border:0!important;outline:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important', 'Mobile menu trigger must remain visually containerless, including focus outline.')
 requireText(responsiveNav, 'html.nav-open .cinematic-v47 .site-header{visibility:hidden!important', 'Underlying header must be hidden while the full-screen menu is open.')
 requireText(responsiveNav, '.mobile-nav nav{display:grid!important', 'Expanded menu destinations must remain visibly laid out.')
+requireText(responsiveNav, 'html[data-motion="off"] .mobile-nav__backdrop', 'Opening the menu must not freeze its entrance animation on an invisible frame.')
+requireText(responsiveNav, 'html[data-motion="off"] .mobile-nav__panel', 'Full-screen menu panel must stay visible while cinematic motion is paused.')
 requireText(responsiveNav, '.menu-button.is-open span:first-child', 'Mobile menu trigger must keep the animated menu-to-X morph.')
 requireText(responsiveNav, '.icon-button.is-open span:first-child', 'Mobile close control must keep the animated X state.')
 
