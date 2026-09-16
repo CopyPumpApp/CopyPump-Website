@@ -1,4 +1,4 @@
-/* iOS-safe mobile navigation overlay. Avoid native <dialog>, backdrop-filter and top-layer rendering bugs. */
+/* iOS-safe mobile navigation overlay. Avoid native top-layer modals, backdrop-filter and related iOS rendering bugs. */
 @media (max-width:760px){
   html.nav-open,html.nav-open body{overflow:hidden!important;overscroll-behavior:none}
   .mobile-nav{position:fixed!important;z-index:2147483000!important;inset:0!important;width:100%!important;height:100dvh!important;display:block!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;color:var(--ink);opacity:1!important;filter:none!important;transform:none!important;isolation:isolate}
