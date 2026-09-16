@@ -23,6 +23,15 @@
   .mobile-nav__external{display:flex;justify-content:center;gap:14px;min-width:0;font:10px/1.4 var(--font-mono);color:var(--quiet)}.mobile-nav__external a{padding:8px 0}.mobile-nav__external a:hover,.mobile-nav__external a:focus-visible{color:var(--mint)}
   /* Opening the menu pauses global cinematic motion. Never let that pause freeze the menu itself on its opacity:0 entrance frame. */
   html[data-motion="off"] .mobile-nav__backdrop,html[data-motion="off"] .mobile-nav__panel,html[data-motion="off"] .mobile-nav__top,html[data-motion="off"] .mobile-nav__body,html[data-motion="off"] .mobile-nav nav,html[data-motion="off"] .mobile-nav nav button,html[data-motion="off"] .mobile-nav__footer{animation:none!important;opacity:1!important;visibility:visible!important;transform:none!important}
+  /* The same invisible 48px hit area applies to tablets and legal pages. */
+  .site-header .menu-button{display:block;position:relative;width:48px;height:48px;padding:0!important;border:0!important;outline:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;touch-action:manipulation}
+  .site-header .menu-button>span{position:absolute;left:12px;top:18px;width:24px;height:1.5px;margin:0;background:var(--ink);transform-origin:center}
+  .site-header .menu-button>span:last-child{top:28px}
+  .site-header .menu-button.is-open>span:first-child{top:23px;transform:rotate(45deg)}
+  .site-header .menu-button.is-open>span:last-child{top:23px;transform:rotate(-45deg)}
+  /* Visible keyboard focus belongs to the symbol, not a button container. */
+  .site-header .menu-button:focus-visible>span,.mobile-nav__top .icon-button:focus-visible>span{background:var(--mint)!important;height:2.5px}
+  .mobile-nav nav button:focus-visible strong{color:var(--mint)!important}
 }
 @media (max-width:760px){
   .cinematic-v47 .site-header{top:0;background:linear-gradient(180deg,rgba(9,16,31,.34),rgba(8,14,28,.16));border-bottom:0!important;box-shadow:none!important;backdrop-filter:blur(7px) saturate(110%);-webkit-backdrop-filter:blur(7px) saturate(110%)}
