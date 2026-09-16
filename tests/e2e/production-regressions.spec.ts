@@ -22,6 +22,23 @@ test('Home keeps the recovered premium information sections', async ({ page }) =
   }
 })
 
+test('approved CopyPump background is active on Home and Project', async ({ page }) => {
+  await page.goto('/')
+  const homeBackground = await page.locator('.site-scroll-background').evaluate(node => getComputedStyle(node, '::before').backgroundImage)
+  expect(homeBackground).toContain('copypump-global-market-background.png')
+  await page.goto('/project')
+  const projectBackground = await page.locator('.project-page').evaluate(node => getComputedStyle(node, '::before').backgroundImage)
+  expect(projectBackground).toContain('copypump-global-market-background.png')
+})
+
+test('workflow surfaces use the approved lightweight cutouts', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.locator('img[src*="/workflow-objects/"]')).toHaveCount(8)
+  const sources = await page.locator('img[src*="/workflow-objects/"]').evaluateAll(nodes => nodes.map(node => (node as HTMLImageElement).getAttribute('src') || ''))
+  expect(sources.every(src => !src.includes('-v47'))).toBeTruthy()
+  expect(sources.every(src => /(?:detect|qualify|constrain|execute-prove)-cutout-final\.webp/.test(src))).toBeTruthy()
+})
+
 test('Progress navigation reaches the restored journal', async ({ page, isMobile }) => {
   await page.goto('/')
   if (isMobile) {
@@ -35,9 +52,9 @@ test('Progress navigation reaches the restored journal', async ({ page, isMobile
   await expect.poll(async () => page.locator('#journal').evaluate(node => Math.abs(node.getBoundingClientRect().top) < window.innerHeight)).toBeTruthy()
 })
 
-test('Motion off never leaves reveal content hidden', async ({ page, isMobile }) => {
+test('Motion off never leaves reveal content hidden', async ({ page }) => {
   await page.goto('/')
-  const toggle = isMobile ? page.locator('.site-header .motion-toggle') : page.locator('.site-header .motion-toggle')
+  const toggle = page.locator('.site-header .motion-toggle')
   await expect(toggle).toBeVisible()
   const pressed = await toggle.getAttribute('aria-pressed')
   if (pressed === 'true') await toggle.click()
@@ -52,23 +69,30 @@ test('mobile navigation stays inside the visual viewport', async ({ page, isMobi
   await expect(panel).toBeVisible()
   const geometry = await panel.evaluate((node) => {
     const r = node.getBoundingClientRect()
-    return {
-      left: r.left,
-      top: r.top,
-      right: r.right,
-      bottom: r.bottom,
-      width: r.width,
-      height: r.height,
-      innerWidth: window.innerWidth,
-      innerHeight: window.innerHeight,
-      visualWidth: window.visualViewport?.width ?? null,
-      visualHeight: window.visualViewport?.height ?? null,
-      visualOffsetLeft: window.visualViewport?.offsetLeft ?? null,
-      visualOffsetTop: window.visualViewport?.offsetTop ?? null,
-    }
+    return { left:r.left, top:r.top, right:r.right, bottom:r.bottom, innerWidth:window.innerWidth, innerHeight:window.innerHeight }
   })
   expect(geometry.left, JSON.stringify(geometry)).toBeGreaterThanOrEqual(-1)
   expect(geometry.top, JSON.stringify(geometry)).toBeGreaterThanOrEqual(-1)
   expect(geometry.right, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.innerWidth + 1)
   expect(geometry.bottom, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.innerHeight + 1)
+})
+
+test('responsive viewport matrix has no horizontal escape', async ({ page, browserName }) => {
+  test.skip(browserName !== 'chromium')
+  const viewports = [[320,568],[360,800],[375,667],[390,844],[393,852],[412,915],[768,1024],[1024,768],[1280,720],[1440,900],[1920,1080]] as const
+  for (const [width,height] of viewports) {
+    await page.setViewportSize({ width, height })
+    await page.goto('/')
+    const geometry = await page.evaluate(() => ({ scrollWidth:document.documentElement.scrollWidth, clientWidth:document.documentElement.clientWidth }))
+    expect(geometry.scrollWidth, `${width}x${height}`).toBeLessThanOrEqual(geometry.clientWidth + 1)
+    if (width <= 760) {
+      await page.locator('.menu-button').click()
+      const box = await page.locator('.mobile-nav__panel').boundingBox()
+      expect(box, `${width}x${height} panel`).not.toBeNull()
+      expect(box!.x, `${width}x${height}`).toBeGreaterThanOrEqual(-1)
+      expect(box!.x + box!.width, `${width}x${height}`).toBeLessThanOrEqual(width + 1)
+      expect(box!.y + box!.height, `${width}x${height}`).toBeLessThanOrEqual(height + 1)
+      await page.keyboard.press('Escape')
+    }
+  }
 })
