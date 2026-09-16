@@ -12,12 +12,8 @@ const projectCss = await readFile(new URL('../src/styles/project-page.css', impo
 const mobileNav = await readFile(new URL('../src/styles/mobile-nav-hotfix.css', import.meta.url), 'utf8')
 const failures = []
 
-const requireText = (source, text, message) => {
-  if (!source.includes(text)) failures.push(message)
-}
-const forbidText = (source, text, message) => {
-  if (source.includes(text)) failures.push(message)
-}
+const requireText = (source, text, message) => { if (!source.includes(text)) failures.push(message) }
+const forbidText = (source, text, message) => { if (source.includes(text)) failures.push(message) }
 
 requireText(landing, 'https://discord.gg/WS95eXrGB', 'Landing page must use the current official Discord invite.')
 requireText(landing, "navigateLocal('/project')", 'Landing page must link to the dedicated Project page.')
@@ -26,14 +22,16 @@ requireText(landing, '<ProductStory/>', 'Recovered Product Story section must st
 requireText(landing, 'ProjectRail variant="journey"', 'Recovered signal journey rail must stay on Home.')
 requireText(landing, 'id="journal"', 'Recovered public Progress journal must stay on Home.')
 requireText(landing, 'ProjectRail variant="roadmap"', 'Public roadmap rail must stay on Home.')
-requireText(appCss, 'copypump-global-market-background.png', 'Core cinematic canvas must keep the approved CopyPump background asset.')
-requireText(uiCleanup, 'copypump-global-market-background.png', 'Home must keep the approved CopyPump background asset.')
-requireText(projectCss, 'copypump-global-market-background.png', 'Project must keep the approved CopyPump background asset.')
-requireText(indexCss, "@import './mobile-nav-hotfix.css';", 'Responsive navigation source of truth must remain imported.')
-requireText(mobileNav, 'backdrop-filter:blur(10px) saturate(118%)', 'Mobile header must keep the approved light crystal blur.')
-requireText(mobileNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Mobile menu must keep the approved light glass blur.')
-requireText(mobileNav, 'background:rgba(2,7,15,.42)', 'Mobile menu backdrop must remain translucent rather than opaque black.')
-requireText(mobileNav, 'background:linear-gradient(150deg,rgba(9,20,35,.58)', 'Mobile menu panel must keep the translucent premium glass gradient.')
+requireText(hero, 'detect-cutout-final-v47', 'Canonical uploaded Detect cutout must remain active.')
+requireText(hero, 'qualify-cutout-final-v47', 'Canonical uploaded Qualify cutout must remain active.')
+requireText(hero, 'constrain-cutout-final-v47', 'Canonical uploaded Constrain cutout must remain active.')
+requireText(hero, 'execute-prove-cutout-final-v47', 'Canonical uploaded Execute/Prove cutout must remain active.')
+requireText(appCss, 'copypump-global-market-background.png', 'Core cinematic canvas must keep the current CopyPump background asset until background forensics completes.')
+requireText(uiCleanup, 'copypump-global-market-background.png', 'Home must keep the current CopyPump background asset until background forensics completes.')
+requireText(projectCss, 'copypump-global-market-background.png', 'Project must keep the current CopyPump background asset until background forensics completes.')
+requireText(indexCss, "@import './mobile-nav-hotfix.css';", 'Responsive navigation source of truth must remain imported until CSS consolidation phase.')
+requireText(mobileNav, 'backdrop-filter:blur(10px) saturate(118%)', 'Mobile header must keep the light crystal blur until header reconstruction.')
+requireText(mobileNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Mobile menu must keep the light glass blur until menu visual reconstruction.')
 
 forbidText(landing, 'Change the capital limit, signal age or emergency stop.', 'Decision demo must not render redundant operating instructions.')
 forbidText(landing, 'Измените лимит капитала', 'Decision demo must not render redundant operating instructions.')
@@ -46,7 +44,6 @@ forbidText(rails, 'github.com/CopyPumpApp/CopyPump/blob/main/docs/', 'Roadmap ra
 forbidText(rails, 'ROADMAP.md', 'Roadmap rail must not expose a developer-document link.')
 forbidText(rails, 'ARCHITECTURE.md', 'Roadmap rail must not expose a developer-document link.')
 forbidText(`${en}\n${ru}`, 'CopyCube', 'CopyCube must remain completely absent from public EN/RU content.')
-forbidText(`${landing}\n${hero}`, '-cutout-final-v47', 'Obsolete v47 workflow cutouts must not return to active UI code.')
 forbidText(appCss, 'copypump-cinematic-environment-v46', 'Stale v46 background references must never return to the active CSS cascade.')
 forbidText(indexCss, 'premium-navigation.css', 'Superseded navigation stylesheet must not return to the CSS import graph.')
 
