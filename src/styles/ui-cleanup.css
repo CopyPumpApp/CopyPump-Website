@@ -1,7 +1,35 @@
-/* Consolidated presentation layer: responsive cinematic canvas and non-structural UI cleanup. */
+/* Consolidated presentation layer: responsive cinematic canvas and calmer visual hierarchy. */
 .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46.webp');background-position:center top;opacity:.72;filter:none;transform:none}
 .mobile-nav nav button{grid-template-columns:32px minmax(0,1fr);padding-right:0}.mobile-nav nav button>small{width:32px;white-space:nowrap}.mobile-nav nav button>span:last-child{display:none}
 .rail-help{display:none!important}
 .community-bottom nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:14px 28px}.community-bottom nav>a{display:grid!important;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:14px;min-height:62px;margin:0!important;padding:10px 0!important}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:34px!important;height:34px!important;display:flex;align-items:center;justify-content:center;margin:0!important;justify-self:start}.community-bottom nav>a>.mail-icon{font-size:30px;line-height:1;color:var(--muted)}.community-bottom nav>a>span:last-child:not(.mail-icon){display:none!important}
 .status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
-@media(max-width:760px){.cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46-mobile.webp');background-position:50% 0;opacity:.68;filter:none;transform:none}.community-bottom nav{grid-template-columns:1fr}.community-bottom nav>a{grid-template-columns:38px minmax(0,1fr)}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:30px!important;height:30px!important}.mobile-nav nav button{gap:20px}}
+
+/* V4 hierarchy reconstruction: dividers support structure instead of becoming the structure. */
+.cinematic-v47 .problem-comparison,.cinematic-v47 .authority-columns,.cinematic-v47 .journal-entries{border-top-color:rgba(158,176,233,.1)!important}
+.cinematic-v47 .problem-row{border-top-color:rgba(158,176,233,.065)!important}
+.cinematic-v47 .problem-row:first-of-type{border-top-color:transparent!important}
+.cinematic-v47 .authority-columns>article{border-left-color:rgba(158,176,233,.075)!important}
+.cinematic-v47 .authority-columns>article:first-child{border-left-color:transparent!important}
+.cinematic-v47 .workflow-caption{border-top-color:rgba(158,176,233,.075)!important}
+.cinematic-v47 .scene-caption{border-top-color:rgba(158,176,233,.08)!important}
+.cinematic-v47 .scene-steps i{background:rgba(158,176,233,.1)!important}
+.cinematic-v47 .text-detail{border-top-color:rgba(158,176,233,.085)!important}
+.cinematic-v47 .text-detail:last-child{border-bottom-color:rgba(158,176,233,.085)!important}
+.cinematic-v47 .project-rail-card,.cinematic-v47 .journal-entry{border-color:rgba(158,176,233,.085)!important}
+.cinematic-v47 .problem-row,.cinematic-v47 .authority-columns>article,.cinematic-v47 .journal-entry{transition:border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease)}
+.cinematic-v47 .problem-row:hover,.cinematic-v47 .authority-columns>article:hover{background:linear-gradient(90deg,rgba(118,217,255,.018),transparent 72%)}
+
+@media(max-width:760px){
+  .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46-mobile.webp');background-position:50% 0;opacity:.68;filter:none;transform:none}
+  .community-bottom nav{grid-template-columns:1fr}.community-bottom nav>a{grid-template-columns:38px minmax(0,1fr)}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:30px!important;height:30px!important}.mobile-nav nav button{gap:20px}
+  .cinematic-v47 .problem-comparison,.cinematic-v47 .authority-columns,.cinematic-v47 .journal-entries{border-top-color:transparent!important}
+  .cinematic-v47 .problem-row{border-top-color:transparent!important;border-bottom-color:rgba(158,176,233,.055)!important}
+  .cinematic-v47 .problem-row:last-child{border-bottom-color:transparent!important}
+  .cinematic-v47 .authority-columns>article{border-left-color:transparent!important;border-top-color:rgba(158,176,233,.055)!important}
+  .cinematic-v47 .authority-columns>article:first-child{border-top-color:transparent!important}
+  .cinematic-v47 .scene-caption,.cinematic-v47 .workflow-caption{border-top-color:rgba(158,176,233,.055)!important}
+  .cinematic-v47 .scene-steps i{background:rgba(158,176,233,.075)!important}
+  .cinematic-v47 .text-detail{border-top-color:rgba(158,176,233,.065)!important}
+  .cinematic-v47 .text-detail:last-child{border-bottom-color:rgba(158,176,233,.065)!important}
+}
