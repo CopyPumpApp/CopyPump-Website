@@ -1,0 +1,38 @@
+name: Legacy CSS cleanup
+on:
+  push:
+    branches: [chore/remove-dialog-legacy]
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/remove-dialog-legacy
+      - name: Remove obsolete dialog scroll lock
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('src/styles/app.css')
+          s = p.read_text()
+          old = 'body:has(dialog[open]){overflow:hidden}'
+          if s.count(old) != 1:
+              raise SystemExit(f'Expected exactly one legacy dialog lock, found {s.count(old)}')
+          p.write_text(s.replace(old, ''))
+          PY
+      - name: Verify no dialog selectors remain
+        run: |
+          if grep -RniE 'dialog\[open\]|:has\([^)]*dialog|<dialog|showModal\(' src; then
+            echo 'Legacy dialog usage remains' >&2
+            exit 1
+          fi
+      - name: Commit cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/styles/app.css
+          git commit -m 'chore: remove obsolete dialog scroll lock'
+          git push origin HEAD:chore/remove-dialog-legacy
