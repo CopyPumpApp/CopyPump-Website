@@ -21,6 +21,8 @@
   .mobile-nav__footer{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;width:100%;min-height:48px;padding:8px 0 0;animation:nav-content-in .32s .1s cubic-bezier(.22,1,.36,1);touch-action:manipulation}
   .mobile-nav__footer .motion-toggle{display:flex;font-size:12px;justify-self:end}.mobile-nav__footer .locale-switch{display:flex;font-size:12px}
   .mobile-nav__external{display:flex;justify-content:center;gap:14px;min-width:0;font:10px/1.4 var(--font-mono);color:var(--quiet)}.mobile-nav__external a{padding:8px 0}.mobile-nav__external a:hover,.mobile-nav__external a:focus-visible{color:var(--mint)}
+  /* Opening the menu pauses global cinematic motion. Never let that pause freeze the menu itself on its opacity:0 entrance frame. */
+  html[data-motion="off"] .mobile-nav__backdrop,html[data-motion="off"] .mobile-nav__panel,html[data-motion="off"] .mobile-nav__top,html[data-motion="off"] .mobile-nav__body,html[data-motion="off"] .mobile-nav nav,html[data-motion="off"] .mobile-nav nav button,html[data-motion="off"] .mobile-nav__footer{animation:none!important;opacity:1!important;visibility:visible!important;transform:none!important}
 }
 @media (max-width:760px){
   .cinematic-v47 .site-header{top:0;background:linear-gradient(180deg,rgba(9,16,31,.34),rgba(8,14,28,.16));border-bottom:0!important;box-shadow:none!important;backdrop-filter:blur(7px) saturate(110%);-webkit-backdrop-filter:blur(7px) saturate(110%)}
