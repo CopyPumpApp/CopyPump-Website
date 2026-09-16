@@ -12,16 +12,17 @@
 .cinematic-v47 .problem-row,.cinematic-v47 .authority-columns>article,.cinematic-v47 .journal-entry{transition:background .3s var(--ease),transform .3s var(--ease)}
 .cinematic-v47 .problem-row:hover,.cinematic-v47 .authority-columns>article:hover{background:linear-gradient(90deg,rgba(118,217,255,.018),transparent 72%)}
 
-/* Focused landing page: only the essential product story remains on Home. */
-.home-summary{padding-block:clamp(48px,6vw,82px)}
-.home-summary__points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(26px,4vw,60px);margin-top:36px}
-.home-summary__points article{min-width:0;padding:0;background:transparent}
-.home-summary__points .problem-index{display:block;margin-bottom:13px}.home-summary__points h3{font-size:clamp(21px,2vw,28px);line-height:1.15;margin-bottom:10px}.home-summary__points p{font-size:14px;line-height:1.75;max-width:380px}
-.home-summary__action{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-top:34px}.home-summary__action .fine-print{max-width:720px}.home-summary__action .text-link{flex:0 0 auto}
-.home-community{padding-top:clamp(34px,4vw,58px)}
+/* Focused landing page: one short product explanation, then official channels. */
+.home-summary{padding-block:clamp(48px,6vw,76px)}
+.home-summary__heading{max-width:920px}.home-summary__heading h2{font-size:clamp(34px,4vw,60px);line-height:1.06;margin:18px 0 16px}.home-summary__heading p{max-width:760px;font-size:16px;line-height:1.72}
+.home-summary__points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,4vw,56px);margin-top:34px}
+.home-summary__points article{min-width:0;padding:0;background:transparent}.home-summary__points .problem-index{display:block;margin-bottom:10px}.home-summary__points h3{font-size:clamp(20px,1.85vw,27px);line-height:1.18;margin:0}
+.home-summary__details{margin-top:28px}
+.home-community{padding-block:clamp(36px,4vw,58px) 32px}.home-community__heading{max-width:850px}.home-community__heading h2{font-size:clamp(34px,4.2vw,62px);line-height:1.05;margin:18px 0 14px}.home-community__heading h2 em{color:var(--mint)}.home-community__heading p{max-width:620px;font-size:15px;line-height:1.7}.home-community .community-bottom{grid-template-columns:1fr;margin-top:28px;padding-top:0!important}.home-community .community-bottom nav{max-width:760px}
 
 @media(max-width:760px){
   .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46-mobile.webp');background-position:50% 0;opacity:.68;filter:none;transform:none}
   .community-bottom nav{grid-template-columns:1fr}.community-bottom nav>a{grid-template-columns:38px minmax(0,1fr)}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:30px!important;height:30px!important}
-  .home-summary{padding-block:42px}.home-summary__points{grid-template-columns:1fr;gap:28px;margin-top:28px}.home-summary__points article{max-width:560px}.home-summary__action{align-items:flex-start;flex-direction:column;gap:12px;margin-top:28px}.home-community{padding-top:26px}
+  .home-summary{padding-block:38px}.home-summary__heading h2{font-size:clamp(31px,8.6vw,40px);margin-top:14px}.home-summary__heading p{font-size:15px}.home-summary__points{grid-template-columns:1fr;gap:22px;margin-top:26px}.home-summary__points article{max-width:560px}.home-summary__points h3{font-size:21px}.home-summary__details{margin-top:22px}
+  .home-community{padding-block:30px 24px}.home-community__heading h2{font-size:clamp(31px,8.8vw,42px);margin-top:14px}.home-community__heading p{font-size:14px}.home-community .community-bottom{margin-top:20px}
 }
