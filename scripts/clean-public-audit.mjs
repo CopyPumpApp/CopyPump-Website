@@ -7,10 +7,11 @@ const en = await readFile(new URL('../src/i18n/en.json', import.meta.url), 'utf8
 const ru = await readFile(new URL('../src/i18n/ru.json', import.meta.url), 'utf8')
 const indexCss = await readFile(new URL('../src/styles/index.css', import.meta.url), 'utf8')
 const uiCleanup = await readFile(new URL('../src/styles/ui-cleanup.css', import.meta.url), 'utf8')
-const mobileNav = await readFile(new URL('../src/styles/mobile-nav-hotfix.css', import.meta.url), 'utf8')
+const responsiveNav = await readFile(new URL('../src/styles/responsive-navigation.css', import.meta.url), 'utf8')
 const failures = []
 const requireText = (source, text, message) => { if (!source.includes(text)) failures.push(message) }
 const forbidText = (source, text, message) => { if (source.includes(text)) failures.push(message) }
+
 requireText(landing, 'https://discord.gg/WS95eXrGB', 'Landing page must use the current official Discord invite.')
 requireText(landing, "navigateLocal('/project')", 'Landing page must link to the dedicated Project page.')
 requireText(landing, 'decision-demo', 'Landing page must retain the interactive decision demo.')
@@ -18,18 +19,24 @@ requireText(landing, '<ProductStory/>', 'Recovered Product Story section must st
 requireText(landing, 'ProjectRail variant="journey"', 'Recovered signal journey rail must stay on Home.')
 requireText(landing, 'id="journal"', 'Recovered public Progress journal must stay on Home.')
 requireText(landing, 'ProjectRail variant="roadmap"', 'Public roadmap rail must stay on Home.')
+
 requireText(hero, 'detect-cutout-final-v47', 'Canonical uploaded Detect cutout must remain active.')
 requireText(hero, 'qualify-cutout-final-v47', 'Canonical uploaded Qualify cutout must remain active.')
 requireText(hero, 'constrain-cutout-final-v47', 'Canonical uploaded Constrain cutout must remain active.')
 requireText(hero, 'execute-prove-cutout-final-v47', 'Canonical uploaded Execute/Prove cutout must remain active.')
+
 requireText(uiCleanup, 'copypump-cinematic-environment-v46.webp', 'Desktop must use the responsive cinematic environment baseline.')
 requireText(uiCleanup, 'copypump-cinematic-environment-v46-mobile.webp', 'Mobile must use its responsive cinematic environment baseline.')
 forbidText(uiCleanup, 'copypump-global-market-background.png', 'Legacy 3MB market background must not return to the active presentation layer.')
-requireText(indexCss, "@import './mobile-nav-hotfix.css';", 'Responsive navigation source of truth must remain imported until CSS consolidation phase.')
-requireText(mobileNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Reconstructed mobile header must retain the lightweight crystal blur.')
-requireText(mobileNav, 'backdrop-filter:blur(5px) saturate(108%)', 'Reconstructed mobile menu must retain the lightweight glass blur.')
-requireText(mobileNav, '.menu-button.is-open span:first-child', 'Mobile menu trigger must keep the animated menu-to-X morph.')
-requireText(mobileNav, '.icon-button.is-open span:first-child', 'Mobile close control must keep the animated X state.')
+
+requireText(indexCss, "@import './responsive-navigation.css';", 'Canonical responsive navigation stylesheet must remain imported.')
+forbidText(indexCss, 'mobile-nav-hotfix.css', 'Obsolete mobile navigation hotfix must not return to the CSS import graph.')
+forbidText(indexCss, 'premium-navigation.css', 'Superseded navigation stylesheet must not return to the CSS import graph.')
+requireText(responsiveNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Responsive mobile header must retain the lightweight crystal blur.')
+requireText(responsiveNav, 'backdrop-filter:blur(5px) saturate(108%)', 'Responsive mobile menu must retain the lightweight glass blur.')
+requireText(responsiveNav, '.menu-button.is-open span:first-child', 'Mobile menu trigger must keep the animated menu-to-X morph.')
+requireText(responsiveNav, '.icon-button.is-open span:first-child', 'Mobile close control must keep the animated X state.')
+
 forbidText(landing, 'Change the capital limit, signal age or emergency stop.', 'Decision demo must not render redundant operating instructions.')
 forbidText(landing, 'Измените лимит капитала', 'Decision demo must not render redundant operating instructions.')
 forbidText(landing, 'DNBQtqw6R', 'Stale Discord invite is still rendered.')
@@ -41,6 +48,10 @@ forbidText(rails, 'github.com/CopyPumpApp/CopyPump/blob/main/docs/', 'Roadmap ra
 forbidText(rails, 'ROADMAP.md', 'Roadmap rail must not expose a developer-document link.')
 forbidText(rails, 'ARCHITECTURE.md', 'Roadmap rail must not expose a developer-document link.')
 forbidText(`${en}\n${ru}`, 'CopyCube', 'CopyCube must remain completely absent from public EN/RU content.')
-forbidText(indexCss, 'premium-navigation.css', 'Superseded navigation stylesheet must not return to the CSS import graph.')
-if (failures.length) { console.error('Public-site audit failed:'); failures.forEach(item => console.error(`- ${item}`)); process.exit(1) }
+
+if (failures.length) {
+  console.error('Public-site audit failed:')
+  failures.forEach(item => console.error(`- ${item}`))
+  process.exit(1)
+}
 console.log('Public-site audit passed.')
