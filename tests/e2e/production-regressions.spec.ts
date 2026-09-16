@@ -66,6 +66,30 @@ test('Motion off never leaves reveal content hidden', async ({ page, isMobile })
   await expect.poll(async () => page.evaluate(() => [...document.querySelectorAll<HTMLElement>('[data-reveal]')].every(node => getComputedStyle(node).opacity !== '0'))).toBeTruthy()
 })
 
+test('mobile header and menu keep the crystal glass treatment', async ({ page, isMobile }) => {
+  test.skip(!isMobile)
+  await page.goto('/')
+  const header = await page.locator('.site-header').evaluate(node => {
+    const style = getComputedStyle(node)
+    const webkit = (style as CSSStyleDeclaration & { webkitBackdropFilter?: string }).webkitBackdropFilter || ''
+    return { backgroundImage:style.backgroundImage, backgroundColor:style.backgroundColor, backdrop:`${style.backdropFilter || ''} ${webkit}` }
+  })
+  expect(header.backgroundImage).toContain('linear-gradient')
+  expect(header.backdrop).toContain('blur(')
+  expect(header.backgroundColor).not.toContain('0.985')
+
+  await page.locator('.menu-button').click()
+  const glass = await page.locator('.mobile-nav__backdrop').evaluate(node => {
+    const style = getComputedStyle(node)
+    const webkit = (style as CSSStyleDeclaration & { webkitBackdropFilter?: string }).webkitBackdropFilter || ''
+    return { background:style.backgroundColor, backdrop:`${style.backdropFilter || ''} ${webkit}` }
+  })
+  const panelBackground = await page.locator('.mobile-nav__panel').evaluate(node => getComputedStyle(node).backgroundImage)
+  expect(glass.backdrop).toContain('blur(')
+  expect(glass.background).not.toBe('rgb(1, 4, 10)')
+  expect(panelBackground).toContain('linear-gradient')
+})
+
 test('mobile navigation stays inside the visual viewport', async ({ page, isMobile }) => {
   test.skip(!isMobile)
   await page.goto('/')
