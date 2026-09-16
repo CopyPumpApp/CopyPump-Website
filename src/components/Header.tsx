@@ -21,7 +21,7 @@ export function Header({simple=false}:{simple?:boolean}){
     if(!open) requestAnimationFrame(()=>trigger.current?.focus({preventScroll:true}))
     return()=>{root.classList.remove('nav-open');window.removeEventListener('keydown',onKey);window.removeEventListener('pageshow',onPageShow);document.removeEventListener('visibilitychange',onVisibility)}
   },[open])
-  const homeLinks=[['why-copypump',c.product],['authority',c.controls],['roadmap',c.progress]]
+  const homeLinks=[['why-copypump',c.product],['authority',c.controls],['journal',c.progress]]
   const projectLabel=locale==='ru'?'О проекте':'Project'
   const go=(id:string)=>{close();if(simple){navigateLocal('/');setTimeout(()=>smoothScrollToId(id),60)}else requestAnimationFrame(()=>smoothScrollToId(id))}
   const project=()=>{close();navigateLocal('/project')}
