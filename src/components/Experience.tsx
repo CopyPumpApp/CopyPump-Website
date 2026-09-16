@@ -6,11 +6,11 @@ export const useMotion=()=>useContext(MotionContext)
 
 type RevealProfile={from:Keyframe;duration:number;easing:string}
 function revealProfile(target:HTMLElement):RevealProfile{
-  if(target.dataset.revealKind==='hero')return{from:{opacity:0,transform:'translate3d(0,20px,0) scale(.994)'},duration:760,easing:'cubic-bezier(.22,1,.36,1)'}
-  if(target.dataset.revealKind==='title')return{from:{opacity:0,transform:'translate3d(0,22px,0)'},duration:660,easing:'cubic-bezier(.22,1,.36,1)'}
-  if(target.classList.contains('problem-row'))return{from:{opacity:0,transform:'translate3d(-18px,0,0)'},duration:600,easing:'cubic-bezier(.22,1,.36,1)'}
-  if(target.classList.contains('workflow-node'))return{from:{opacity:0,transform:'translate3d(0,22px,0) scale(.985)'},duration:640,easing:'cubic-bezier(.22,1,.36,1)'}
-  return{from:{opacity:0,transform:'translate3d(0,14px,0)'},duration:520,easing:'cubic-bezier(.22,1,.36,1)'}
+  if(target.dataset.revealKind==='hero')return{from:{opacity:0,transform:'translate3d(0,20px,0) scale(.994)'},duration:980,easing:'cubic-bezier(.22,1,.36,1)'}
+  if(target.dataset.revealKind==='title')return{from:{opacity:0,transform:'translate3d(0,22px,0)'},duration:860,easing:'cubic-bezier(.22,1,.36,1)'}
+  if(target.classList.contains('problem-row'))return{from:{opacity:0,transform:'translate3d(-18px,0,0)'},duration:780,easing:'cubic-bezier(.22,1,.36,1)'}
+  if(target.classList.contains('workflow-node'))return{from:{opacity:0,transform:'translate3d(0,22px,0) scale(.985)'},duration:820,easing:'cubic-bezier(.22,1,.36,1)'}
+  return{from:{opacity:0,transform:'translate3d(0,14px,0)'},duration:700,easing:'cubic-bezier(.22,1,.36,1)'}
 }
 function makeVisible(node:HTMLElement){node.style.opacity='1';node.style.transform='none';node.style.willChange='';node.dataset.revealed='true'}
 
@@ -41,7 +41,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     if(!running||reduced)return
     const main=document.querySelector<HTMLElement>('.app-shell main')
     if(!main||typeof main.animate!=='function')return
-    const animation=main.animate([{opacity:.84,transform:'translate3d(0,7px,0)'},{opacity:1,transform:'none'}],{duration:380,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'})
+    const animation=main.animate([{opacity:.84,transform:'translate3d(0,7px,0)'},{opacity:1,transform:'none'}],{duration:520,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'})
     activeAnimations.current.add(animation)
     animation.finished.finally(()=>activeAnimations.current.delete(animation)).catch(()=>{})
     return()=>{animation.cancel();activeAnimations.current.delete(animation)}
@@ -59,7 +59,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
         const node=entry.target as HTMLElement
         observer.unobserve(node)
         if(node.dataset.revealed==='true'){makeVisible(node);continue}
-        const profile=revealProfile(node),raw=Number(node.dataset.reveal||0),delay=Number.isFinite(raw)?Math.min(220,Math.max(0,raw)):0
+        const profile=revealProfile(node),raw=Number(node.dataset.reveal||0),delay=Number.isFinite(raw)?Math.min(260,Math.max(0,raw)):0
         if(typeof node.animate!=='function'){makeVisible(node);continue}
         node.style.opacity='1';node.style.transform='none';node.style.willChange='opacity, transform'
         const animation=node.animate([profile.from,{opacity:1,transform:'none'}],{duration:profile.duration,delay,easing:profile.easing,fill:'both'})
