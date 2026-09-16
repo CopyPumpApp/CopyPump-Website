@@ -1,0 +1,85 @@
+{
+  "artwork": "Existing owner-uploaded Earth / trading-room artwork and canonical V47 cutouts. Same sources; responsive resampling only.",
+  "files": [
+    {
+      "source": "backgrounds/copypump-global-market-background.png",
+      "sourceSha256": "b24d9f52fde10df8e30b9fb2e722e538e983fbdc30d9b97dd319016eaa633470",
+      "output": "media/v48/earth-trading-900.webp",
+      "width": 900,
+      "height": 507,
+      "bytes": 88036
+    },
+    {
+      "source": "backgrounds/copypump-global-market-background.png",
+      "sourceSha256": "b24d9f52fde10df8e30b9fb2e722e538e983fbdc30d9b97dd319016eaa633470",
+      "output": "media/v48/earth-trading-1600.webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 199744
+    },
+    {
+      "source": "workflow-objects/detect-cutout-final-v47.webp",
+      "sourceSha256": "46091fde1521131d780f35365f090d647ab04f2f4ae5c91193b1e62a4b1f3e80",
+      "output": "media/v48/detect-480.webp",
+      "width": 480,
+      "height": 612,
+      "bytes": 83728
+    },
+    {
+      "source": "workflow-objects/detect-cutout-final-v47.webp",
+      "sourceSha256": "46091fde1521131d780f35365f090d647ab04f2f4ae5c91193b1e62a4b1f3e80",
+      "output": "media/v48/detect-800.webp",
+      "width": 800,
+      "height": 1020,
+      "bytes": 182350
+    },
+    {
+      "source": "workflow-objects/qualify-cutout-final-v47.webp",
+      "sourceSha256": "3f97fb1a957eacd3d60fd6eeb75fefb78e0b59bff853fd7fb84726cd0882c84a",
+      "output": "media/v48/qualify-480.webp",
+      "width": 480,
+      "height": 611,
+      "bytes": 66706
+    },
+    {
+      "source": "workflow-objects/qualify-cutout-final-v47.webp",
+      "sourceSha256": "3f97fb1a957eacd3d60fd6eeb75fefb78e0b59bff853fd7fb84726cd0882c84a",
+      "output": "media/v48/qualify-800.webp",
+      "width": 800,
+      "height": 1019,
+      "bytes": 146600
+    },
+    {
+      "source": "workflow-objects/constrain-cutout-final-v47.webp",
+      "sourceSha256": "d39359657e0aab8de0454ae2f7bfbfe099af79d626782ddc889443672fa7868e",
+      "output": "media/v48/constrain-480.webp",
+      "width": 480,
+      "height": 611,
+      "bytes": 75520
+    },
+    {
+      "source": "workflow-objects/constrain-cutout-final-v47.webp",
+      "sourceSha256": "d39359657e0aab8de0454ae2f7bfbfe099af79d626782ddc889443672fa7868e",
+      "output": "media/v48/constrain-800.webp",
+      "width": 800,
+      "height": 1019,
+      "bytes": 171918
+    },
+    {
+      "source": "workflow-objects/execute-prove-cutout-final-v47.webp",
+      "sourceSha256": "188278363da66c6bbfb25d55aa09016fa243c97dc71a6cae3ed38706f59ff988",
+      "output": "media/v48/execute-prove-480.webp",
+      "width": 480,
+      "height": 612,
+      "bytes": 88918
+    },
+    {
+      "source": "workflow-objects/execute-prove-cutout-final-v47.webp",
+      "sourceSha256": "188278363da66c6bbfb25d55aa09016fa243c97dc71a6cae3ed38706f59ff988",
+      "output": "media/v48/execute-prove-800.webp",
+      "width": 800,
+      "height": 1020,
+      "bytes": 227752
+    }
+  ]
+}
