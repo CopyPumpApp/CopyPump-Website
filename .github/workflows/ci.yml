@@ -25,10 +25,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Install dependencies
+      - name: Install production dependencies
         run: npm ci
       - name: Typecheck, public/UI audit, and production build
         run: npm run check
+      - name: Install Playwright test tooling
+        run: npm install --no-save --package-lock=false @playwright/test@1.55.0
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
       - name: Browser smoke — desktop, iPhone WebKit, Android
