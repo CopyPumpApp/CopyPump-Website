@@ -79,14 +79,18 @@ test('mobile header and menu keep the crystal glass treatment', async ({ page, i
   expect(header.backgroundColor).not.toContain('0.985')
 
   await page.locator('.menu-button').click()
+  const firstItem = page.locator('.mobile-nav nav button').first()
   await expect(page.locator('.mobile-nav__top')).toBeVisible()
-  await expect(page.locator('.mobile-nav nav button').first()).toBeVisible()
+  await expect(firstItem).toBeVisible()
   await expect(page.locator('.mobile-nav__footer')).toBeVisible()
+  await page.waitForTimeout(700)
   const glassBackground = await page.locator('.mobile-nav__backdrop').evaluate(node => getComputedStyle(node).backgroundColor)
   const panelBackground = await page.locator('.mobile-nav__panel').evaluate(node => getComputedStyle(node).backgroundImage)
+  const itemOpacity = await firstItem.evaluate(node => Number(getComputedStyle(node).opacity))
   expect(glassBackground).not.toBe('rgb(1, 4, 10)')
   expect(glassBackground).not.toBe('rgba(1, 4, 10, 0.96)')
   expect(panelBackground).toContain('linear-gradient')
+  expect(itemOpacity).toBeGreaterThan(.95)
 })
 
 test('mobile navigation stays inside the visual viewport', async ({ page, isMobile }) => {
@@ -130,13 +134,12 @@ test('mobile navigation remains viewport-pinned after deep scroll', async ({ pag
   await expect(panel).toBeVisible()
   const state = await panel.evaluate((node) => {
     const r = node.getBoundingClientRect()
-    const bodyStyle = getComputedStyle(document.body)
-    return {top:r.top,bottom:r.bottom,height:window.innerHeight,bodyPosition:bodyStyle.position,bodyTop:bodyStyle.top}
+    return {top:r.top,bottom:r.bottom,height:window.innerHeight,scrollY:window.scrollY}
   })
   expect(state.top, JSON.stringify(state)).toBeGreaterThanOrEqual(-1)
   expect(state.top, JSON.stringify(state)).toBeLessThanOrEqual(1)
   expect(state.bottom, JSON.stringify(state)).toBeLessThanOrEqual(state.height + 1)
-  expect(state.bodyPosition).toBe('fixed')
+  expect(Math.abs(state.scrollY-before)).toBeLessThanOrEqual(2)
   const firstBox = await firstItem.boundingBox()
   const footerBox = await footer.boundingBox()
   expect(firstBox).not.toBeNull()
