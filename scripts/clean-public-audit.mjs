@@ -30,8 +30,10 @@ requireText(appCss, 'copypump-global-market-background.png', 'Core cinematic can
 requireText(uiCleanup, 'copypump-global-market-background.png', 'Home must keep the current CopyPump background asset until background forensics completes.')
 requireText(projectCss, 'copypump-global-market-background.png', 'Project must keep the current CopyPump background asset until background forensics completes.')
 requireText(indexCss, "@import './mobile-nav-hotfix.css';", 'Responsive navigation source of truth must remain imported until CSS consolidation phase.')
-requireText(mobileNav, 'backdrop-filter:blur(10px) saturate(118%)', 'Mobile header must keep the light crystal blur until header reconstruction.')
-requireText(mobileNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Mobile menu must keep the light glass blur until menu visual reconstruction.')
+requireText(mobileNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Reconstructed mobile header must retain the lightweight crystal blur.')
+requireText(mobileNav, 'backdrop-filter:blur(5px) saturate(108%)', 'Reconstructed mobile menu must retain the lightweight glass blur.')
+requireText(mobileNav, '.menu-button.is-open span:first-child', 'Mobile menu trigger must keep the animated menu-to-X morph.')
+requireText(mobileNav, '.icon-button.is-open span:first-child', 'Mobile close control must keep the animated X state.')
 
 forbidText(landing, 'Change the capital limit, signal age or emergency stop.', 'Decision demo must not render redundant operating instructions.')
 forbidText(landing, 'Измените лимит капитала', 'Decision demo must not render redundant operating instructions.')
