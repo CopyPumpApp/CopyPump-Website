@@ -22,7 +22,7 @@ test('Home keeps the recovered premium information sections', async ({ page }) =
   }
 })
 
-test('approved CopyPump background is active on Home and Project', async ({ page }) => {
+test('current CopyPump background is active on Home and Project', async ({ page }) => {
   await page.goto('/')
   const homeBackground = await page.locator('.site-scroll-background').evaluate(node => getComputedStyle(node, '::before').backgroundImage)
   expect(homeBackground).toContain('copypump-global-market-background.png')
@@ -31,12 +31,11 @@ test('approved CopyPump background is active on Home and Project', async ({ page
   expect(projectBackground).toContain('copypump-global-market-background.png')
 })
 
-test('workflow surfaces use the approved lightweight cutouts', async ({ page }) => {
+test('workflow surfaces use the canonical uploaded v47 cutouts', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('img[src*="/workflow-objects/"]')).toHaveCount(8)
   const sources = await page.locator('img[src*="/workflow-objects/"]').evaluateAll(nodes => nodes.map(node => (node as HTMLImageElement).getAttribute('src') || ''))
-  expect(sources.every(src => !src.includes('-v47'))).toBeTruthy()
-  expect(sources.every(src => /(?:detect|qualify|constrain|execute-prove)-cutout-final\.webp/.test(src))).toBeTruthy()
+  expect(sources.every(src => /(?:detect|qualify|constrain|execute-prove)-cutout-final-v47\.webp/.test(src))).toBeTruthy()
 })
 
 test('Progress navigation reaches the restored journal', async ({ page, isMobile }) => {
@@ -135,10 +134,6 @@ test('mobile navigation remains viewport-pinned after deep scroll', async ({ pag
   expect(buttonBox).not.toBeNull()
   expect(buttonBox!.y).toBeGreaterThanOrEqual(-1)
   expect(buttonBox!.y + buttonBox!.height).toBeLessThanOrEqual(viewportHeight + 1)
-
-  // Use the already-visible sticky control directly. Playwright's locator.click()
-  // may scroll sticky controls before dispatching the click; that driver-induced
-  // scroll is not an application regression and would pollute this strict lock test.
   await menuButton.evaluate(node => (node as HTMLButtonElement).click())
 
   const panel = page.locator('.mobile-nav__panel')
