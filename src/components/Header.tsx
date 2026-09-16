@@ -10,8 +10,9 @@ export function Header({simple=false}:{simple?:boolean}){
   const [open,setOpen]=useState(false)
   const trigger=useRef<HTMLButtonElement>(null)
   const lockedScrollY=useRef(0)
+  const lockedPathname=useRef('')
   const close=()=>setOpen(false)
-  const toggle=()=>setOpen(current=>{if(!current)lockedScrollY.current=window.scrollY;return!current})
+  const toggle=()=>setOpen(current=>{if(!current){lockedScrollY.current=window.scrollY;lockedPathname.current=window.location.pathname}return!current})
   const ru=locale==='ru'
   const detailLinks=[
     {label:ru?'Главная':'Home',path:'/'},
@@ -27,14 +28,14 @@ export function Header({simple=false}:{simple?:boolean}){
 
   useLayoutEffect(()=>{
     if(!open)return
-    const root=document.documentElement,body=document.body,targetY=lockedScrollY.current
+    const root=document.documentElement,body=document.body,targetY=lockedScrollY.current,targetPath=lockedPathname.current
     const previous={rootOverflow:root.style.overflow,rootOverscroll:root.style.overscrollBehavior,bodyOverflow:body.style.overflow}
     const onKey=(event:KeyboardEvent)=>{if(event.key==='Escape')close()}
     root.classList.add('nav-open');root.style.overflow='hidden';root.style.overscrollBehavior='none';body.style.overflow='hidden'
     window.addEventListener('keydown',onKey)
     return()=>{
       window.removeEventListener('keydown',onKey);root.classList.remove('nav-open');root.style.overflow=previous.rootOverflow;root.style.overscrollBehavior=previous.rootOverscroll;body.style.overflow=previous.bodyOverflow
-      if(Math.abs(window.scrollY-targetY)>2)window.scrollTo({top:targetY,left:0,behavior:'auto'})
+      if(window.location.pathname===targetPath&&Math.abs(window.scrollY-targetY)>2)window.scrollTo({top:targetY,left:0,behavior:'auto'})
     }
   },[open])
 
