@@ -997,10 +997,7 @@
       "offline": "Unavailable",
       "loading": "Checking",
       "retry": "Check again",
-      "apiNote": "This checks the website API only. It says nothing about trading readiness.",
-      "updateLabel": "ECOSYSTEM ALPHA",
-      "updateTitle": "CopyCube has moved to a website-only alpha path.",
-      "updateText": "CopyCube 3.2 Alpha 2 is now scoped as a website-only, cube-only game in the CopyPump ecosystem. Its source and architecture gates pass, while a clean production Next.js build and browser QA remain unverified—so it is still Alpha, not a production release."
+      "apiNote": "This checks the website API only. It says nothing about trading readiness."
     },
     "faq": {
       "eyebrow": "05 / THE ESSENTIALS",
@@ -1029,10 +1026,6 @@
         {
           "q": "Why is confirmation not the end of a trade?",
           "a": "CopyPump’s target model also checks the resulting balances and position, and records fees and the decision trail. A correct interface message alone does not establish that the position is reconciled."
-        },
-        {
-          "q": "What is the current status of CopyCube?",
-          "a": "CopyCube 3.2 Alpha 2 is a separate website-only game in the CopyPump ecosystem. Its active path is cube-only and no longer depends on Telegram or TON Connect. Production build and browser QA are still required, so it is not presented as production-ready and this site does not expose CopyCube reward mechanics or game-point earning."
         },
         {
           "q": "Where can I check the claims on this page?",
