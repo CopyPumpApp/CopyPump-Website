@@ -76,22 +76,29 @@ test('mobile menu trigger is visually containerless and overlay opens', async ({
   await page.goto('/')
   const trigger = page.locator('.menu-button')
   await expect(trigger).toBeVisible()
-  const triggerStyle = await trigger.evaluate(node => { const s=getComputedStyle(node); return {background:s.backgroundColor,borderTop:s.borderTopWidth,borderRight:s.borderRightWidth,borderBottom:s.borderBottomWidth,borderLeft:s.borderLeftWidth,boxShadow:s.boxShadow} })
+  const triggerStyle = await trigger.evaluate(node => { const s=getComputedStyle(node); return {background:s.backgroundColor,borderTop:s.borderTopWidth,borderRight:s.borderRightWidth,borderBottom:s.borderBottomWidth,borderLeft:s.borderLeftWidth,boxShadow:s.boxShadow,outlineWidth:s.outlineWidth,outlineStyle:s.outlineStyle} })
   expect(triggerStyle.background).toBe('rgba(0, 0, 0, 0)')
   expect([triggerStyle.borderTop,triggerStyle.borderRight,triggerStyle.borderBottom,triggerStyle.borderLeft].every(v=>v==='0px')).toBeTruthy()
   expect(triggerStyle.boxShadow).toBe('none')
+  expect(triggerStyle.outlineWidth).toBe('0px')
+  expect(triggerStyle.outlineStyle).toBe('none')
   await trigger.click()
   await expect(page.locator('#mobile-navigation')).toBeVisible()
   await expect(page.locator('.mobile-nav__panel')).toBeVisible()
   await expect(page.locator('.mobile-nav nav button')).toHaveCount(8)
 })
 
-test('mobile menu exposes the extended information architecture', async ({ page, isMobile }) => {
+test('mobile menu exposes visible extended information inside the viewport', async ({ page, isMobile }) => {
   test.skip(!isMobile)
   await page.goto('/')
   await page.locator('.menu-button').click()
-  const labels = await page.locator('.mobile-nav nav button strong').allTextContents()
+  await waitForMenuSettled(page)
+  const items=page.locator('.mobile-nav nav button')
+  const labels = await items.locator('strong').allTextContents()
   for (const expected of ['How it works','Controls & safety','Decision demo','Progress','Roadmap','FAQ']) expect(labels.join(' ')).toContain(expected)
+  const first=await items.first().boundingBox(),last=await items.last().boundingBox(),viewport=await page.evaluate(()=>({width:innerWidth,height:innerHeight}))
+  expect(first).not.toBeNull();expect(last).not.toBeNull()
+  for(const box of [first!,last!]){expect(box.x).toBeGreaterThanOrEqual(-1);expect(box.y).toBeGreaterThanOrEqual(-1);expect(box.x+box.width).toBeLessThanOrEqual(viewport.width+1);expect(box.y+box.height).toBeLessThanOrEqual(viewport.height+1)}
 })
 
 test('decorative horizontal stripe dividers are removed from extended content', async ({ page }) => {
