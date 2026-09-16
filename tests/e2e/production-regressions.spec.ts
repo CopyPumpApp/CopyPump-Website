@@ -79,6 +79,9 @@ test('mobile header and menu keep the crystal glass treatment', async ({ page, i
   expect(header.backgroundColor).not.toContain('0.985')
 
   await page.locator('.menu-button').click()
+  await expect(page.locator('.mobile-nav__top')).toBeVisible()
+  await expect(page.locator('.mobile-nav nav button').first()).toBeVisible()
+  await expect(page.locator('.mobile-nav__footer')).toBeVisible()
   const glassBackground = await page.locator('.mobile-nav__backdrop').evaluate(node => getComputedStyle(node).backgroundColor)
   const panelBackground = await page.locator('.mobile-nav__panel').evaluate(node => getComputedStyle(node).backgroundImage)
   expect(glassBackground).not.toBe('rgb(1, 4, 10)')
@@ -91,7 +94,13 @@ test('mobile navigation stays inside the visual viewport', async ({ page, isMobi
   await page.goto('/')
   await page.locator('.menu-button').click()
   const panel = page.locator('.mobile-nav__panel')
+  const top = page.locator('.mobile-nav__top')
+  const firstItem = page.locator('.mobile-nav nav button').first()
+  const footer = page.locator('.mobile-nav__footer')
   await expect(panel).toBeVisible()
+  await expect(top).toBeVisible()
+  await expect(firstItem).toBeVisible()
+  await expect(footer).toBeVisible()
   const geometry = await panel.evaluate((node) => {
     const r = node.getBoundingClientRect()
     return { left:r.left, top:r.top, right:r.right, bottom:r.bottom, innerWidth:window.innerWidth, innerHeight:window.innerHeight }
@@ -100,6 +109,12 @@ test('mobile navigation stays inside the visual viewport', async ({ page, isMobi
   expect(geometry.top, JSON.stringify(geometry)).toBeGreaterThanOrEqual(-1)
   expect(geometry.right, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.innerWidth + 1)
   expect(geometry.bottom, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.innerHeight + 1)
+  for (const locator of [top, firstItem, footer]) {
+    const box = await locator.boundingBox()
+    expect(box).not.toBeNull()
+    expect(box!.y).toBeGreaterThanOrEqual(-1)
+    expect(box!.y + box!.height).toBeLessThanOrEqual(geometry.innerHeight + 1)
+  }
 })
 
 test('responsive viewport matrix has no horizontal escape', async ({ page, browserName }) => {
