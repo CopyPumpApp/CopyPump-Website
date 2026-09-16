@@ -117,6 +117,39 @@ test('mobile navigation stays inside the visual viewport', async ({ page, isMobi
   }
 })
 
+test('mobile navigation remains viewport-pinned after deep scroll', async ({ page, isMobile }) => {
+  test.skip(!isMobile)
+  await page.goto('/')
+  await page.locator('#journal').scrollIntoViewIfNeeded()
+  const before = await page.evaluate(() => window.scrollY)
+  expect(before).toBeGreaterThan(100)
+  await page.locator('.menu-button').click()
+  const panel = page.locator('.mobile-nav__panel')
+  const firstItem = page.locator('.mobile-nav nav button').first()
+  const footer = page.locator('.mobile-nav__footer')
+  await expect(panel).toBeVisible()
+  const state = await panel.evaluate((node) => {
+    const r = node.getBoundingClientRect()
+    const bodyStyle = getComputedStyle(document.body)
+    return {top:r.top,bottom:r.bottom,height:window.innerHeight,bodyPosition:bodyStyle.position,bodyTop:bodyStyle.top}
+  })
+  expect(state.top, JSON.stringify(state)).toBeGreaterThanOrEqual(-1)
+  expect(state.top, JSON.stringify(state)).toBeLessThanOrEqual(1)
+  expect(state.bottom, JSON.stringify(state)).toBeLessThanOrEqual(state.height + 1)
+  expect(state.bodyPosition).toBe('fixed')
+  const firstBox = await firstItem.boundingBox()
+  const footerBox = await footer.boundingBox()
+  expect(firstBox).not.toBeNull()
+  expect(footerBox).not.toBeNull()
+  expect(firstBox!.y).toBeGreaterThanOrEqual(0)
+  expect(firstBox!.y + firstBox!.height).toBeLessThanOrEqual(state.height + 1)
+  expect(footerBox!.y).toBeGreaterThanOrEqual(0)
+  expect(footerBox!.y + footerBox!.height).toBeLessThanOrEqual(state.height + 1)
+  await page.keyboard.press('Escape')
+  await expect(page.locator('#mobile-navigation')).toHaveCount(0)
+  await expect.poll(async () => Math.abs((await page.evaluate(() => window.scrollY)) - before)).toBeLessThanOrEqual(2)
+})
+
 test('responsive viewport matrix has no horizontal escape', async ({ page, browserName }) => {
   test.skip(browserName !== 'chromium')
   const viewports = [[320,568],[360,800],[375,667],[390,844],[393,852],[412,915],[768,1024],[1024,768],[1280,720],[1440,900],[1920,1080]] as const
