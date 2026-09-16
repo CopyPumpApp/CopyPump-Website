@@ -1,161 +1,40 @@
-import { test, expect, type Locator, type Page } from '@playwright/test'
-
-// Use browser pointer input, not HTMLElement.click() or force:true.
-// Coordinates avoid Playwright scrolling a sticky header before the input.
-async function pressVisible(page:Page, locator:Locator, touch:boolean){
-  await expect(locator).toBeVisible()
-  const box=await locator.boundingBox()
-  expect(box).not.toBeNull()
-  const x=box!.x+box!.width/2,y=box!.y+box!.height/2
-  const hit=await locator.evaluate((node,point)=>{
-    const target=document.elementFromPoint(point.x,point.y)
-    return !!target&&(target===node||node.contains(target))
-  },{x,y})
-  expect(hit,'the control must actually receive the pointer, without forced clicks').toBeTruthy()
-  if(touch)await page.touchscreen.tap(x,y)
-  else await page.mouse.click(x,y)
-}
-
-async function assertOpen(page:Page){
-  await expect(page.locator('#mobile-navigation')).toHaveCount(1)
-  await expect.poll(()=>page.locator('.mobile-nav__panel').evaluate(node=>{
-    let opacity=1
-    for(let parent:Element|null=node;parent;parent=parent.parentElement)opacity*=Number(getComputedStyle(parent).opacity)
-    return opacity
-  })).toBeGreaterThan(.99)
-  await expect(page.locator('.mobile-nav nav button')).toHaveCount(8)
-}
-
-async function assertUnlocked(page:Page){
-  await expect(page.locator('#mobile-navigation')).toHaveCount(0)
-  await expect(page.locator('html')).not.toHaveClass(/nav-open/)
-  await expect.poll(()=>page.evaluate(()=>{
-    const shell=document.querySelector<HTMLElement>('.app-shell')
-    return !shell?.inert&&document.documentElement.style.overflow!=='hidden'&&document.body.style.overflow!=='hidden'
-  })).toBeTruthy()
-}
-
-test('real touch: menu survives 16 deep-scroll open/close cycles',async({page,isMobile},testInfo)=>{
-  test.skip(!isMobile)
-  test.setTimeout(90_000)
-  const errors:string[]=[]
-  page.on('pageerror',error=>errors.push(error.message))
-  await page.goto('/')
-  await page.locator('#community').scrollIntoViewIfNeeded()
-  await page.waitForTimeout(1800)
-  for(let cycle=0;cycle<16;cycle++){
-    const before=await page.evaluate(()=>window.scrollY)
-    expect(before).toBeGreaterThan(100)
-    await pressVisible(page,page.locator('.menu-button'),true)
-    await assertOpen(page)
-    expect(Math.abs(await page.evaluate(()=>window.scrollY)-before)).toBeLessThanOrEqual(2)
-    if(cycle%4===0)await pressVisible(page,page.locator('.mobile-nav__footer .motion-toggle'),true)
-    if(cycle===15)await page.screenshot({path:`test-results/visual-qa/${testInfo.project.name}/feedback-menu-after-16-cycles.png`})
-    await pressVisible(page,page.locator('.mobile-nav__top .icon-button'),true)
-    await assertUnlocked(page)
-    expect(Math.abs(await page.evaluate(()=>window.scrollY)-before)).toBeLessThanOrEqual(2)
-  }
-  expect(errors).toEqual([])
+import {test,expect,type Page} from '@playwright/test'
+async function press(page:Page,selector:string,touch:boolean){const n=page.locator(selector);await expect(n).toBeVisible();const r=await n.boundingBox();expect(r).not.toBeNull();const x=r!.x+r!.width/2,y=r!.y+r!.height/2;expect(await n.evaluate((n,p)=>n.contains(document.elementFromPoint(p.x,p.y)),{x,y})).toBeTruthy();if(touch)await page.touchscreen.tap(x,y);else await page.mouse.click(x,y)}
+async function unlocked(page:Page){await expect(page.locator('#mobile-navigation')).toHaveCount(0);await expect(page.locator('html')).not.toHaveClass(/nav-open/);expect(await page.locator('#root').evaluate(n=>(n as HTMLElement).inert)).toBeFalsy()}
+test('16 deep-scroll menu interactions are stable',async({page,isMobile})=>{
+ test.setTimeout(60_000);await page.goto('/');await page.locator('#community').scrollIntoViewIfNeeded();await page.waitForTimeout(1000)
+ for(let i=0;i<16;i++){
+  const y=await page.evaluate(()=>scrollY);await press(page,'.menu-button',isMobile)
+  await expect(page.locator('.mobile-nav__panel')).toBeVisible();await expect(page.locator('.mobile-nav nav a')).toHaveCount(6)
+  expect(await page.locator('.mobile-nav').evaluate(n=>getComputedStyle(n).opacity)).toBe('1')
+  await press(page,'.icon-button',isMobile);await unlocked(page);expect(Math.abs(await page.evaluate(()=>scrollY)-y)).toBeLessThanOrEqual(2)
+ }
 })
-
-test('real touch: every extended destination is reachable from the menu',async({page,isMobile})=>{
-  test.skip(!isMobile)
-  test.setTimeout(90_000)
-  await page.goto('/')
-  const destinations=[['How it works','product-story'],['Controls & safety','learn-more'],['Decision demo','decision-demo'],['Signal journey','journey'],['Progress','journal'],['Roadmap','roadmap'],['FAQ','questions']]
-  for(const[label,id]of destinations){
-    await pressVisible(page,page.locator('.menu-button'),true)
-    await assertOpen(page)
-    const item=page.locator('.mobile-nav nav button').filter({hasText:label})
-    await item.scrollIntoViewIfNeeded()
-    await pressVisible(page,item,true)
-    await assertUnlocked(page)
-    await expect(page).toHaveURL(/\/project$/)
-    await expect.poll(()=>page.locator(`#${id}`).evaluate(node=>{
-      const rect=node.getBoundingClientRect()
-      return rect.top<innerHeight-50&&rect.bottom>100
-    })).toBeTruthy()
-    // Do not let the next tap intentionally interrupt this destination's scroll.
-    await page.waitForTimeout(900)
-  }
+test('menu supports focus, all destinations and same-page Home',async({page,isMobile})=>{
+ await page.goto('/');await press(page,'.menu-button',isMobile);await expect(page.locator('.icon-button')).toBeFocused()
+ for(let i=0;i<22;i++){await page.keyboard.press('Tab');expect(await page.locator('.mobile-nav').evaluate(n=>n.contains(document.activeElement))).toBeTruthy()}
+ await page.keyboard.press('Escape');await unlocked(page);await expect(page.locator('.menu-button')).toBeFocused()
+ for(const path of ['/project','/progress','/security','/contact','/']){
+  await press(page,'.menu-button',isMobile);await page.locator(`.mobile-nav nav a[href="${path}"]`).click();await unlocked(page);await expect(page).toHaveURL(new RegExp(`${path.replace('/','\\/')}$`))
+ }
+ await page.locator('#community').scrollIntoViewIfNeeded();await press(page,'.menu-button',isMobile);await page.locator('.mobile-nav .brand').click();await unlocked(page);await expect.poll(()=>page.evaluate(()=>scrollY)).toBeLessThanOrEqual(2)
 })
-
-test('menu Home and logo close the sheet even on the same page',async({page,isMobile})=>{
-  test.skip(!isMobile)
-  await page.goto('/')
-  for(const selector of ['.mobile-nav nav button:first-child','.mobile-nav__top .brand']){
-    await page.locator('#community').scrollIntoViewIfNeeded()
-    await pressVisible(page,page.locator('.menu-button'),true)
-    await assertOpen(page)
-    await pressVisible(page,page.locator(selector),true)
-    await assertUnlocked(page)
-    await expect.poll(()=>page.evaluate(()=>window.scrollY)).toBeLessThanOrEqual(2)
-  }
+test('RU short viewport, menu resize and explicit Motion off never hide content',async({page,isMobile})=>{
+ await page.setViewportSize({width:320,height:568});await page.goto('/ru');await press(page,'.menu-button',isMobile)
+ await page.locator('.mobile-nav__footer .motion-toggle').click();await page.locator('.icon-button').click();await unlocked(page)
+ await expect.poll(()=>page.locator('[data-reveal]').evaluateAll(ns=>ns.every(n=>getComputedStyle(n).opacity==='1'))).toBeTruthy()
+ await press(page,'.menu-button',isMobile);await page.setViewportSize({width:1200,height:720});await expect(page.locator('.mobile-nav')).toBeVisible();await page.keyboard.press('Escape');await unlocked(page)
 })
-
-test('modal focus stays in the sheet and returns after Escape',async({page,isMobile})=>{
-  await page.setViewportSize({width:820,height:950})
-  await page.goto('/')
-  await pressVisible(page,page.locator('.menu-button'),isMobile)
-  await assertOpen(page)
-  await expect(page.locator('.mobile-nav__top .icon-button')).toBeFocused()
-  for(let step=0;step<22;step++){
-    await page.keyboard.press(step<16?'Tab':'Shift+Tab')
-    expect(await page.evaluate(()=>!!document.getElementById('mobile-navigation')?.contains(document.activeElement))).toBeTruthy()
-  }
-  await page.keyboard.press('Escape')
-  await assertUnlocked(page)
-  await expect(page.locator('.menu-button')).toBeFocused()
+test('reduced motion stops ambience while keeping the demonstration functional',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.locator('#experience').scrollIntoViewIfNeeded();await page.locator('#chapter-2').click()
+ expect(await page.locator('.experience-art picture').evaluate(n=>getComputedStyle(n).animationName)).toBe('none')
+ await page.locator('#capital-limit').press('End');await expect(page.locator('.policy-result')).toContainText('Within this limit')
 })
-
-test('tablet trigger has no container and resizing cannot leave a hidden modal lock',async({page,isMobile})=>{
-  for(const width of [375,820,1000]){
-    await page.setViewportSize({width,height:900})
-    await page.goto('/')
-    const trigger=page.locator('.menu-button')
-    const styles=await trigger.evaluate(node=>{
-      const s=getComputedStyle(node)
-      return {border:[s.borderTopWidth,s.borderRightWidth,s.borderBottomWidth,s.borderLeftWidth],background:s.backgroundColor,shadow:s.boxShadow,width:node.getBoundingClientRect().width,height:node.getBoundingClientRect().height}
-    })
-    expect(styles.border).toEqual(['0px','0px','0px','0px'])
-    expect(styles.background).toBe('rgba(0, 0, 0, 0)')
-    expect(styles.shadow).toBe('none')
-    expect(styles.width).toBeGreaterThanOrEqual(44)
-    expect(styles.height).toBeGreaterThanOrEqual(44)
-    await pressVisible(page,trigger,isMobile)
-    await assertOpen(page)
-    await page.setViewportSize({width:1280,height:900})
-    await assertUnlocked(page)
-  }
-})
-
-test('Russian menu works on a short 320px viewport with reduced motion',async({page,isMobile},testInfo)=>{
-  await page.setViewportSize({width:320,height:568})
-  await page.emulateMedia({reducedMotion:'reduce'})
-  await page.goto('/ru')
-  await pressVisible(page,page.locator('.menu-button'),isMobile)
-  await assertOpen(page)
-  const faq=page.locator('.mobile-nav nav button').filter({hasText:'Вопросы'})
-  await faq.scrollIntoViewIfNeeded()
-  await page.screenshot({path:`test-results/visual-qa/${testInfo.project.name}/feedback-menu-ru-320.png`})
-  await pressVisible(page,faq,isMobile)
-  await assertUnlocked(page)
-  await expect(page).toHaveURL(/\/ru\/project$/)
-  await expect.poll(()=>page.locator('#questions').evaluate(node=>node.getBoundingClientRect().top<innerHeight)).toBeTruthy()
-})
-
-test('actual decorative borders and pseudo dividers stay removed',async({page})=>{
-  await page.goto('/project')
-  for(const selector of ['.product-story','.story-flow article','.story-list>div','.workflow-node','.example-amount','.decision-trace>div','.rail-item-outcome','.site-footer']){
-    const borders=await page.locator(selector).evaluateAll(nodes=>nodes.map(node=>{
-      const s=getComputedStyle(node)
-      return [s.borderTopWidth,s.borderRightWidth,s.borderBottomWidth,s.borderLeftWidth]
-    }))
-    expect(borders.length,selector).toBeGreaterThan(0)
-    for(const border of borders)expect(border,selector).toEqual(['0px','0px','0px','0px'])
-  }
-  for(const selector of ['.product-story','.project-details','.project-faq','.decision-outcome']){
-    const display=await page.locator(selector).first().evaluate(node=>getComputedStyle(node,'::before').display)
-    expect(display,`${selector}::before`).toBe('none')
-  }
+test('animation lifecycle stays bounded after scrolling and menu use',async({page,isMobile},info)=>{
+ await page.goto('/');await page.locator('#experience').scrollIntoViewIfNeeded();await page.waitForTimeout(1300)
+ const active=await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length);expect(active).toBeLessThanOrEqual(2)
+ await page.locator('#community').scrollIntoViewIfNeeded();await page.waitForTimeout(1300)
+ const idle=await page.evaluate(()=>({running:document.getAnimations().filter(a=>a.playState==='running').length,willChange:[...document.querySelectorAll('*')].filter(n=>getComputedStyle(n).willChange!=='auto').length}))
+ expect(idle.running).toBe(0);expect(idle.willChange).toBe(0)
+ await info.attach('animation-budget',{body:JSON.stringify({active,idle}),contentType:'application/json'})
 })

@@ -1,33 +1,16 @@
-import fs from 'node:fs'
-
-const read = p => fs.readFileSync(p, 'utf8')
-const header = read('src/components/Header.tsx')
-const experience = read('src/components/Experience.tsx')
-const autoRail = read('src/components/AutoRail.tsx')
-const details = read('src/components/ProjectDetails.tsx')
-const indexCss = read('src/styles/index.css')
-const uiCleanup = read('src/styles/ui-cleanup.css')
-const responsiveNav = read('src/styles/responsive-navigation.css')
-const css = read('src/styles/app.css') + responsiveNav + read('src/styles/project-page.css')
-const failures = []
-const must = (ok, msg) => { if (!ok) failures.push(msg) }
-
-must(!header.includes('<dialog'), 'mobile navigation must not use native dialog')
-must(header.includes('mobile-nav__backdrop') && header.includes('mobile-nav__panel'), 'mobile navigation overlay layers missing')
-must(header.includes("id:'decision-demo'") && header.includes("id:'journal'") && header.includes("id:'roadmap'"), 'expanded project destinations must be exposed from the menu')
-must(!experience.includes("querySelector('.mobile-nav"), 'global Motion must not depend on mobile nav DOM presence')
-must(!autoRail.includes('useMotion') && !autoRail.includes('motion.running') && !autoRail.includes('motion.modal'), 'auto rail runtime must not rebuild from global motion context state')
-must(autoRail.includes('MutationObserver(sync)'), 'auto rail must observe global motion state without rebuilding its runtime')
-must(uiCleanup.includes('.cinematic-v47 .rail-viewport{overflow-x:hidden;touch-action:pan-y pinch-zoom}'), 'horizontal rails must not combine native horizontal scrolling with custom drag motion')
-must(uiCleanup.includes('.cinematic-v47 .story-flow') && uiCleanup.includes('border:0!important'), 'decorative stripe dividers must remain removed')
-must(responsiveNav.includes('.site-header .menu-button{display:block') && responsiveNav.includes('border:0!important') && responsiveNav.includes('background:transparent!important') && responsiveNav.includes('box-shadow:none!important'), 'mobile menu trigger must remain containerless')
-must(!details.includes('project-detail__index'), 'decorative Project disclosure numbering must stay removed')
-must(indexCss.includes("@import './responsive-navigation.css';"), 'canonical responsive navigation stylesheet must stay imported')
-must(!indexCss.includes('mobile-nav-hotfix.css'), 'obsolete mobile navigation hotfix must stay removed')
-must(css.includes('prefers-reduced-motion'), 'reduced-motion fallback missing')
-
-if (failures.length) {
-  console.error(failures.map(x => 'FAIL: ' + x).join('\n'))
-  process.exit(1)
-}
-console.log('UI regression audit passed')
+import {readFileSync,statSync} from 'node:fs'
+const read=p=>readFileSync(p,'utf8')
+const site=read('src/premium/Site.tsx'),css=read('src/premium/premium.css'),motion=read('src/components/Experience.tsx')
+const failures=[]
+const must=(v,msg)=>{if(!v)failures.push(msg)}
+must(site.includes('createPortal')&&site.includes('document.body'),'Navigation must escape page stacking contexts.')
+must(site.includes('app.inert=true')&&site.includes("e.key!=='Tab'"),'Modal focus and background interaction containment required.')
+must(css.includes('prefers-reduced-motion'),'Reduced-motion support required.')
+must(!css.includes('!important'),'The v48 stylesheet must not become a second override stack.')
+must(!css.includes('backdrop-filter')&&!css.includes('filter:'),'No live full-scene blur/filter repaint cost.')
+must(!motion.includes('pointermove')&&!motion.includes('scrollY'),'No pointer/scroll-driven scene transform loop.')
+must(!css.includes('animation-play-state:paused'),'Never freeze the menu on a hidden entrance frame.')
+must(statSync('src/premium/premium.css').size<40000,'Presentation CSS must stay within the 40KB source budget.')
+must(site.includes('aria-selected')&&site.includes('policy-result'),'Interactive chapters and policy illustration must remain functional.')
+if(failures.length){console.error(failures.join('\n'));process.exit(1)}
+console.log('Stable motion, modal behavior and UI budget audit passed.')

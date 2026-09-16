@@ -1,1 +1,1 @@
-CopyPump v47.4.0
+CopyPump v48.0 premium redesign preview
