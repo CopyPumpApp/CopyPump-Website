@@ -1,6 +1,8 @@
 import { readFile } from 'node:fs/promises'
 
 const landing = await readFile(new URL('../src/pages/LandingPage.tsx', import.meta.url), 'utf8')
+const project = await readFile(new URL('../src/pages/ProjectPage.tsx', import.meta.url), 'utf8')
+const header = await readFile(new URL('../src/components/Header.tsx', import.meta.url), 'utf8')
 const rails = await readFile(new URL('../src/components/ProjectRails.tsx', import.meta.url), 'utf8')
 const hero = await readFile(new URL('../src/components/HeroScene.tsx', import.meta.url), 'utf8')
 const en = await readFile(new URL('../src/i18n/en.json', import.meta.url), 'utf8')
@@ -14,11 +16,22 @@ const forbidText = (source, text, message) => { if (source.includes(text)) failu
 
 requireText(landing, 'https://discord.gg/WS95eXrGB', 'Landing page must use the current official Discord invite.')
 requireText(landing, "navigateLocal('/project')", 'Landing page must link to the dedicated Project page.')
-requireText(landing, 'decision-demo', 'Landing page must retain the interactive decision demo.')
-requireText(landing, '<ProductStory/>', 'Recovered Product Story section must stay on Home.')
-requireText(landing, 'ProjectRail variant="journey"', 'Recovered signal journey rail must stay on Home.')
-requireText(landing, 'id="journal"', 'Recovered public Progress journal must stay on Home.')
-requireText(landing, 'ProjectRail variant="roadmap"', 'Public roadmap rail must stay on Home.')
+requireText(landing, 'home-summary', 'Landing page must retain the concise project summary.')
+forbidText(landing, '<ProductStory/>', 'Extended Product Story must not render on Home.')
+forbidText(landing, '<DecisionExample/>', 'Extended decision demo must not render on Home.')
+forbidText(landing, 'ProjectRail variant="journey"', 'Extended signal journey must not render on Home.')
+forbidText(landing, 'ProjectRail variant="roadmap"', 'Extended roadmap must not render on Home.')
+forbidText(landing, '<ProjectProgress/>', 'Extended progress section must not render on Home.')
+
+requireText(project, '<ProductStory/>', 'Project page must host the expanded Product Story.')
+requireText(project, '<ProjectDetails/>', 'Project page must host expanded control details.')
+requireText(project, '<DecisionExample/>', 'Project page must host the interactive decision demo.')
+requireText(project, 'ProjectRail variant="journey"', 'Project page must host the signal journey.')
+requireText(project, '<ProjectProgress/>', 'Project page must host public progress.')
+requireText(project, 'ProjectRail variant="roadmap"', 'Project page must host the roadmap.')
+requireText(project, 'id="questions"', 'Project page must host FAQ details.')
+
+for (const anchor of ['product-story','learn-more','decision-demo','journey','journal','roadmap','questions']) requireText(header, anchor, `Menu must expose ${anchor}.`)
 
 requireText(hero, 'detect-cutout-final-v47', 'Canonical uploaded Detect cutout must remain active.')
 requireText(hero, 'qualify-cutout-final-v47', 'Canonical uploaded Qualify cutout must remain active.')
@@ -28,21 +41,18 @@ forbidText(hero, 'requestIdleCallback', 'Hero must not eagerly prefetch the full
 
 requireText(uiCleanup, 'copypump-cinematic-environment-v46.webp', 'Desktop must use the responsive cinematic environment baseline.')
 requireText(uiCleanup, 'copypump-cinematic-environment-v46-mobile.webp', 'Mobile must use its responsive cinematic environment baseline.')
+requireText(uiCleanup, 'No decorative stripe dividers', 'Stripe-divider removal must remain explicit in the presentation layer.')
 forbidText(uiCleanup, 'copypump-global-market-background.png', 'Legacy 3MB market background must not return to the active presentation layer.')
 
 requireText(indexCss, "@import './responsive-navigation.css';", 'Canonical responsive navigation stylesheet must remain imported.')
 forbidText(indexCss, 'mobile-nav-hotfix.css', 'Obsolete mobile navigation hotfix must not return to the CSS import graph.')
 forbidText(indexCss, 'premium-navigation.css', 'Superseded navigation stylesheet must not return to the CSS import graph.')
-requireText(responsiveNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Responsive mobile header must retain the lightweight crystal blur.')
-requireText(responsiveNav, 'backdrop-filter:blur(5px) saturate(108%)', 'Responsive mobile menu must retain the lightweight glass blur.')
+requireText(responsiveNav, 'border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important', 'Mobile menu trigger must remain visually containerless.')
 requireText(responsiveNav, '.menu-button.is-open span:first-child', 'Mobile menu trigger must keep the animated menu-to-X morph.')
 requireText(responsiveNav, '.icon-button.is-open span:first-child', 'Mobile close control must keep the animated X state.')
 
-forbidText(landing, 'Change the capital limit, signal age or emergency stop.', 'Decision demo must not render redundant operating instructions.')
-forbidText(landing, 'Измените лимит капитала', 'Decision demo must not render redundant operating instructions.')
 forbidText(landing, 'DNBQtqw6R', 'Stale Discord invite is still rendered.')
 forbidText(landing, 'useSystem', 'Developer-facing website API status hook is still wired into the landing page.')
-forbidText(landing, 'c.journal.updateTitle', 'Non-CopyPump ecosystem update is still rendered in public progress.')
 forbidText(landing, 'PROJECT_STATUS.md', 'Developer source controls should not be rendered in the marketing flow.')
 forbidText(landing, 'SECURITY_MODEL.md', 'Developer source controls should not be rendered in the marketing flow.')
 forbidText(rails, 'github.com/CopyPumpApp/CopyPump/blob/main/docs/', 'Roadmap rail must not expose developer documentation controls in the marketing flow.')
