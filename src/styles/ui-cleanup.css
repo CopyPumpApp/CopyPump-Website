@@ -1,37 +1,27 @@
 /* Consolidated presentation layer: responsive cinematic canvas and calmer visual hierarchy. */
 .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46.webp');background-position:center top;opacity:.72;filter:none;transform:none}
-.mobile-nav nav button{grid-template-columns:32px minmax(0,1fr);padding-right:0}.mobile-nav nav button>small{width:32px;white-space:nowrap}.mobile-nav nav button>span:last-child{display:none}
 .rail-help{display:none!important}
 /* Horizontal rails own the horizontal gesture. Native vertical page scroll remains available on touch. */
 .cinematic-v47 .rail-viewport{overflow-x:hidden;touch-action:pan-y pinch-zoom}
 .community-bottom nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:14px 28px}.community-bottom nav>a{display:grid!important;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:14px;min-height:62px;margin:0!important;padding:10px 0!important}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:34px!important;height:34px!important;display:flex;align-items:center;justify-content:center;margin:0!important;justify-self:start}.community-bottom nav>a>.mail-icon{font-size:30px;line-height:1;color:var(--muted)}.community-bottom nav>a>span:last-child:not(.mail-icon){display:none!important}
 .status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
 
-/* V4 hierarchy reconstruction: dividers support structure instead of becoming the structure. */
-.cinematic-v47 .problem-comparison,.cinematic-v47 .authority-columns,.cinematic-v47 .journal-entries{border-top-color:rgba(158,176,233,.1)!important}
-.cinematic-v47 .problem-row{border-top-color:rgba(158,176,233,.065)!important}
-.cinematic-v47 .problem-row:first-of-type{border-top-color:transparent!important}
-.cinematic-v47 .authority-columns>article{border-left-color:rgba(158,176,233,.075)!important}
-.cinematic-v47 .authority-columns>article:first-child{border-left-color:transparent!important}
-.cinematic-v47 .workflow-caption{border-top-color:rgba(158,176,233,.075)!important}
-.cinematic-v47 .scene-caption{border-top-color:rgba(158,176,233,.08)!important}
-.cinematic-v47 .scene-steps i{background:rgba(158,176,233,.1)!important}
-.cinematic-v47 .text-detail{border-top-color:rgba(158,176,233,.085)!important}
-.cinematic-v47 .text-detail:last-child{border-bottom-color:rgba(158,176,233,.085)!important}
-.cinematic-v47 .project-rail-card,.cinematic-v47 .journal-entry{border-color:rgba(158,176,233,.085)!important}
-.cinematic-v47 .problem-row,.cinematic-v47 .authority-columns>article,.cinematic-v47 .journal-entry{transition:border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease)}
+/* No decorative stripe dividers. Spacing, typography and depth carry the hierarchy. */
+.cinematic-v47 .problem-comparison,.cinematic-v47 .problem-row,.cinematic-v47 .problem-bottom,.cinematic-v47 .story-flow,.cinematic-v47 .story-flow article,.cinematic-v47 .story-list,.cinematic-v47 .story-list>div,.cinematic-v47 .story-note,.cinematic-v47 .decision-section,.cinematic-v47 .decision-desk,.cinematic-v47 .workflow-caption,.cinematic-v47 .scene-caption,.cinematic-v47 .authority-columns,.cinematic-v47 .authority-columns>article,.cinematic-v47 .authority-bottom,.cinematic-v47 .text-detail,.cinematic-v47 .journal-section,.cinematic-v47 .journal-entries article,.cinematic-v47 .community-bottom,.cinematic-v47 .project-availability{border:0!important}
+.cinematic-v47 .project-page .product-story:before,.cinematic-v47 .project-page .project-details:before,.cinematic-v47 .project-page .project-faq:before{display:none!important}
+.cinematic-v47 .problem-row,.cinematic-v47 .authority-columns>article,.cinematic-v47 .journal-entry{transition:background .3s var(--ease),transform .3s var(--ease)}
 .cinematic-v47 .problem-row:hover,.cinematic-v47 .authority-columns>article:hover{background:linear-gradient(90deg,rgba(118,217,255,.018),transparent 72%)}
+
+/* Focused landing page: only the essential product story remains on Home. */
+.home-summary{padding-block:clamp(48px,6vw,82px)}
+.home-summary__points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(26px,4vw,60px);margin-top:36px}
+.home-summary__points article{min-width:0;padding:0;background:transparent}
+.home-summary__points .problem-index{display:block;margin-bottom:13px}.home-summary__points h3{font-size:clamp(21px,2vw,28px);line-height:1.15;margin-bottom:10px}.home-summary__points p{font-size:14px;line-height:1.75;max-width:380px}
+.home-summary__action{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-top:34px}.home-summary__action .fine-print{max-width:720px}.home-summary__action .text-link{flex:0 0 auto}
+.home-community{padding-top:clamp(34px,4vw,58px)}
 
 @media(max-width:760px){
   .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46-mobile.webp');background-position:50% 0;opacity:.68;filter:none;transform:none}
-  .community-bottom nav{grid-template-columns:1fr}.community-bottom nav>a{grid-template-columns:38px minmax(0,1fr)}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:30px!important;height:30px!important}.mobile-nav nav button{gap:20px}
-  .cinematic-v47 .problem-comparison,.cinematic-v47 .authority-columns,.cinematic-v47 .journal-entries{border-top-color:transparent!important}
-  .cinematic-v47 .problem-row{border-top-color:transparent!important;border-bottom-color:rgba(158,176,233,.055)!important}
-  .cinematic-v47 .problem-row:last-child{border-bottom-color:transparent!important}
-  .cinematic-v47 .authority-columns>article{border-left-color:transparent!important;border-top-color:rgba(158,176,233,.055)!important}
-  .cinematic-v47 .authority-columns>article:first-child{border-top-color:transparent!important}
-  .cinematic-v47 .scene-caption,.cinematic-v47 .workflow-caption{border-top-color:rgba(158,176,233,.055)!important}
-  .cinematic-v47 .scene-steps i{background:rgba(158,176,233,.075)!important}
-  .cinematic-v47 .text-detail{border-top-color:rgba(158,176,233,.065)!important}
-  .cinematic-v47 .text-detail:last-child{border-bottom-color:rgba(158,176,233,.065)!important}
+  .community-bottom nav{grid-template-columns:1fr}.community-bottom nav>a{grid-template-columns:38px minmax(0,1fr)}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:30px!important;height:30px!important}
+  .home-summary{padding-block:42px}.home-summary__points{grid-template-columns:1fr;gap:28px;margin-top:28px}.home-summary__points article{max-width:560px}.home-summary__action{align-items:flex-start;flex-direction:column;gap:12px;margin-top:28px}.home-community{padding-top:26px}
 }
