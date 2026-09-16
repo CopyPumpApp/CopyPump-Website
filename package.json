@@ -11,13 +11,16 @@
     "preview": "vite preview",
     "start": "vite preview --host 0.0.0.0 --port ${PORT:-8787}",
     "check:clean": "node scripts/clean-public-audit.mjs",
-    "check": "npm run typecheck && npm run check:clean && npm run build"
+    "check:ui": "node scripts/ui-regression-audit.mjs",
+    "test:e2e": "playwright test",
+    "check": "npm run typecheck && npm run check:clean && npm run check:ui && npm run build"
   },
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
