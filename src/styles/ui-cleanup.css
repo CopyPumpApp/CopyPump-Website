@@ -2,6 +2,8 @@
 .cinematic-v47 .site-scroll-background:before{background-image:url('/backgrounds/copypump-cinematic-environment-v46.webp');background-position:center top;opacity:.72;filter:none;transform:none}
 .mobile-nav nav button{grid-template-columns:32px minmax(0,1fr);padding-right:0}.mobile-nav nav button>small{width:32px;white-space:nowrap}.mobile-nav nav button>span:last-child{display:none}
 .rail-help{display:none!important}
+/* Horizontal rails own the horizontal gesture. Native vertical page scroll remains available on touch. */
+.cinematic-v47 .rail-viewport{overflow-x:hidden;touch-action:pan-y pinch-zoom}
 .community-bottom nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:14px 28px}.community-bottom nav>a{display:grid!important;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:14px;min-height:62px;margin:0!important;padding:10px 0!important}.community-bottom nav>a>.service-logo,.community-bottom nav>a>.mail-icon{width:34px!important;height:34px!important;display:flex;align-items:center;justify-content:center;margin:0!important;justify-self:start}.community-bottom nav>a>.mail-icon{font-size:30px;line-height:1;color:var(--muted)}.community-bottom nav>a>span:last-child:not(.mail-icon){display:none!important}
 .status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
 
