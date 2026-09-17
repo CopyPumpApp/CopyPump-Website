@@ -1,0 +1,96 @@
+name: V52 actual preview verification
+on:
+  push:
+    branches: [feat/v52-publication-ready]
+    paths: [.github/workflows/v52-preview-smoke.yml]
+permissions:
+  contents: read
+  checks: read
+jobs:
+  public-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false && npx playwright install --with-deps chromium webkit
+      - name: Find this exact commit's successful Cloudflare preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p evidence
+          python - <<'PY'
+          import os,json,re,time,urllib.request
+          url=f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/commits/{os.environ['GITHUB_SHA']}/check-runs"
+          for attempt in range(36):
+              req=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+              with urllib.request.urlopen(req,timeout=20) as r: runs=json.load(r)['check_runs']
+              cf=next((r for r in runs if r['name']=='Workers Builds: copypump-website'),None)
+              if cf and cf['status']=='completed':
+                  assert cf['conclusion']=='success',cf['conclusion']
+                  version=re.search(r'Version ID:\s*([0-9a-f-]{36})',cf['output']['summary']).group(1)
+                  origin=f'https://{version[:8]}-copypump-website.copypumphq.workers.dev'
+                  open('evidence/deployment.json','w').write(json.dumps({'head':os.environ['GITHUB_SHA'],'version':version,'origin':origin},indent=2))
+                  with open(os.environ['GITHUB_ENV'],'a') as f:f.write('V52_ORIGIN='+origin+'\n')
+                  break
+              time.sleep(10)
+          else:raise RuntimeError('No successful exact-head preview within the bounded wait')
+          PY
+      - name: Verify actual HTTP, page hydration and both Discord invite destinations
+        run: |
+          cat > verify-preview.mjs <<'JS'
+          import {chromium,webkit,devices} from 'playwright'
+          import {writeFileSync} from 'node:fs'
+          import assert from 'node:assert/strict'
+          const origin=process.env.V52_ORIGIN
+          const manifestResponse=await fetch(origin+'/publication-manifest.json');assert.equal(manifestResponse.status,200)
+          const manifest=await manifestResponse.json();assert.equal(manifest.preview,true)
+          const reports=[]
+          for(const route of manifest.routes.filter(x=>x.indexable)){
+            const response=await fetch(origin+route.route),body=await response.text()
+            assert.equal(response.status,200,route.route)
+            assert.ok(body.includes('data-prerendered="true"'),route.route)
+            assert.ok(body.includes('content="noindex,follow"'),route.route)
+            assert.ok(body.includes('rel="canonical" href="'+route.canonical+'"'),route.route)
+            assert.ok(response.headers.get('x-robots-tag')?.includes('noindex'),route.route)
+            assert.equal(response.headers.get('x-content-type-options'),'nosniff')
+            assert.ok(response.headers.get('content-security-policy')?.includes("frame-ancestors 'none'"))
+            reports.push({path:route.route,status:response.status,robots:response.headers.get('x-robots-tag')})
+          }
+          for(const path of ['/definitely-not-a-page','/radar/unknown-material','/ru/unknown-page','/ru/radar/unknown-material']){
+            const r=await fetch(origin+path);assert.equal(r.status,404,path);reports.push({path,status:r.status})
+          }
+          writeFileSync('evidence/http.json',JSON.stringify(reports,null,2))
+          const browserReports=[]
+          for(const [name,type,options] of [['desktop',chromium,{viewport:{width:1920,height:854}}],['iphone',webkit,devices['iPhone 14']]]){
+            const browser=await type.launch();const context=await browser.newContext(options);const page=await context.newPage();const errors=[]
+            page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())})
+            await page.goto(origin+'/ru');await page.waitForTimeout(1600)
+            assert.equal(await page.locator('.responsibility-columns').count(),1);assert.equal(await page.locator('.radar-other-notes article').count(),2)
+            assert.ok((await page.locator('.hero-intro').textContent()).includes('сам обнаруживает'))
+            await page.screenshot({path:`evidence/${name}-home.png`})
+            for(const id of ['experience','your-control','status','radar-preview']){await page.locator('#'+id).scrollIntoViewIfNeeded();await page.waitForTimeout(1600);await page.screenshot({path:`evidence/${name}-${id}.png`})}
+            await page.locator('.menu-button').click();await page.waitForTimeout(1400);await page.locator('.mobile-nav nav a[href="/ru/project"]').click();await page.waitForTimeout(1900)
+            assert.equal(await page.locator('.architecture-parts article').count(),4)
+            await page.screenshot({path:`evidence/${name}-product.png`})
+            await page.goto(origin+'/ru/contact');await page.waitForTimeout(1400)
+            for(const href of ['https://x.com/CopyPumpAI','https://discord.gg/WS95eXrGB','https://github.com/CopyPumpApp/CopyPump','mailto:copypumphq@gmail.com'])assert.equal(await page.locator(`a[href="${href}"]`).count(),1)
+            await page.goto(origin+'/ru/radar');await page.locator('.radar-row .radar-save').first().click();await page.reload();await page.waitForTimeout(400);assert.equal(await page.locator('.radar-row .radar-save').first().getAttribute('aria-pressed'),'true')
+            await page.locator('.radar-row h2 a').first().click();await page.locator('.radar-narrative').waitFor();await page.screenshot({path:`evidence/${name}-radar-article.png`})
+            browserReports.push({name,errors});await browser.close();assert.deepEqual(errors,[],name)
+          }
+          writeFileSync('evidence/browser.json',JSON.stringify(browserReports,null,2))
+          const invites=[]
+          for(const code of ['WS95eXrGB','DNBQtqw6R']){try{const r=await fetch(`https://discord.com/api/v10/invites/${code}?with_counts=false`,{signal:AbortSignal.timeout(10000)});const j=await r.json();invites.push({code,status:r.status,guildId:j.guild?.id||null,guildName:j.guild?.name||null})}catch(e){invites.push({code,error:String(e.message)})}}
+          writeFileSync('evidence/invites.json',JSON.stringify(invites,null,2))
+          JS
+          node verify-preview.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: v52-public-preview-verification
+          path: evidence
+          retention-days: 7
