@@ -1,0 +1,61 @@
+name: Verify settled v52 preview reading
+on:
+  push:
+    branches: [ops/verify-v52-render]
+    paths: [.github/workflows/verify-v52-render.yml]
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false && npx playwright install --with-deps chromium webkit
+      - name: Check actual settled text and captures on the fixed accepted-candidate preview
+        run: |
+          mkdir -p evidence
+          cat > verify-render.mjs <<'JS'
+          import {chromium,webkit,devices} from 'playwright'
+          import {expect} from '@playwright/test'
+          import {writeFileSync} from 'node:fs'
+          const origin='https://d2f35507-copypump-website.copypumphq.workers.dev',reports=[]
+          async function readable(locator){
+            await expect(locator).toBeVisible()
+            await expect.poll(()=>locator.evaluate(n=>{let opacity=1;for(let p=n;p;p=p.parentElement)opacity*=Number(getComputedStyle(p).opacity);return opacity}),{timeout:7000}).toBeGreaterThan(.999)
+          }
+          for(const [name,type,options] of [['desktop',chromium,{viewport:{width:1920,height:854}}],['iphone',webkit,devices['iPhone 14']]]){
+            const b=await type.launch(),c=await b.newContext(options),page=await c.newPage(),errors=[]
+            page.on('pageerror',e=>errors.push(e.message))
+            page.on('console',m=>{if(m.type()==='error')errors.push(m.text())})
+            let failure=null
+            try{
+              await page.goto(origin+'/ru/radar');await readable(page.locator('.radar-row h2').first())
+              await page.waitForTimeout(1600);await page.screenshot({path:`evidence/${name}-radar-settled.png`})
+              const start=Date.now();await page.locator('.radar-row h2 a').first().click()
+              await readable(page.locator('.radar-narrative'))
+              await expect.poll(()=>page.locator('h1 .heading-motion').evaluateAll(ns=>ns.length>0&&ns.every(n=>Number(getComputedStyle(n).opacity)>.999)),{timeout:7000}).toBe(true)
+              await page.waitForTimeout(300);await page.screenshot({path:`evidence/${name}-article-settled.png`})
+              const settledMs=Date.now()-start
+              await page.waitForTimeout(1800);await readable(page.locator('.radar-narrative'))
+              await page.locator('#editorial-history').scrollIntoViewIfNeeded();await page.screenshot({path:`evidence/${name}-history-settled.png`})
+              await page.goto(origin+'/ru/project');await readable(page.locator('.architecture-parts'))
+              await page.waitForTimeout(1600);await page.screenshot({path:`evidence/${name}-product-full.png`,fullPage:true})
+              reports.push({name,candidate:'14aaf3c53ccf440accb82073a71ded7aa467f906',origin,settledMs,errors})
+              if(errors.length)throw new Error('Page/console errors')
+            }catch(e){failure=String(e.stack||e);reports.push({name,failure,errors});await page.screenshot({path:`evidence/${name}-failure.png`}).catch(()=>{})}
+            finally{writeFileSync('evidence/render.json',JSON.stringify(reports,null,2));await b.close()}
+            if(failure)throw new Error(failure)
+          }
+          JS
+          node verify-render.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: v52-settled-render-verification
+          path: evidence
+          retention-days: 7
