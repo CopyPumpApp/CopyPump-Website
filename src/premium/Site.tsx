@@ -14,6 +14,7 @@ import {radarCopy} from '../radar/copy'
 import {ChapterArtwork} from './ChapterArtwork'
 import {BrandIcon,BrandText,brandForUrl} from './BrandIcon'
 import {previewScene} from './sceneThemes'
+import {usePageEntrance} from './usePageEntrance'
 
 const useCopy = () => { const { locale } = useI18n(); return premiumCopy[locale] }
 function Arrow({ diagonal = false }: { diagonal?: boolean }) { return <svg className="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={diagonal?'M6 18 18 6M6 6h12v12':'M4 12h15m-6-6 6 6-6 6'} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg> }
@@ -54,14 +55,8 @@ export function PremiumHeader({simple=false}:{simple?:boolean}) {
 }
 /** Header and scene retain their DOM identity across all routes, including legal pages. */
 export function PremiumShell({children,routeKey}:{children:ReactNode;routeKey:string}) {
-  const outlet=useRef<HTMLDivElement>(null),previous=useRef(routeKey)
-  const motion=useMotion()
-  useLayoutEffect(()=>{
-    const changed=previous.current!==routeKey;previous.current=routeKey
-    if(!changed||motion.paused||motion.reduced||!outlet.current?.animate)return
-    const animation=outlet.current.animate([{opacity:.2,transform:'translate3d(0,18px,0)'},{opacity:1,transform:'none'}],{duration:760,delay:document.documentElement.classList.contains('nav-open')?260:0,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'})
-    return()=>animation.cancel()
-  },[routeKey])
+  const outlet=useRef<HTMLDivElement>(null)
+  usePageEntrance(routeKey,outlet)
   return <><SceneBackdrop routeKey={routeKey}/><div className="site-frame"><PremiumHeader/><div ref={outlet} className="page-outlet">{children}</div><PremiumFooter/></div></>
 }
 export function PremiumFooter(){const c=useCopy();return <footer className="site-footer wrap"><div className="footer-brand"><Mark/><p>{c.footer.line}</p><small>© 2026 CopyPump</small></div><div className="footer-links"><nav aria-label="CopyPump"><External href={CHANNELS.x}>X <Arrow diagonal/></External><External href={CHANNELS.discord}>Discord <Arrow diagonal/></External><External href={CHANNELS.github}>GitHub <Arrow diagonal/></External><External href={CHANNELS.email}>Email <Arrow diagonal/></External></nav><nav aria-label="Legal"><Link to="/privacy">{c.footer.privacy}</Link><Link to="/terms">{c.footer.terms}</Link><Link to="/security">{c.footer.security}</Link><Link to="/contact">{c.footer.contact}</Link></nav><p>{c.footer.disclaimer}</p></div></footer>}

@@ -37,7 +37,10 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
       document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(visible);return
     }
     let disposed=false
+    const waitingForMenu=new Set<HTMLElement>()
     const enter=(node:HTMLElement)=>{
+      if(!node.isConnected)return
+      if(document.documentElement.classList.contains('nav-open')){waitingForMenu.add(node);return}
       if(node.dataset.revealed==='true'||!allowed.current||typeof node.animate!=='function'){visible(node);return}
       node.dataset.revealed='true';node.style.opacity='1';node.style.willChange='opacity, transform';const section=node.closest<HTMLElement>('section,.document-hero');if(section)section.dataset.entered='true'
       const kind=node.dataset.reveal
@@ -45,7 +48,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
         kind==='depth'?{opacity:0,transform:'translate3d(0,38px,0) scale(.92)'}:
           {opacity:0,transform:'translate3d(0,16px,0)'}
       const duration=kind==='heading'?1120:kind==='depth'?1250:kind==='label'?650:kind==='record'?960:880
-      const delay=Math.min(360,Math.max(0,Number(node.dataset.delay)||0))+(document.documentElement.classList.contains('nav-open')?260:0)
+      const delay=Math.min(360,Math.max(0,Number(node.dataset.delay)||0))
       const animation=node.animate([from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],
         {duration,delay,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'})
       active.current.set(node,animation)
@@ -65,6 +68,8 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
       if(typeof node.animate==='function')node.style.opacity='0'
       io.observe(node)
     })}
+    const afterMenu=()=>{waitingForMenu.forEach(enter);waitingForMenu.clear()}
+    window.addEventListener('copypump:menu-settled',afterMenu)
     discover();window.addEventListener('copypump:content-ready',discover)
     const focus=(event:FocusEvent)=>{
       const target=event.target as Element|null
@@ -72,7 +77,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
       if(node){io.unobserve(node);active.current.get(node)?.cancel();active.current.delete(node);visible(node)}
     }
     document.addEventListener('focusin',focus)
-    return()=>{disposed=true;io.disconnect();window.removeEventListener('copypump:content-ready',discover);document.removeEventListener('focusin',focus);active.current.forEach(a=>a.cancel());active.current.clear();nodes.forEach(visible)}
+    return()=>{disposed=true;waitingForMenu.clear();window.removeEventListener('copypump:menu-settled',afterMenu);io.disconnect();window.removeEventListener('copypump:content-ready',discover);document.removeEventListener('focusin',focus);active.current.forEach(a=>a.cancel());active.current.clear();nodes.forEach(visible)}
   },[routeKey])
 
   // A single visible accent may run. Mobile uses one finite sweep, not a loop.
