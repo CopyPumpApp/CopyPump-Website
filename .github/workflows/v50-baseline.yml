@@ -1,0 +1,69 @@
+name: V50 baseline and public evidence
+on:
+  push:
+    branches: [feat/premium-v50-radar]
+    paths: [.github/workflows/v50-baseline.yml]
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false
+      - name: Bounded read-only public ledger snapshot (no keys or signing)
+        run: |
+          mkdir -p /tmp/radar-evidence
+          python - <<'PY'
+          import json,time,urllib.request,hashlib
+          from pathlib import Path
+          from datetime import datetime,timezone
+          out=Path('/tmp/radar-evidence')
+          endpoint='https://api.mainnet-beta.solana.com'
+          now=lambda:datetime.now(timezone.utc).isoformat()
+          report={'cluster':'mainnet-beta','endpoint':endpoint,'startedAt':now(),'calls':[]}
+          def rpc(method,params,name):
+              request={'jsonrpc':'2.0','id':1,'method':method,'params':params}
+              stamp=now()
+              try:
+                  req=urllib.request.Request(endpoint,data=json.dumps(request).encode(),headers={'Content-Type':'application/json','User-Agent':'CopyPump-public-evidence-review/1.0'})
+                  with urllib.request.urlopen(req,timeout=25) as r: raw=r.read()
+                  parsed=json.loads(raw)
+                  (out/(name+'.json')).write_bytes(raw)
+                  report['calls'].append({'method':method,'requestedAt':stamp,'receivedAt':now(),'file':name+'.json','sha256':hashlib.sha256(raw).hexdigest(),'request':request,'ok':'error' not in parsed})
+                  return parsed.get('result')
+              except Exception as e:
+                  report['calls'].append({'method':method,'requestedAt':stamp,'receivedAt':now(),'ok':False,'error':str(e)})
+                  return None
+          address='TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+          signatures=rpc('getSignaturesForAddress',[address,{'limit':12,'commitment':'finalized'}],'signatures')
+          if isinstance(signatures,list):
+              chosen=[]
+              for predicate in [lambda x:x.get('err') is not None,lambda x:x.get('err') is None,lambda x:True]:
+                  hit=next((x for x in signatures if predicate(x) and x not in chosen),None)
+                  if hit:chosen.append(hit)
+              report['selection']='First failed, first successful, then first not already selected in a 12-signature finalized Token Program sample. No price or identity selection.'
+              report['selected']=chosen
+              for i,entry in enumerate(chosen):
+                  time.sleep(6)
+                  rpc('getTransaction',[entry['signature'],{'encoding':'jsonParsed','commitment':'finalized','maxSupportedTransactionVersion':0}],f'transaction-{i+1}')
+              time.sleep(6)
+              rpc('getSignatureStatuses',[[x['signature'] for x in chosen],{'searchTransactionHistory':True}],'follow-up-statuses')
+          report['finishedAt']=now()
+          (out/'provenance.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Package allowlisted website sources and dependencies
+        run: tar -czf /tmp/v50-baseline.tar.gz src public scripts tests docs node_modules index.html package.json package-lock.json tsconfig.json vite.config.ts playwright.config.ts README.md .github/workflows/ci.yml
+      - uses: actions/upload-artifact@v7
+        with:
+          name: v50-baseline-and-evidence
+          path: |
+            /tmp/v50-baseline.tar.gz
+            /tmp/radar-evidence
+          retention-days: 2
