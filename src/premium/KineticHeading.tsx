@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-/** Semantic text once; the mask is stationary and only its inner layer moves. */
+/** One accessible text copy; the extra color layer is purely visual. */
 export function KineticHeading({ as: Tag = 'h2', lines, id, className = '' }: {
   as?: 'h1' | 'h2' | 'h3'
   lines: Array<{ text: string; accent?: boolean }>
@@ -12,7 +12,7 @@ export function KineticHeading({ as: Tag = 'h2', lines, id, className = '' }: {
       <span className="heading-motion" data-reveal="heading" data-delay={i * 70}>
         <span className={line.accent ? 'heading-ink gradient-ink' : 'heading-ink'}
           data-gradient={line.accent ? '' : undefined}
-          style={{ '--ink-delay': `${i * -2}s` } as CSSProperties}>{line.text}</span>
+          style={{ '--ink-delay': `${i * -2}s` } as CSSProperties}>{line.accent ? <><span className="gradient-base">{line.text}</span><span className="gradient-shift" aria-hidden="true">{line.text}</span></> : line.text}</span>
       </span>
     </span>)}
   </Tag>
