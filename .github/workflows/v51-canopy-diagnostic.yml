@@ -1,0 +1,60 @@
+name: V51 rendered canopy diagnostic
+on:
+  push:
+    branches: [feat/premium-v51-motion]
+    paths: [.github/workflows/v51-canopy-diagnostic.yml]
+permissions:
+  contents: read
+jobs:
+  canopy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false && npm run build
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Compare scoped layer variants in real browser rendering
+        run: |
+          node --input-type=module <<'JS'
+          import {chromium,webkit,devices} from 'playwright';
+          import {spawn} from 'node:child_process';
+          import {mkdirSync,writeFileSync} from 'node:fs';
+          const out='canopy-diagnostic';mkdirSync(out,{recursive:true});
+          const server=spawn('npm',['run','preview','--','--host','127.0.0.1','--port','4173'],{stdio:'ignore'});
+          try {
+            for(let i=0;i<60;i++){try{const r=await fetch('http://127.0.0.1:4173');if(r.ok)break}catch{}await new Promise(r=>setTimeout(r,300))}
+            const variants={
+              baseline:'',
+              positive:'.site-header::before{z-index:0}.site-header__inner{position:relative;z-index:1}',
+              unmasked:'.site-header::before{z-index:0;mask-image:none;-webkit-mask-image:none}.site-header__inner{position:relative;z-index:1}',
+              headerOwn:'.site-header[data-scrolled=true]{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}.site-header::before{-webkit-backdrop-filter:none;backdrop-filter:none}',
+              noParentTransition:'.site-header{transition:none}.site-header::before{z-index:0}.site-header__inner{position:relative;z-index:1}',
+              fixedSibling:'.site-header::before{display:none}.diag-canopy{position:fixed;top:0;left:0;right:0;height:100px;z-index:50;pointer-events:none;background:linear-gradient(180deg,rgba(3,8,18,.55),rgba(3,8,18,.38) 70%,rgba(3,8,18,.16));-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent)}'
+            };
+            const report=[];
+            for(const [label,engine,device] of [['desktop',chromium,{viewport:{width:1440,height:1000}}],['iphone',webkit,devices['iPhone 14']]]){
+              const browser=await engine.launch();const context=await browser.newContext({...device});const page=await context.newPage();
+              await page.goto('http://127.0.0.1:4173/ru');await page.waitForTimeout(1800);
+              await page.locator('.hero-bottom p').evaluate(n=>scrollTo({top:n.getBoundingClientRect().top+scrollY-28,behavior:'auto'}));await page.waitForTimeout(1200);
+              for(const [name,css] of Object.entries(variants)){
+                const style=await page.addStyleTag({content:css});
+                if(name==='fixedSibling')await page.evaluate(()=>{const n=document.createElement('div');n.className='diag-canopy';document.body.append(n)});
+                await page.waitForTimeout(550);await page.screenshot({path:`${out}/${label}-${name}.png`});
+                report.push({label,name,styles:await page.locator('.site-header').evaluate(n=>{const s=getComputedStyle(n,'::before');return {headerOpacity:getComputedStyle(n).opacity,blur:s.backdropFilter||s.getPropertyValue('-webkit-backdrop-filter'),zIndex:s.zIndex,mask:s.maskImage||s.getPropertyValue('-webkit-mask-image'),scrolled:n.getAttribute('data-scrolled')}})});
+                await style.evaluate(n=>n.remove());await page.evaluate(()=>document.querySelector('.diag-canopy')?.remove());
+              }
+              await browser.close();
+            }
+            writeFileSync(`${out}/report.json`,JSON.stringify(report,null,2));
+          } finally {server.kill('SIGTERM')}
+          JS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: v51-canopy-diagnostic
+          path: canopy-diagnostic
+          retention-days: 2
