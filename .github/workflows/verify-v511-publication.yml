@@ -1,0 +1,122 @@
+name: Verify v51.1 public release
+on:
+  push:
+    branches: [ops/verify-v511-publication]
+    paths: [.github/workflows/verify-v511-publication.yml]
+permissions:
+  contents: read
+jobs:
+  public-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Wait for the accepted release and compare public responses
+        run: |
+          mkdir -p release-evidence
+          python - <<'PY'
+          import json,time,urllib.request,hashlib,re
+          from pathlib import Path
+          from datetime import datetime,timezone
+          prod='https://copypump-website.copypumphq.workers.dev'
+          preview='https://3ed647bf-copypump-website.copypumphq.workers.dev'
+          expected=Path('public/release-marker.txt').read_bytes()
+          assert b'v51.1' in expected
+          def get(base,path):
+              req=urllib.request.Request(base+path,headers={'User-Agent':'CopyPump-release-verification/51.1','Cache-Control':'no-cache'})
+              with urllib.request.urlopen(req,timeout=15) as r:
+                  return r.status,r.read()
+          assert get(preview,'/release-marker.txt')[1]==expected
+          for attempt in range(24):
+              try:
+                  if get(prod,'/release-marker.txt?release=511')[1]==expected:break
+              except Exception as error:print(type(error).__name__,str(error))
+              if attempt==23:raise AssertionError('Production does not serve the accepted v51.1 marker')
+              time.sleep(10)
+          routes=['/','/ru','/project','/ru/project','/progress','/ru/progress','/radar','/ru/radar','/contact','/ru/contact','/privacy','/ru/privacy','/terms','/security']
+          report={'acceptedCommit':'754de4ca723d8f89e7c0be9ca8ec1c399c07c198','production':prod,'acceptedPreview':preview,'checkedAt':datetime.now(timezone.utc).isoformat(),'routes':[],'matchingAssets':[]}
+          for path in routes:
+              status,raw=get(prod,path)
+              assert status==200 and b'id="root"' in raw,path
+              report['routes'].append({'path':path,'status':status})
+          old_html=get(preview,'/ru')[1].decode();new_html=get(prod,'/ru')[1].decode()
+          assets=lambda html:set(re.findall(r'(?:src|href)=[\"\x27](/assets/[^\"\x27]+\.(?:js|css))[\"\x27]',html))
+          assert assets(old_html) and assets(old_html)==assets(new_html),'Entrypoint bundle names differ'
+          paths=assets(old_html)|{'/release-marker.txt','/radar/index.json'}
+          for item in Path('public/media/v51').glob('*.webp'):paths.add('/'+str(item.relative_to('public')))
+          for item in Path('public/media/v48').glob('*.webp'):paths.add('/'+str(item.relative_to('public')))
+          for path in sorted(paths):
+              accepted=get(preview,path)[1];published=get(prod,path)[1]
+              assert accepted==published,'Published bytes differ from accepted preview: '+path
+              report['matchingAssets'].append({'path':path,'bytes':len(published),'sha256':hashlib.sha256(published).hexdigest()})
+          Path('release-evidence/public-http.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Read-only browser smoke on published site
+        run: |
+          cat > release-smoke.mjs <<'JS'
+          import {chromium,webkit,devices,expect} from '@playwright/test';
+          import {writeFileSync} from 'node:fs';
+          const origin='https://copypump-website.copypumphq.workers.dev';
+          const outcomes=[];
+          async function press(page,selector,touch){
+            const el=page.locator(selector);await expect(el).toBeVisible();const r=await el.boundingBox();
+            const p={x:r.x+r.width/2,y:r.y+r.height/2};
+            if(!await el.evaluate((n,p)=>n.contains(document.elementFromPoint(p.x,p.y)),p))throw new Error('Control is covered: '+selector);
+            if(touch)await page.touchscreen.tap(p.x,p.y);else await page.mouse.click(p.x,p.y);
+          }
+          for(const [name,type,options] of [['desktop',chromium,{viewport:{width:1440,height:1000}}],['iphone-webkit',webkit,devices['iPhone 14']],['android-chromium',chromium,devices['Pixel 7']]]){
+            const browser=await type.launch(),context=await browser.newContext({...options,baseURL:origin});
+            const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.setDefaultTimeout(15000);
+            try{
+              await page.goto('/ru');await expect(page.locator('.hero-intro')).toContainText('сам обнаруживает успешные кошельки');
+              await expect.poll(()=>page.locator('.scene-art img').evaluate(n=>n.complete&&n.naturalWidth>0)).toBeTruthy();
+              await page.waitForTimeout(1700);await page.screenshot({path:`release-evidence/${name}-home.png`});
+              const area=page.locator('.experience-art');await area.scrollIntoViewIfNeeded();await page.waitForTimeout(1700);
+              const r=await area.boundingBox(),x=r.x+r.width*.6,y=r.y+r.height*.4;
+              if(name==='android-chromium'){
+                const cdp=await context.newCDPSession(page);
+                await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id:1}]});
+                for(let i=1;i<=10;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x-110*i/10,y:y+2,id:1}]});await page.waitForTimeout(20);}
+                await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.detach();
+              }else{
+                await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x-110,y+2,{steps:12});await page.mouse.up();
+              }
+              await expect(page.locator('#chapter-1')).toHaveAttribute('aria-selected','true');
+              await page.locator('#chapter-2').click();await page.locator('#capital-limit').press('End');
+              await expect(page.locator('.policy-result')).toContainText('В пределах лимита');
+              await expect(page.locator('#chapter-2')).toHaveAttribute('aria-selected','true');
+              await expect(page.locator('.chapter-ghost')).toHaveCount(0);
+              await page.locator('.experience-art').scrollIntoViewIfNeeded();await page.screenshot({path:`release-evidence/${name}-artwork.png`});
+              await press(page,'.menu-button',!!options.hasTouch);await expect(page.locator('.mobile-nav')).toHaveAttribute('data-phase','open');
+              await page.locator('.mobile-nav nav a[href="/ru/contact"]').click();await expect(page.locator('.mobile-nav')).toHaveCount(0);
+              await expect(page).toHaveURL(/\/ru\/contact$/);
+              for(const href of ['https://x.com/CopyPumpAI','https://discord.gg/WS95eXrGB','https://github.com/CopyPumpApp/CopyPump','mailto:copypumphq@gmail.com']){
+                await expect(page.locator(`a[href="${href}"]`)).toHaveCount(1);await expect(page.locator(`a[href="${href}"] svg`)).toHaveCount(1);
+              }
+              await page.waitForTimeout(1400);await page.screenshot({path:`release-evidence/${name}-contact.png`,fullPage:true});
+              await page.goto('/ru/radar');await expect(page.locator('.radar-row')).toHaveCount(3);
+              await page.locator('.radar-save').first().click();await expect(page.locator('.radar-save').first()).toHaveAttribute('aria-pressed','true');
+              await page.reload();await expect(page.locator('.radar-save').first()).toHaveAttribute('aria-pressed','true');
+              await expect(page.locator('html')).not.toHaveClass(/nav-open/);
+              if(errors.length)throw new Error(errors.join('\n'));
+              outcomes.push({profile:name,passed:true,gestures:name==='android-chromium'?'native CDP touchscreen swipe':'browser pointer drag',notes:'Browser emulation, not a physical device',errors});
+            }catch(error){
+              outcomes.push({profile:name,passed:false,error:String(error),errors});await page.screenshot({path:`release-evidence/${name}-failure.png`}).catch(()=>{});throw error;
+            }finally{writeFileSync('release-evidence/browser-smoke.json',JSON.stringify(outcomes,null,2)+'\n');await context.close();await browser.close();}
+          }
+          console.log(JSON.stringify(outcomes,null,2));
+          JS
+          node release-smoke.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: v511-public-release-verification
+          path: release-evidence
+          retention-days: 7
