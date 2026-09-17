@@ -1,0 +1,20 @@
+name: V51 public website baseline
+on:
+  push:
+    branches: [feat/premium-v51-motion]
+    paths: [.github/workflows/v51-baseline.yml]
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Package allowlisted website files (no credentials)
+        run: tar -czf /tmp/v51-baseline.tar.gz src public scripts tests docs index.html package.json package-lock.json tsconfig.json vite.config.ts playwright.config.ts README.md .github/workflows/ci.yml
+      - uses: actions/upload-artifact@v7
+        with:
+          name: v51-public-baseline
+          path: /tmp/v51-baseline.tar.gz
+          retention-days: 2
