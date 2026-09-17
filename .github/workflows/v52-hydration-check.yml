@@ -1,0 +1,27 @@
+name: V52 hydration regression
+on:
+  push:
+    branches: [feat/v52-publication-ready]
+    paths: [src/main.tsx, src/radar/store.tsx, tests/e2e/hydration-local-state.spec.ts, .github/workflows/v52-hydration-check.yml]
+permissions:
+  contents: read
+jobs:
+  hydration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false && npm run check
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Recheck initial document with saved state in all browser profiles
+        run: npx playwright test tests/e2e/hydration-local-state.spec.ts tests/e2e/publication-v52.spec.ts --grep 'hydration|delayed initial' --retries=0 --reporter=list
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: v52-hydration-failures
+          path: test-results
+          retention-days: 2

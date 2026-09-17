@@ -30,6 +30,10 @@ for(const code of ['WS95eXrGB','DNBQtqw6R']){
  catch(e){invites.push({code,error:String(e.message)})}
 }
 writeFileSync('evidence/invites.json',JSON.stringify(invites,null,2))
+async function readable(locator){
+ await expect(locator).toBeVisible()
+ await expect.poll(()=>locator.evaluate(n=>{let value=1;for(let p=n;p;p=p.parentElement)value*=Number(getComputedStyle(p).opacity);return value}),{timeout:7000}).toBeGreaterThan(.999)
+}
 const browserReports=[]
 for(const [name,type,options] of [['desktop',chromium,{viewport:{width:1920,height:854}}],['iphone',webkit,devices['iPhone 14']]]){
  const browser=await type.launch(),context=await browser.newContext(options),page=await context.newPage(),errors=[]
@@ -39,21 +43,24 @@ for(const [name,type,options] of [['desktop',chromium,{viewport:{width:1920,heig
   await page.goto(origin+'/ru');await page.waitForTimeout(1600)
   await expect(page.locator('.responsibility-columns')).toHaveCount(1)
   await expect(page.locator('.radar-other-notes article')).toHaveCount(2)
-  await expect(page.locator('.hero-intro')).toContainText('сам обнаруживает')
+  await expect(page.locator('.hero-intro')).toContainText('сам обнаруживает');await readable(page.locator('.hero-intro'))
   await page.screenshot({path:`evidence/${name}-home.png`})
-  for(const id of ['experience','your-control','status','radar-preview']){await page.locator('#'+id).scrollIntoViewIfNeeded();await page.waitForTimeout(1600);await page.screenshot({path:`evidence/${name}-${id}.png`})}
+  for(const id of ['experience','your-control','status','radar-preview']){await page.locator('#'+id).scrollIntoViewIfNeeded();await page.waitForTimeout(1800);await page.screenshot({path:`evidence/${name}-${id}.png`})}
   await page.locator('.menu-button').click();await expect(page.locator('.mobile-nav')).toHaveAttribute('data-phase','open');await page.locator('.mobile-nav nav a[href="/ru/project"]').click();await page.waitForTimeout(1900)
-  await expect(page.locator('.architecture-parts article')).toHaveCount(4)
+  await expect(page.locator('.architecture-parts article')).toHaveCount(4);await readable(page.locator('.architecture-parts'))
   await page.screenshot({path:`evidence/${name}-product.png`})
   await page.goto(origin+'/ru/contact');await page.waitForTimeout(1400)
   for(const href of ['https://x.com/CopyPumpAI','https://discord.gg/WS95eXrGB','https://github.com/CopyPumpApp/CopyPump','mailto:copypumphq@gmail.com'])await expect(page.locator(`a[href="${href}"]`)).toHaveCount(1)
   await page.goto(origin+'/ru/radar');await expect(page.locator('.radar-row')).toHaveCount(3)
   await page.locator('.radar-row .radar-save').first().click();await page.reload()
   await expect(page.locator('.radar-row .radar-save').first()).toHaveAttribute('aria-pressed','true')
-  await page.locator('.radar-row h2 a').first().click();await expect(page.locator('.radar-narrative')).toBeVisible();await page.screenshot({path:`evidence/${name}-radar-article.png`})
+  await page.locator('.radar-row h2 a').first().click();await readable(page.locator('.radar-narrative'))
+  await expect.poll(()=>page.locator('h1 .heading-motion').evaluateAll(ns=>ns.length>0&&ns.every(n=>Number(getComputedStyle(n).opacity)>.999)),{timeout:7000}).toBe(true)
+  await page.screenshot({path:`evidence/${name}-radar-article.png`})
+  await page.waitForTimeout(1500);await readable(page.locator('.radar-narrative'))
   assert.deepEqual(errors,[],name)
  }catch(e){failure=String(e.stack||e);await page.screenshot({path:`evidence/${name}-failure.png`}).catch(()=>{});writeFileSync(`evidence/${name}-failure.html`,await page.content())}
  finally{browserReports.push({name,errors,failure});writeFileSync('evidence/browser.json',JSON.stringify(browserReports,null,2));await browser.close()}
 }
 assert.ok(browserReports.every(x=>!x.failure),'Browser preview validation failed; inspect evidence/browser.json')
-console.log('Actual preview: 22 localized HTML routes, 4 real 404s, deployed headers and both browser journeys passed.')
+console.log('Actual preview: 22 localized HTML routes, 4 real 404s, deployed headers and both browser journeys passed, including settled readable article text.')
