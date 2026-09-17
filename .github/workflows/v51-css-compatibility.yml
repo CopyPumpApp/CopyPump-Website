@@ -1,0 +1,45 @@
+name: Apply bounded v51 CSS compatibility correction
+on:
+  push:
+    branches: [feat/premium-v51-motion]
+    paths: [.github/workflows/v51-css-compatibility.yml]
+permissions:
+  contents: write
+jobs:
+  correct:
+    if: github.ref == 'refs/heads/feat/premium-v51-motion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/premium-v51-motion
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Correct only the reviewed declaration order and add a built-CSS guard
+        run: |
+          python - <<'PY'
+          import subprocess
+          from pathlib import Path
+          path=Path('src/premium/premium.css')
+          assert subprocess.check_output(['git','hash-object',str(path)],text=True).strip()=='3344f3f1051e729cc6ada704fc51e45a9557cb50', 'Stylesheet changed; review required'
+          old='opacity:1;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)'
+          new='opacity:1;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)'
+          text=path.read_text(); assert text.count(old)==1
+          path.write_text(text.replace(old,new,1))
+          package=Path('package.json');text=package.read_text()
+          old='"build": "vite build"';new='"build": "vite build && node scripts/header-build-audit.mjs"'
+          assert text.count(old)==1
+          package.write_text(text.replace(old,new,1))
+          PY
+      - run: npm ci --audit=false && npm run check
+      - name: Commit corrected preview source; never update main
+        run: |
+          git config user.name 'CopyPump website review'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/premium/premium.css package.json
+          git rm .github/workflows/v51-css-compatibility.yml
+          git commit -m 'fix: preserve standard header backdrop filter in minified CSS'
+          git push origin HEAD:feat/premium-v51-motion
