@@ -1,0 +1,31 @@
+name: Integrate targeted v51.1 preview
+on:
+  push:
+    branches: [feat/premium-v51-1-polish]
+    paths: [.github/workflows/v511-integrate.yml]
+permissions:
+  contents: write
+jobs:
+  integrate:
+    if: github.ref == 'refs/heads/feat/premium-v51-1-polish'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/premium-v51-1-polish
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: python scripts/apply-v511.py
+      - run: npm ci --audit=false && npm run check
+      - name: Commit only the reviewed preview changes
+        run: |
+          git config user.name 'CopyPump website review'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/premium/content.ts src/premium/Site.tsx src/premium/premium.css src/i18n/en.json src/i18n/ru.json public/release-marker.txt
+          git rm scripts/apply-v511.py .github/workflows/v511-integrate.yml
+          git commit -m 'fix: automatic-discovery copy, single contact links, artwork swipes and compact spacing'
+          git push origin HEAD:feat/premium-v51-1-polish
