@@ -27,7 +27,12 @@ test('RU short viewport, menu resize and explicit Motion off never hide content'
 })
 test('reduced motion stops ambience while keeping the demonstration functional',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.locator('#experience').scrollIntoViewIfNeeded();await page.locator('#chapter-2').click()
- expect(await page.locator('.experience-art picture').evaluate(n=>getComputedStyle(n).animationName)).toBe('none')
+ // Chapter changes await image decoding and replace the keyed picture element.
+ // Assert the selected, settled chapter before querying its computed styles.
+ await expect(page.locator('#chapter-2')).toHaveAttribute('aria-selected','true')
+ await expect(page.locator('#experience-panel')).toHaveAttribute('aria-busy','false')
+ await expect(page.locator('.experience-art img')).toHaveAttribute('src',/constrain-800\.webp$/)
+ await expect(page.locator('.experience-art picture')).toHaveCSS('animation-name','none')
  await page.locator('#capital-limit').press('End');await expect(page.locator('.policy-result')).toContainText('Within this limit')
 })
 test('animation lifecycle stays bounded after scrolling and menu use',async({page,isMobile},info)=>{
