@@ -1,0 +1,25 @@
+name: V49 validation baseline
+on:
+  push:
+    branches: [feat/premium-v49]
+    paths: [.github/workflows/v49-baseline.yml]
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false
+      - name: Package allowlisted website code and locked dependencies
+        run: tar -czf /tmp/v49-baseline.tar.gz src public scripts tests docs node_modules index.html package.json package-lock.json tsconfig.json vite.config.ts playwright.config.ts README.md .github/workflows/ci.yml
+      - uses: actions/upload-artifact@v7
+        with:
+          name: v49-validation-baseline
+          path: /tmp/v49-baseline.tar.gz
+          retention-days: 2
