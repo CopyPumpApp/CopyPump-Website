@@ -1,0 +1,24 @@
+name: V51 review source
+on:
+  push:
+    branches: [feat/premium-v51-motion]
+    paths: [.github/workflows/v51-review-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false
+      - run: tar -czf /tmp/v51-reviewed-source.tar.gz src public scripts tests docs node_modules index.html package.json package-lock.json tsconfig.json vite.config.ts playwright.config.ts README.md .github/workflows/ci.yml
+      - uses: actions/upload-artifact@v7
+        with:
+          name: v51-reviewed-source
+          path: /tmp/v51-reviewed-source.tar.gz
+          retention-days: 2
