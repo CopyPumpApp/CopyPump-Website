@@ -15,6 +15,7 @@ import {ChapterArtwork} from './ChapterArtwork'
 import {BrandIcon,BrandText,brandForUrl} from './BrandIcon'
 import {previewScene} from './sceneThemes'
 import {usePageEntrance} from './usePageEntrance'
+import {useArtworkSwipe} from './useArtworkSwipe'
 
 const useCopy = () => { const { locale } = useI18n(); return premiumCopy[locale] }
 function Arrow({ diagonal = false }: { diagonal?: boolean }) { return <svg className="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={diagonal?'M6 18 18 6M6 6h12v12':'M4 12h15m-6-6 6 6-6 6'} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg> }
@@ -31,7 +32,7 @@ function Mark({onNavigate}:{onNavigate?:()=>void}){const c=useCopy();return <Lin
 function LocaleSwitch(){const {locale,setLocale}=useI18n();return <div className="locale-switch" role="group" aria-label={locale==='ru'?'Язык':'Language'}>{(['en','ru'] as const).map(l=><button type="button" key={l} aria-pressed={locale===l} onClick={()=>setLocale(l)}>{l.toUpperCase()}</button>)}</div>}
 export function PremiumMotionToggle(){const m=useMotion(),c=useCopy().nav;return <button type="button" className="motion-toggle" onClick={m.toggle} aria-pressed={!m.paused&&!m.reduced} disabled={m.reduced} aria-label={m.reduced?c.reduced:m.paused?c.play:c.pause}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h3l3-7 5 14 3-7h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{c.motion}</span><i/></button>}
 
-export function PremiumHeader({simple=false}:{simple?:boolean}) {
+export function PremiumHeader({simple=false,hideChannels=false}:{simple?:boolean;hideChannels?:boolean}) {
   const c=useCopy(), menu=useAnimatedMenu(), {locale}=useI18n()
   const header=useRef<HTMLElement>(null),sentinel=useRef<HTMLSpanElement>(null)
   useEffect(()=>{if(!sentinel.current||!('IntersectionObserver'in window))return;const observer=new IntersectionObserver(([entry])=>{if(header.current)header.current.dataset.scrolled=entry.isIntersecting?'false':'true'});observer.observe(sentinel.current);return()=>observer.disconnect()},[])
@@ -48,7 +49,7 @@ export function PremiumHeader({simple=false}:{simple?:boolean}) {
     <div className="mobile-nav__panel" ref={menu.sheet}>
       <div className="mobile-nav__top wrap"><Mark onNavigate={menu.destination}/><button ref={menu.closeButton} type="button" className="icon-button" aria-label={c.nav.close} onClick={menu.reverse}><span/><span/></button></div>
       <div className="mobile-nav__body wrap"><p className="eyebrow">{c.nav.explore}</p><nav onPointerLeave={()=>previewScene(null)}>{items.map(([to,label],i)=><Link key={to} to={to} onNavigate={menu.destination} onPointerEnter={(event:React.PointerEvent<HTMLAnchorElement>)=>{if(event.pointerType==='mouse')previewScene(to)}} onFocus={()=>previewScene(to)} style={{'--item-delay':`${110+i*65}ms`} as CSSProperties}><small>0{i+1}</small><span className="nav-label-mask"><strong>{label}{to==='/radar'&&<RadarIndicator/>}</strong></span><Arrow diagonal/></Link>)}</nav></div>
-      <div className="mobile-nav__footer wrap"><LocaleSwitch/><div className="mobile-nav__external"><External href={CHANNELS.github}>GitHub</External><External href={CHANNELS.discord}>Discord</External><External href={CHANNELS.x}>X</External></div><PremiumMotionToggle/></div>
+      <div className="mobile-nav__footer wrap"><LocaleSwitch/>{!hideChannels&&<div className="mobile-nav__external"><External href={CHANNELS.github}>GitHub</External><External href={CHANNELS.discord}>Discord</External><External href={CHANNELS.x}>X</External></div>}<PremiumMotionToggle/></div>
     </div>
   </div>,document.body)}
   </>
@@ -57,10 +58,11 @@ export function PremiumHeader({simple=false}:{simple?:boolean}) {
 export function PremiumShell({children,routeKey}:{children:ReactNode;routeKey:string}) {
   const outlet=useRef<HTMLDivElement>(null)
   usePageEntrance(routeKey,outlet)
-  return <><SceneBackdrop routeKey={routeKey}/><div className="site-frame"><PremiumHeader/><div ref={outlet} className="page-outlet">{children}</div><PremiumFooter/></div></>
+  const contactRoute=routeKey.endsWith(':/contact')
+  return <><SceneBackdrop routeKey={routeKey}/><div className="site-frame"><PremiumHeader hideChannels={contactRoute}/><div ref={outlet} className="page-outlet">{children}</div><PremiumFooter hideChannels={contactRoute}/></div></>
 }
-export function PremiumFooter(){const c=useCopy();return <footer className="site-footer wrap"><div className="footer-brand"><Mark/><p>{c.footer.line}</p><small>© 2026 CopyPump</small></div><div className="footer-links"><nav aria-label="CopyPump"><External href={CHANNELS.x}>X <Arrow diagonal/></External><External href={CHANNELS.discord}>Discord <Arrow diagonal/></External><External href={CHANNELS.github}>GitHub <Arrow diagonal/></External><External href={CHANNELS.email}>Email <Arrow diagonal/></External></nav><nav aria-label="Legal"><Link to="/privacy">{c.footer.privacy}</Link><Link to="/terms">{c.footer.terms}</Link><Link to="/security">{c.footer.security}</Link><Link to="/contact">{c.footer.contact}</Link></nav><p>{c.footer.disclaimer}</p></div></footer>}
-function Layout({children,title,description,path}:{children:ReactNode;title:string;description:string;path:string}){return <div className="app-shell premium-v51" data-release="51.0-motion"><Seo title={title} description={description} path={path}/><main id="main-content" tabIndex={-1}>{children}</main></div>}
+export function PremiumFooter({hideChannels=false}:{hideChannels?:boolean}){const c=useCopy();return <footer className="site-footer wrap"><div className="footer-brand"><Mark/><p>{c.footer.line}</p><small>© 2026 CopyPump</small></div><div className="footer-links">{!hideChannels&&<nav aria-label="CopyPump"><External href={CHANNELS.x}>X <Arrow diagonal/></External><External href={CHANNELS.discord}>Discord <Arrow diagonal/></External><External href={CHANNELS.github}>GitHub <Arrow diagonal/></External><External href={CHANNELS.email}>Email <Arrow diagonal/></External></nav>}<nav aria-label="Legal"><Link to="/privacy">{c.footer.privacy}</Link><Link to="/terms">{c.footer.terms}</Link><Link to="/security">{c.footer.security}</Link><Link to="/contact">{c.footer.contact}</Link></nav><p>{c.footer.disclaimer}</p></div></footer>}
+function Layout({children,title,description,path}:{children:ReactNode;title:string;description:string;path:string}){return <div className="app-shell premium-v51" data-release="51.1-polish"><Seo title={title} description={description} path={path}/><main id="main-content" tabIndex={-1}>{children}</main></div>}
 function DateLabel(){const {locale}=useI18n();return <time dateTime={STATUS.sourceDate}>{new Intl.DateTimeFormat(locale==='ru'?'ru-RU':'en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(`${STATUS.sourceDate}T12:00:00Z`))}</time>}
 function StatusBadge(){const c=useCopy();return <Link to="/progress" className="status-badge"><i/>{c.hero.label}<Arrow diagonal/></Link>}
 
@@ -79,12 +81,22 @@ function ProductExperience(){
   useEffect(()=>()=>{requestId.current++},[])
   useEffect(()=>{if(!root.current||!('IntersectionObserver'in window))return;const io=new IntersectionObserver(([e])=>setInView(e.isIntersecting));io.observe(root.current);return()=>io.disconnect()},[])
   useLayoutEffect(()=>{window.dispatchEvent(new Event('copypump:content-ready'))},[active,locale])
+  const pending=useRef(requested);pending.current=requested
+  const stepChapter=(direction:1|-1)=>{
+    const next=Math.max(0,Math.min(ART.objects.length-1,pending.current+direction))
+    if(next===pending.current)return
+    pending.current=next;void selectChapter(next)
+  }
+  const swipe=useArtworkSwipe(stepChapter)
   const chapter=c.chapters[active],allowed=limit>=.5
   return <section className="experience wrap section-space" id="experience" data-scene="experience" aria-labelledby="experience-title">
     <div className="section-heading"><div><p className="eyebrow" data-reveal="label">{c.eyebrow}</p><KineticHeading id="experience-title" lines={[{text:c.title},{text:c.accent,accent:true}]}/></div><p data-reveal>{locale==='ru'?'Четыре этапа — от наблюдения до проверяемого результата. Переключайте сцены, чтобы познакомиться с подходом CopyPump.':'Four stages—from an observation to a reviewable outcome. Explore each scene to discover the CopyPump approach.'}</p></div>
     <div className="experience-tabs" role="tablist" aria-label={c.eyebrow}>{c.chapters.map((item,i)=><button key={i} type="button" role="tab" id={`chapter-${i}`} aria-controls="experience-panel" aria-selected={active===i} tabIndex={active===i?0:-1} ref={el=>{buttons.current[i]=el}} onClick={()=>void selectChapter(i)} onKeyDown={e=>{let next=i;if(e.key==='ArrowRight')next=(i+1)%4;else if(e.key==='ArrowLeft')next=(i+3)%4;else if(e.key==='Home')next=0;else if(e.key==='End')next=3;else return;e.preventDefault();void selectChapter(next);buttons.current[next]?.focus()}}>{item.name}<i aria-hidden="true"/></button>)}</div>
     <div className="experience-stage" ref={root} id="experience-panel" aria-busy={requested!==active} role="tabpanel" aria-labelledby={`chapter-${active}`} tabIndex={0} data-ambient={m.running&&inView?'on':'off'}>
-      <div className="experience-art" data-reveal="depth"><div className="art-orbit" aria-hidden="true"/><ChapterArtwork name={ART.objects[active]} running={m.running&&inView}/></div>
+      <div className="experience-art" data-reveal="depth" {...swipe} role="group" aria-label={locale==='ru'?'Переключение сцен продукта':'Product scene controls'} aria-describedby="artwork-swipe-hint" tabIndex={0} onKeyDown={event=>{if(event.target!==event.currentTarget)return;if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();stepChapter(event.key==='ArrowRight'?1:-1)}}}>
+        <div className="art-orbit" aria-hidden="true"/><ChapterArtwork name={ART.objects[active]} running={m.running&&inView}/>
+        <div className="artwork-step-controls"><button type="button" className="artwork-previous" disabled={requested===0} aria-label={locale==='ru'?'Предыдущий объект':'Previous object'} onClick={()=>stepChapter(-1)}>‹</button><span id="artwork-swipe-hint">{locale==='ru'?'Листайте объекты свайпом':'Swipe to explore'}</span><button type="button" className="artwork-next" disabled={requested===ART.objects.length-1} aria-label={locale==='ru'?'Следующий объект':'Next object'} onClick={()=>stepChapter(1)}>›</button></div>
+      </div>
       <div className="experience-story chapter-enter" key={active}>
         <KineticHeading as="h3" lines={[{text:chapter.title,accent:true}]}/><p>{chapter.copy}</p>
         {active===2&&<div className="instrument instrument--policy"><div className="policy-readout"><span>{c.test}</span><b>0.50 <small>SOL</small></b></div><label className="policy-range" htmlFor="capital-limit"><span>{c.limit}</span><output htmlFor="capital-limit">{limit.toFixed(2)} SOL</output><input id="capital-limit" type="range" min="0.1" max="1" step="0.05" value={limit} onChange={e=>setLimit(Number(e.target.value))}/><small>0.10 SOL</small><small>1.00 SOL</small></label><div className={`policy-result ${allowed?'allowed':'blocked'}`} role="status" aria-live="polite"><strong><i/>{allowed?c.allowed:c.blocked}</strong><p>{allowed?c.allowedNote:c.blockedNote}</p></div></div>}
