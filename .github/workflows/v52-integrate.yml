@@ -1,0 +1,48 @@
+name: Integrate verified v52 publication candidate
+on:
+  push:
+    branches: [feat/v52-publication-ready]
+    paths: [.github/workflows/v52-integrate.yml]
+permissions:
+  contents: write
+jobs:
+  integrate:
+    if: github.ref == 'refs/heads/feat/v52-publication-ready'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/v52-publication-ready
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Apply exact-base UTF-8 edits with both-side SHA-256 checks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          changes=[]
+          for name in ['a','b','c']: changes.extend(json.loads(Path(f'.ops/v52-{name}.json').read_text()))
+          expected={'.github/workflows/ci.yml','index.html','package-lock.json','package.json','public/release-marker.txt','scripts/ui-regression-audit.mjs','src/App.tsx','src/components/Experience.tsx','src/components/Seo.tsx','src/main.tsx','src/pages/NotFoundPage.tsx','src/premium/SceneBackdrop.tsx','src/premium/Site.tsx','src/premium/content.ts','src/premium/premium.css','src/radar/Radar.tsx','src/radar/RadarTeaser.tsx','src/radar/store.tsx','tests/e2e/radar.spec.ts','tests/e2e/v51-final-regressions.spec.ts','wrangler.jsonc'}
+          assert {c['path'] for c in changes}==expected and len(changes)==len(expected)
+          for c in changes:
+              path=Path(c['path']);raw=path.read_bytes()
+              assert hashlib.sha256(raw).hexdigest()==c['before'],str(path)+' base mismatch'
+              new=raw.decode('utf-8')
+              for a,b,value in reversed(c['edits']): new=new[:a]+value+new[b:]
+              assert hashlib.sha256(new.encode()).hexdigest()==c['after'],str(path)+' result mismatch'
+              path.write_text(new)
+          test=Path('tests/e2e/publication-v52.spec.ts')
+          test.write_text(test.read_text().replace("toContainText('Сверка')","toContainText('Что видно в источнике')"))
+          PY
+      - run: npm ci --audit=false && npm run check
+      - name: Commit only the validated preview integration
+        run: |
+          git config user.name 'CopyPump publication review'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src public scripts tests docs index.html package.json package-lock.json wrangler.jsonc .github/workflows/ci.yml
+          git rm .ops/v52-a.json .ops/v52-b.json .ops/v52-c.json .github/workflows/v52-baseline.yml .github/workflows/v52-integrate.yml
+          git commit -m 'feat: integrate substantive v52 content and deterministic static publishing'
+          git push origin HEAD:feat/v52-publication-ready
