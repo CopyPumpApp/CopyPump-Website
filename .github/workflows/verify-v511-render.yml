@@ -1,0 +1,61 @@
+name: Verify v51.1 settled WebKit rendering
+on:
+  push:
+    branches: [ops/verify-v511-publication]
+    paths: [.github/workflows/verify-v511-render.yml]
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false && npx playwright install --with-deps webkit
+      - name: Inspect real rendered opacity without forcing the site state
+        run: |
+          mkdir -p render-evidence
+          cat > render-check.mjs <<'JS'
+          import {webkit,devices,expect} from '@playwright/test';
+          import {writeFileSync} from 'node:fs';
+          const results=[];
+          const targets=[['production-ru-1','https://copypump-website.copypumphq.workers.dev/ru'],['production-ru-2','https://copypump-website.copypumphq.workers.dev/ru'],['preview-ru','https://3ed647bf-copypump-website.copypumphq.workers.dev/ru']];
+          const browser=await webkit.launch();
+          for(const [name,url] of targets){
+            const context=await browser.newContext({...devices['iPhone 14']}),page=await context.newPage(),errors=[];
+            page.on('pageerror',e=>errors.push(e.message));
+            const report={name,url,samples:[],passed:false};results.push(report);
+            const sample=()=>page.evaluate(()=>({
+              now:performance.now(),hidden:document.hidden,scrollY,motion:document.documentElement.dataset.motion,nav:document.documentElement.classList.contains('nav-open'),
+              nodes:[...document.querySelectorAll('h1 .heading-motion,.hero-intro,.hero-actions')].map(n=>{
+                let opacity=1;const layers=[];
+                for(let p=n;p;p=p.parentElement){const s=getComputedStyle(p);opacity*=Number(s.opacity);if(Number(s.opacity)<1)layers.push({tag:p.tagName,class:p.className,opacity:s.opacity});}
+                const r=n.getBoundingClientRect();return{class:n.className,opacity,inline:n.getAttribute('style'),revealed:n.dataset.revealed,layers,rect:{top:r.top,bottom:r.bottom,width:r.width},animations:n.getAnimations().map(a=>({state:a.playState,time:a.currentTime,start:a.startTime}))};
+              })
+            }));
+            try{
+              await page.goto(url);await expect(page.locator('.hero-intro')).toContainText('сам обнаруживает успешные кошельки');
+              await expect.poll(()=>page.locator('.scene-art img').evaluate(n=>n.complete&&n.naturalWidth>0)).toBeTruthy();
+              await page.waitForTimeout(1700);report.samples.push(await sample());await page.screenshot({path:`render-evidence/${name}-initial.png`});
+              await expect.poll(async()=>{const s=await sample();report.samples.push(s);return s.nodes.length>=3&&s.nodes.every(n=>n.opacity>=.99);},{timeout:10000,intervals:[200,400,800,1000],message:'Hero copy and heading must actually finish revealing without a scroll or user action'}).toBeTruthy();
+              await page.screenshot({path:`render-evidence/${name}-settled.png`});
+              await page.waitForTimeout(1700);report.samples.push(await sample());
+              if(!report.samples.at(-1).nodes.every(n=>n.opacity>=.99))throw new Error('Settled hero became hidden');
+              if(errors.length)throw new Error(errors.join('\n'));
+              report.passed=true;
+            }catch(error){report.error=String(error);report.samples.push(await sample());await page.screenshot({path:`render-evidence/${name}-failure.png`}).catch(()=>{});}
+            report.errors=errors;writeFileSync('render-evidence/results.json',JSON.stringify(results,null,2)+'\n');await context.close();
+          }
+          await browser.close();console.log(JSON.stringify(results,null,2));if(results.some(r=>!r.passed))process.exit(1);
+          JS
+          node render-check.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: v511-settled-render-verification
+          path: render-evidence
+          retention-days: 7
