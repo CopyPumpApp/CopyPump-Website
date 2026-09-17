@@ -1,0 +1,66 @@
+name: V51 pixel proof
+on:
+  push:
+    branches: [ops/v51-canopy-render]
+    paths: [.github/workflows/pixel-proof.yml]
+permissions:
+  contents: read
+jobs:
+  pixels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false && npm run build
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Capture real rendering with isolated scoped variants
+        run: |
+          node --input-type=module <<'JS'
+          import {chromium,webkit,devices} from 'playwright';
+          import {spawn} from 'node:child_process';
+          import {mkdirSync,writeFileSync} from 'node:fs';
+          const out='pixel-proof';mkdirSync(out,{recursive:true});
+          const server=spawn('npm',['run','preview','--','--host','127.0.0.1','--port','4173'],{stdio:'ignore'}),report=[];
+          try{
+            let ready=false;for(let i=0;i<60;i++){try{if((await fetch('http://127.0.0.1:4173')).ok){ready=true;break}}catch{}await new Promise(r=>setTimeout(r,300))}if(!ready)throw new Error('Server unavailable');
+            for(const [label,engine,device] of [['desktop',chromium,{viewport:{width:1440,height:1000}}],['iphone',webkit,devices['iPhone 14']]]){
+              const browser=await engine.launch();try{
+                const ctx=await browser.newContext({...device});const page=await ctx.newPage();
+                await page.emulateMedia({reducedMotion:'reduce'});await page.goto('http://127.0.0.1:4173/ru');await page.waitForTimeout(1300);
+                await page.locator('.hero-bottom p').evaluate(n=>scrollTo({top:n.getBoundingClientRect().top+scrollY-28,behavior:'auto'}));await page.waitForTimeout(500);
+                const geometry=await page.evaluate(()=>{
+                  const layer=document.querySelector('.scene-backdrop'),img=layer.querySelector('img'),header=document.querySelector('.site-header');
+                  const r=layer.getBoundingClientRect(),scale=Math.max(r.width/1672,r.height/941),w=1672*scale,h=941*scale,p=getComputedStyle(img).objectPosition.split(' ').map(parseFloat);
+                  header.style.setProperty('--header-scene-image',`url("${img.currentSrc}")`);header.style.setProperty('--header-scene-size',`${w}px ${h}px`);header.style.setProperty('--header-scene-position',`${(r.width-w)*p[0]/100}px ${(r.height-h)*p[1]/100}px`);
+                  return{width:r.width,height:r.height,w,h,position:p};
+                });
+                await page.addStyleTag({content:'.site-header::before{background-image:linear-gradient(90deg,rgba(3,8,18,.62),rgba(3,8,18,.45)),var(--header-scene-image);background-size:100% 100%,var(--header-scene-size);background-position:0 0,var(--header-scene-position);background-repeat:no-repeat;-webkit-backdrop-filter:none;backdrop-filter:none;-webkit-mask-image:linear-gradient(#000 calc(100% - 32px),transparent);mask-image:linear-gradient(#000 calc(100% - 32px),transparent)}'});
+                await page.waitForTimeout(600);await page.screenshot({path:`${out}/${label}-scene-canopy.png`});
+                const r=await page.locator('.site-header').boundingBox(),clip={x:0,y:0,width:r.width,height:Math.floor(r.height)-2};
+                const a=await page.screenshot({clip});await page.locator('.page-outlet').evaluate(n=>n.style.visibility='hidden');const b=await page.screenshot({clip});
+                report.push({label,kind:'header',geometry,pixelsIgnorePageText:a.equals(b)});
+                await page.close();
+                for(const mode of ['lazy','eager','eagerStatic']){
+                  const p=await ctx.newPage();
+                  if(mode!=='lazy')await p.addInitScript(()=>{new MutationObserver(()=>document.querySelectorAll('.chapter-art-stack img').forEach(n=>n.loading='eager')).observe(document,{childList:true,subtree:true})});
+                  await p.goto('http://127.0.0.1:4173/ru');await p.locator('#experience').scrollIntoViewIfNeeded();await p.waitForTimeout(1800);await p.locator('.experience-art').scrollIntoViewIfNeeded();await p.waitForTimeout(400);
+                  if(mode==='eagerStatic')await p.addStyleTag({content:'@keyframes object-sweep-in{0%{transform:translate3d(120%,-4%,0) rotate(7deg) scale(.92);opacity:0}16%{opacity:1}78%{transform:translate3d(-2%,0,0) rotate(0deg) scale(1.01);opacity:1}100%{transform:none;opacity:1}}@keyframes object-sweep-out{0%{transform:none;opacity:1}22%{opacity:1}100%{transform:translate3d(-125%,9%,0) rotate(-9deg) scale(.86);opacity:0}}'});
+                  await p.locator('#chapter-1').click();await p.waitForTimeout(280);
+                  const state=await p.locator('.chapter-art-stack').evaluate(node=>Array.from(node.querySelectorAll('picture')).map(n=>{const s=getComputedStyle(n),i=n.querySelector('img'),r=n.getBoundingClientRect();return{className:n.className,rect:{x:r.x,y:r.y,w:r.width,h:r.height},opacity:s.opacity,transform:s.transform,complete:i.complete,naturalWidth:i.naturalWidth,src:i.currentSrc,animations:n.getAnimations().map(a=>({time:a.currentTime,frames:a.effect.getKeyframes()}))}}));
+                  await p.screenshot({path:`${out}/${label}-${mode}-sweep.png`});report.push({label,kind:'objects',mode,state});await p.close();
+                }
+              }finally{await browser.close()}
+            }
+            writeFileSync(`${out}/report.json`,JSON.stringify(report,null,2));
+          }finally{server.kill('SIGTERM')}
+          JS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: v51-pixel-proof
+          path: pixel-proof
+          retention-days: 2
