@@ -1,0 +1,118 @@
+name: Verify v49 production publication
+on:
+  push:
+    branches: [ops/verify-v49-publication]
+    paths: [.github/workflows/verify-v49-publication.yml]
+permissions:
+  contents: read
+jobs:
+  live-verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Compare live routes and assets with the approved preview
+        shell: bash
+        run: |
+          mkdir -p release-evidence
+          python - <<'PY'
+          import urllib.request, re, time, hashlib, json, datetime
+          from pathlib import Path
+          approved='https://cf204966-copypump-website.copypumphq.workers.dev'
+          production='https://copypump-website.copypumphq.workers.dev'
+          report={'approvedCommit':'909232f11b5ceca243264e3b1fe5a7150d1cffc3','approvedPreview':approved,'production':production,'routes':[],'assets':[]}
+          def get(base,path):
+              request=urllib.request.Request(base+path,headers={'Cache-Control':'no-cache','User-Agent':'CopyPump-release-verification/1.0'})
+              with urllib.request.urlopen(request,timeout=25) as response:
+                  assert response.status==200,(path,response.status)
+                  return response.read(),response.headers.get('Content-Type','')
+          def assets(body):
+              return sorted(set(re.findall(r'(?:src|href)="(/assets/[^\"]+)"',body.decode())))
+          reference,_=get(approved,'/ru')
+          expected=assets(reference)
+          assert any(path.endswith('.js') for path in expected) and any(path.endswith('.css') for path in expected),expected
+          marker,_=get(approved,'/release-marker.txt')
+          assert b'v49' in marker
+          for attempt in range(32):
+              try:
+                  current,_=get(production,'/ru')
+                  live_marker,_=get(production,'/release-marker.txt')
+                  if assets(current)==expected and live_marker==marker:
+                      break
+                  print('Waiting for approved v49 on production',attempt+1,flush=True)
+              except Exception as error:
+                  print(type(error).__name__,str(error),flush=True)
+              time.sleep(10)
+          else:
+              raise RuntimeError('Production did not match the approved v49 within the verification window')
+          for path in ['/','/ru','/project','/ru/project','/progress','/ru/progress','/privacy','/terms','/security','/contact']:
+              body,mime=get(production,path)
+              assert 'text/html' in mime,(path,mime)
+              assert assets(body)==expected,(path,assets(body),expected)
+              report['routes'].append({'path':path,'status':200,'matchesApprovedEntrypoints':True})
+          paths=expected+['/media/v48/earth-trading-900.webp','/media/v48/earth-trading-1600.webp','/media/v48/manifest.json']
+          for path in paths:
+              before,_=get(approved,path);after,mime=get(production,path)
+              assert hashlib.sha256(before).digest()==hashlib.sha256(after).digest(),path
+              report['assets'].append({'path':path,'bytes':len(after),'sha256':hashlib.sha256(after).hexdigest(),'matchesApprovedPreview':True})
+          report['checkedAt']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+          report['releaseMarker']=marker.decode().strip()
+          Path('release-evidence/live-comparison.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          PY
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false
+      - run: npx playwright install --with-deps chromium
+      - name: Read-only browser smoke on the public production address
+        run: |
+          cat > release-evidence/smoke.mjs <<'JS'
+          import { chromium, devices, expect } from '@playwright/test';
+          import { writeFileSync } from 'node:fs';
+          const base='https://copypump-website.copypumphq.workers.dev';
+          const browser=await chromium.launch();
+          const results=[];
+          try {
+            for (const [name,settings] of [['desktop',{viewport:{width:1440,height:1000}}],['mobile',devices['Pixel 7']]]) {
+              const context=await browser.newContext(settings);
+              const page=await context.newPage();
+              const errors=[]; page.on('pageerror',error=>errors.push(error.message));
+              const response=await page.goto(base+'/ru',{waitUntil:'networkidle'});
+              if(response.status()!==200) throw new Error('Unexpected route status');
+              await expect(page.locator('.premium-v49')).toHaveAttribute('data-release','49.0-cinematic');
+              await expect.poll(()=>page.locator('.scene-backdrop img').evaluate(img=>img.complete&&img.naturalWidth>0)).toBeTruthy();
+              await page.waitForTimeout(1300);
+              await page.screenshot({path:`release-evidence/live-${name}-home.png`});
+              await page.locator('.menu-button').click();
+              await expect(page.locator('.mobile-nav')).toHaveAttribute('data-phase','open');
+              await expect(page.locator('.mobile-nav nav a')).toHaveCount(6);
+              await page.locator('.mobile-nav nav a[href="/ru/progress"]').click();
+              await expect(page.locator('.mobile-nav')).toHaveCount(0);
+              await expect(page).toHaveURL(base+'/ru/progress');
+              await expect(page.locator('.progress-gates article')).toHaveCount(4);
+              await page.goto(base+'/',{waitUntil:'networkidle'});
+              await page.locator('#chapter-2').click();
+              await expect(page.locator('#capital-limit')).toBeVisible();
+              await page.locator('#capital-limit').press('End');
+              await expect(page.locator('.policy-result')).toContainText('Within this limit');
+              await page.locator('#capital-limit').press('Home');
+              await expect(page.locator('.policy-result')).toContainText('Blocked by your limit');
+              if(errors.length) throw new Error(JSON.stringify(errors));
+              results.push({profile:name,browser:'Chromium',physicalDevice:false,status:'passed',consoleErrors:errors});
+              await context.close();
+            }
+            writeFileSync('release-evidence/live-browser.json',JSON.stringify(results,null,2));
+            console.log(JSON.stringify(results));
+          } finally { await browser.close(); }
+          JS
+          node release-evidence/smoke.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: v49-live-publication-evidence
+          path: release-evidence
+          retention-days: 7
