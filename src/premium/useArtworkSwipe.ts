@@ -1,4 +1,4 @@
-import {useEffect,useRef,type PointerEvent as ReactPointerEvent,type MouseEvent as ReactMouseEvent} from 'react'
+import {useEffect,useRef,type PointerEvent as ReactPointerEvent,type MouseEvent as ReactMouseEvent,type DragEvent} from 'react'
 
 type Gesture={id:number;x:number;y:number;axis:'pending'|'x'|'y';threshold:number}
 /** Gestures belong ONLY to the artwork, never to the capital slider or prose. */
@@ -24,12 +24,13 @@ export function useArtworkSwipe(onStep:(direction:1|-1)=>void){
   }
   return {
     onPointerDown:(event:ReactPointerEvent<HTMLDivElement>)=>{
+      // A new intentional press, including a button tap, is never a swipe click.
+      suppressClick.current=false
       if(event.pointerType==='touch'){
         touches.current.add(event.pointerId)
         if(touches.current.size>1||!event.isPrimary){gesture.current=null;delete event.currentTarget.dataset.dragging;return}
       }
       if(event.button!==0||(event.target as Element).closest('a,button,input,select,textarea,[contenteditable="true"]'))return
-      suppressClick.current=false
       gesture.current={id:event.pointerId,x:event.clientX,y:event.clientY,axis:'pending',threshold:Math.min(68,Math.max(44,event.currentTarget.clientWidth*.12))}
       // Capture doesn't disable pan-y/pinch zoom; native scroll sends pointercancel.
       try{event.currentTarget.setPointerCapture(event.pointerId)}catch{/* Synthetic test event or released pointer. */}
@@ -54,7 +55,7 @@ export function useArtworkSwipe(onStep:(direction:1|-1)=>void){
     onLostPointerCapture:(event:ReactPointerEvent<HTMLDivElement>)=>{
       if(gesture.current?.id===event.pointerId){gesture.current=null;delete event.currentTarget.dataset.dragging}
     },
-    onDragStart:(event:React.DragEvent<HTMLDivElement>)=>event.preventDefault(),
+    onDragStart:(event:DragEvent<HTMLDivElement>)=>event.preventDefault(),
     onClickCapture:(event:ReactMouseEvent<HTMLDivElement>)=>{
       if(suppressClick.current){suppressClick.current=false;event.preventDefault();event.stopPropagation()}
     },
