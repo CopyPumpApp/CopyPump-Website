@@ -32,7 +32,7 @@ export function LegalPage({ kind }: { kind: LegalPageKind }) {
             {section.bullets && <ul>{section.bullets.map(item => <li key={item}>{item}</li>)}</ul>}
           </section>)}
         </div>
-        <p className="legal-updated">{meta.updated}</p>
+        <p className="legal-updated">{kind === 'privacy' ? (locale === 'ru' ? 'Последнее обновление: 17 сентября 2026 года.' : 'Last updated: 17 September 2026.') : meta.updated}</p>
       </div>
     </main>
   </div>

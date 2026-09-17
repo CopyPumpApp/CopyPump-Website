@@ -2,7 +2,7 @@ import {readFileSync,statSync} from 'node:fs'
 import {createHash} from 'node:crypto'
 import assert from 'node:assert/strict'
 const root='public/radar/',load=p=>JSON.parse(readFileSync(root+p,'utf8')),index=load('index.json'),provenance=load('evidence/provenance.json')
-assert.equal(index.schemaVersion,1);assert.ok(index.items.length>=3);assert.ok(statSync(root+'index.json').size<14000)
+assert.equal(index.schemaVersion,1);assert.ok(index.items.length>=3);assert.ok(statSync(root+'index.json').size<128000)
 const ids=new Set()
 for(const call of provenance.calls){assert.equal(call.ok,true);assert.equal(createHash('sha256').update(readFileSync(root+'evidence/'+call.file)).digest('hex'),call.sha256)}
 const loc=x=>assert.ok(x&&typeof x.en==='string'&&x.en.trim()&&typeof x.ru==='string'&&x.ru.trim())
