@@ -3,13 +3,13 @@ import {useMotion} from '../components/Experience'
 
 /** The destination never paints over the outgoing navigation labels. */
 export function usePageEntrance(routeKey:string, outlet:RefObject<HTMLDivElement|null>) {
-  const {paused,reduced}=useMotion()
+  const {paused,reduced,modal}=useMotion()
   const previous=useRef(routeKey),allowed=useRef(!paused&&!reduced)
   const active=useRef<Animation|null>(null)
   useLayoutEffect(()=>{
     allowed.current=!paused&&!reduced
-    if(!allowed.current){active.current?.cancel();active.current=null}
-  },[paused,reduced])
+    if(!allowed.current||modal){active.current?.cancel();active.current=null}
+  },[paused,reduced,modal])
   useLayoutEffect(()=>{
     if(previous.current===routeKey)return
     previous.current=routeKey
@@ -18,7 +18,7 @@ export function usePageEntrance(routeKey:string, outlet:RefObject<HTMLDivElement
       window.removeEventListener('copypump:menu-settled',begin)
       frame=requestAnimationFrame(()=>{
         frame=0
-        if(disposed||!allowed.current||!outlet.current?.animate)return
+        if(disposed||!allowed.current||document.documentElement.classList.contains('nav-open')||!outlet.current?.animate)return
         active.current?.cancel()
         const animation=outlet.current.animate(
           [{opacity:0,transform:'translate3d(0,18px,0)'},{opacity:1,transform:'none'}],
