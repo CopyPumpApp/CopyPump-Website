@@ -10,6 +10,9 @@ for(const route of manifest.routes){
  assert.ok(html.includes('content="'+(manifest.preview||!route.indexable?'noindex,follow':'index,follow')+'"'))
  assert.ok(!html.includes('<!--$!-->'),'No server bailout '+route.route)
  assert.ok(html.includes('site-bootstrap'))
+ assert.ok(!/<!--\$[?!]-->|<div hidden|<template id="B:/.test(html),'No hidden streaming segments '+route.route)
+ assert.equal((html.match(/id="main-content"/g)||[]).length,1,route.route+' has one readable main')
+ for(const script of html.matchAll(/<script([^>]*)>/g))assert.ok(/src=|type="application\/json"/.test(script[1]),'No executable inline hydration bridge '+route.route)
  if(route.route==='/ru')for(const phrase of ['публичный валидатор','Задачи системы','Сверка','Devnet'])assert.ok(html.includes(phrase),phrase)
  if(route.route.includes('/radar/')&&route.indexable)assert.ok(html.includes('radar-narrative'),'Radar articles must be in raw HTML')
 }
