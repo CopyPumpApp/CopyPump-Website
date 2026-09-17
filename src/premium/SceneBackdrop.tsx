@@ -15,7 +15,9 @@ export function SceneBackdrop({ routeKey }: { routeKey: string }) {
     const scenes = [...document.querySelectorAll<HTMLElement>('main [data-scene]')]
     if (!scenes.length || !('IntersectionObserver' in window)) return
     // A narrow viewport band chooses one scene. No per-scroll frame loop.
-    const observer = new IntersectionObserver(() => {
+    let observer: IntersectionObserver | undefined
+    let resizeFrame = 0
+    const chooseScene = () => {
       const y = innerHeight * .43
       const nearest = scenes.reduce<HTMLElement | null>((best, item) => {
         const a = item.getBoundingClientRect()
@@ -25,9 +27,23 @@ export function SceneBackdrop({ routeKey }: { routeKey: string }) {
         return distance < Math.max(b.top - y, y - b.bottom, 0) ? item : best
       }, null)
       if (nearest) node.dataset.scene = nearest.dataset.scene || defaults
-    }, { threshold: 0, rootMargin: '-38% 0px -52% 0px' })
-    scenes.forEach(item => observer.observe(item))
-    return () => observer.disconnect()
+    }
+    const observe = () => {
+      resizeFrame = 0
+      observer?.disconnect()
+      // IntersectionObserver resolves percentages against WIDTH, including vertical
+      // margins. Use height-derived pixels so the band also works in landscape.
+      const top = Math.round(innerHeight * .38), bottom = Math.round(innerHeight * .52)
+      observer = new IntersectionObserver(chooseScene, {
+        threshold: 0, rootMargin: `-${top}px 0px -${bottom}px 0px`,
+      })
+      scenes.forEach(item => observer!.observe(item))
+      chooseScene()
+    }
+    const resize = () => { if (!resizeFrame) resizeFrame = requestAnimationFrame(observe) }
+    observe()
+    addEventListener('resize', resize, { passive: true })
+    return () => { observer?.disconnect(); removeEventListener('resize', resize); cancelAnimationFrame(resizeFrame) }
   }, [routeKey])
   return <div ref={layer} className="scene-backdrop" data-menu={modal ? 'true' : 'false'}
     data-ready={ready ? 'true' : 'false'} aria-hidden="true">
