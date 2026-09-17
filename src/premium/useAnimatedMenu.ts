@@ -41,7 +41,7 @@ export function useAnimatedMenu() {
     return () => {
       document.removeEventListener('keydown', keys); document.removeEventListener('focusin', focus); window.removeEventListener('popstate', pop)
       if (app) app.inert = before.inert
-      root.style.overflow = before.root; body.style.overflow = before.body; root.classList.remove('nav-open'); setModal(false)
+      root.style.overflow = before.root; body.style.overflow = before.body; root.classList.remove('nav-open'); setModal(false); window.dispatchEvent(new Event('copypump:menu-settled'))
       if (restore.current) {
         if (location.pathname === before.path && Math.abs(scrollY - before.y) > 2) scrollTo({ top: before.y, behavior: 'auto' })
         trigger.current?.focus({ preventScroll: true })
@@ -60,10 +60,10 @@ export function useAnimatedMenu() {
     }
     if (phase === 'opening') {
       raf = requestAnimationFrame(() => { raf = requestAnimationFrame(() => setShown(true)) })
-      timer = window.setTimeout(() => setPhase(old => old === 'opening' ? 'open' : old), 760)
+      timer = window.setTimeout(() => setPhase(old => old === 'opening' ? 'open' : old), 1100)
     } else if (phase === 'closing') {
       setShown(false)
-      timer = window.setTimeout(() => setPhase(old => old === 'closing' ? 'closed' : old), 260)
+      timer = window.setTimeout(() => setPhase(old => old === 'closing' ? 'closed' : old), 460)
     }
     return () => { cancelAnimationFrame(raf); clearTimeout(timer) }
   }, [phase, paused, reduced])

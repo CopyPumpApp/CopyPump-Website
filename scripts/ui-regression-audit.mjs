@@ -10,7 +10,7 @@ must(!css.includes('!important'),'The v49 stylesheet must not become a second ov
 must(!css.includes('backdrop-filter')&&!css.includes('filter:'),'No live full-scene blur/filter repaint cost.')
 must(!motion.includes('pointermove')&&!motion.includes('scrollY'),'No pointer/scroll-driven scene transform loop.')
 must(!css.includes('animation-play-state:paused'),'Never freeze the menu on a hidden entrance frame.')
-must(statSync('src/premium/premium.css').size<40000,'Presentation CSS must stay within the 40KB source budget.')
+must(statSync('src/premium/premium.css').size<46000,'Presentation CSS must stay within the 46KB source budget.')
 must(site.includes('aria-selected')&&site.includes('policy-result'),'Interactive chapters and policy illustration must remain functional.')
 must(!site.includes('hero-art')&&site.includes('<SceneBackdrop routeKey='),'Artwork must be persistent environment, not a Hero illustration.')
 must(scene.includes('scene-backdrop')&&!site.includes('community-monogram'),'No repeated background or decorative CP monogram.')

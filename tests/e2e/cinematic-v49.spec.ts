@@ -63,9 +63,9 @@ test('open compositions and functional policy surface have the intended boundari
 })
 
 test('mask text settles, offscreen color stops and disabled animation APIs stay readable',async({page})=>{
-  await page.goto('/');await page.waitForTimeout(1400)
+  await page.goto('/');await page.waitForTimeout(1800)
   expect(await page.locator('h1 .heading-motion').evaluateAll(ns=>ns.every(n=>Number(getComputedStyle(n).opacity)===1))).toBeTruthy()
-  await expect(page.locator('h1 .gradient-ink')).toHaveCSS('background-image',/linear-gradient/)
+  await expect(page.locator('h1 .gradient-ink').first()).toHaveCSS('background-image',/linear-gradient/)
   expect(await page.locator('main [data-gradient-running=true]').count()).toBeLessThanOrEqual(1)
   await page.emulateMedia({reducedMotion:'reduce'})
   await expect(page.locator('html')).toHaveAttribute('data-motion','off')
@@ -93,11 +93,11 @@ test('record actual v49 navigation and section transitions',async({browser,isMob
     await page.screenshot({path:`${dir}/v49-${id}-ru.png`})
   }
   await tap(page,'.menu-button',isMobile);await page.waitForTimeout(900)
-  await page.locator('.mobile-nav nav a[href="/ru/project"]').click();await page.waitForTimeout(1400)
+  await page.locator('.mobile-nav nav a[href="/ru/project"]').click();await page.waitForTimeout(1800)
   await page.screenshot({path:`${dir}/v49-product-ru.png`})
   await page.locator('#product-tab-1').click();await page.waitForTimeout(700)
   await tap(page,'.menu-button',isMobile);await page.waitForTimeout(850)
-  await page.locator('.mobile-nav nav a[href="/ru/progress"]').click();await page.waitForTimeout(1400)
+  await page.locator('.mobile-nav nav a[href="/ru/progress"]').click();await page.waitForTimeout(1800)
   await page.screenshot({path:`${dir}/v49-progress-ru.png`})
   await page.close();await video.saveAs(`${dir}/v49-walkthrough.webm`);await ctx.close()
 })

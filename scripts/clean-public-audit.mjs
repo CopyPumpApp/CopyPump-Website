@@ -15,3 +15,5 @@ if(failures.length){console.error(failures.join('\n'));process.exit(1)}
 console.log('Public claims, content architecture and artwork audit passed.')
 
 await import('./radar-audit.mjs')
+
+await import('./v51-audit.mjs')

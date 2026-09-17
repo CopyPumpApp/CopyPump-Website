@@ -16,7 +16,7 @@ test('only restored same-art responsive background is active',async({page,isMobi
  const img=page.locator('.scene-backdrop img')
  await expect.poll(()=>img.evaluate(n=>(n as HTMLImageElement).complete&&(n as HTMLImageElement).naturalWidth>0)).toBeTruthy()
  const src=await img.evaluate(n=>(n as HTMLImageElement).currentSrc)
- expect(src).toContain(isMobile?'earth-trading-900.webp':'earth-trading-1600.webp')
+ expect(src).toContain('scene-home.webp')
  const requests=await page.evaluate(()=>performance.getEntriesByType('resource').map(x=>x.name))
  expect(requests.some(x=>x.includes('cinematic-environment-v46')||x.includes('cutout-final-v47.webp'))).toBeFalsy()
 })

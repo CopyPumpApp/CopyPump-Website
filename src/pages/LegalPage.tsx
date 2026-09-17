@@ -1,3 +1,5 @@
+import {CHANNELS} from '../premium/content'
+import {BrandText,BrandIcon} from '../premium/BrandIcon'
 import { Seo } from '../components/Seo'
 import { navigateLocal } from '../lib/motion'
 import { useI18n } from '../i18n'
@@ -16,7 +18,7 @@ export function LegalPage({ kind }: { kind: LegalPageKind }) {
         <div className="eyebrow">{page.eyebrow}</div>
         <h1>{page.title}</h1>
         <p className="legal-intro">{page.intro}</p>
-        <div className="legal-sections">
+        {kind==='contact'&&<nav className="contact-channels" aria-label={locale==='ru'?'Официальные каналы':'Official channels'}>{([['x','X',CHANNELS.x],['discord','Discord',CHANNELS.discord],['github','GitHub',CHANNELS.github],['email','Email',CHANNELS.email]] as const).map(([brand,label,href])=><a key={brand} href={href} className="text-link" {...(brand==='email'?{}:{target:'_blank',rel:'noopener noreferrer'})}><BrandIcon brand={brand}/>{label} ↗</a>)}</nav>}<div className="legal-sections">
           {kind === 'privacy' && <section className="legal-section">
             <h2>{locale === 'ru' ? 'Сохранённые наблюдения Radar' : 'Saved Radar observations'}</h2>
             <p>{locale === 'ru'
@@ -28,8 +30,8 @@ export function LegalPage({ kind }: { kind: LegalPageKind }) {
           </section>}
           {page.sections.map((section: LegalSection) => <section className="legal-section" key={section.heading}>
             <h2>{section.heading}</h2>
-            {section.paragraphs.map(p => <p key={p}>{p}</p>)}
-            {section.bullets && <ul>{section.bullets.map(item => <li key={item}>{item}</li>)}</ul>}
+            {section.paragraphs.map(p => <p key={p}><BrandText text={p}/></p>)}
+            {section.bullets && <ul>{section.bullets.map(item => <li key={item}><BrandText text={item}/></li>)}</ul>}
           </section>)}
         </div>
         <p className="legal-updated">{kind === 'privacy' ? (locale === 'ru' ? 'Последнее обновление: 17 сентября 2026 года.' : 'Last updated: 17 September 2026.') : meta.updated}</p>

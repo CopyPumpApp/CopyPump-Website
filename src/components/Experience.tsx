@@ -33,19 +33,19 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
 
   useLayoutEffect(()=>{
     const nodes=new Set<HTMLElement>()
-    if(!allowed.current||!('IntersectionObserver'in window)||document.documentElement.classList.contains('nav-open')) {
+    if(!allowed.current||!('IntersectionObserver'in window)) {
       document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(visible);return
     }
     let disposed=false
     const enter=(node:HTMLElement)=>{
       if(node.dataset.revealed==='true'||!allowed.current||typeof node.animate!=='function'){visible(node);return}
-      node.dataset.revealed='true';node.style.opacity='1';node.style.willChange='opacity, transform'
+      node.dataset.revealed='true';node.style.opacity='1';node.style.willChange='opacity, transform';const section=node.closest<HTMLElement>('section,.document-hero');if(section)section.dataset.entered='true'
       const kind=node.dataset.reveal
-      const from = kind==='heading'?{opacity:.25,transform:'translate3d(0,108%,0)'}:
-        kind==='depth'?{opacity:0,transform:'translate3d(0,20px,0) scale(.985)'}:
+      const from = kind==='heading'?{opacity:.08,transform:'translate3d(0,116%,0) rotate(2deg)'}:
+        kind==='depth'?{opacity:0,transform:'translate3d(0,38px,0) scale(.92)'}:
           {opacity:0,transform:'translate3d(0,16px,0)'}
-      const duration=kind==='heading'?880:kind==='depth'?820:680
-      const delay=Math.min(210,Math.max(0,Number(node.dataset.delay)||0))
+      const duration=kind==='heading'?1120:kind==='depth'?1250:kind==='label'?650:kind==='record'?960:880
+      const delay=Math.min(360,Math.max(0,Number(node.dataset.delay)||0))+(document.documentElement.classList.contains('nav-open')?260:0)
       const animation=node.animate([from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],
         {duration,delay,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'})
       active.current.set(node,animation)
@@ -56,7 +56,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     const io=new IntersectionObserver(entries=>{
       entries.forEach(e=>{if(e.isIntersecting){io.unobserve(e.target);enter(e.target as HTMLElement)}})
     },{threshold:0,rootMargin:'70px 0px'})
-    const discover=()=>document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(node=>{
+    const discover=()=>{nodes.forEach(node=>{if(!node.isConnected){io.unobserve(node);active.current.get(node)?.cancel();active.current.delete(node);nodes.delete(node)}});document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(node=>{
       if(nodes.has(node))return
       nodes.add(node)
       const r=node.getBoundingClientRect()
@@ -64,7 +64,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
       node.dataset.revealed='false'
       if(typeof node.animate==='function')node.style.opacity='0'
       io.observe(node)
-    })
+    })}
     discover();window.addEventListener('copypump:content-ready',discover)
     const focus=(event:FocusEvent)=>{
       const target=event.target as Element|null
