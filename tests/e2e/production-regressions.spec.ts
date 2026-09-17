@@ -13,7 +13,7 @@ test('current state and milestones live only on Progress',async({page})=>{
 })
 test('only restored same-art responsive background is active',async({page,isMobile})=>{
  await page.goto('/')
- const img=page.locator('.hero-art img')
+ const img=page.locator('.scene-backdrop img')
  await expect.poll(()=>img.evaluate(n=>(n as HTMLImageElement).complete&&(n as HTMLImageElement).naturalWidth>0)).toBeTruthy()
  const src=await img.evaluate(n=>(n as HTMLImageElement).currentSrc)
  expect(src).toContain(isMobile?'earth-trading-900.webp':'earth-trading-1600.webp')

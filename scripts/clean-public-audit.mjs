@@ -5,7 +5,7 @@ const failures=[]
 const must=(condition,message)=>{if(!condition)failures.push(message)}
 must(app.includes('PremiumLanding')&&app.includes('PremiumProject')&&app.includes('PremiumProgress'),'Three explicit content destinations must remain active.')
 must(!app.includes("from './pages/LandingPage'")&&!app.includes("from './pages/ProjectPage'"),'Legacy duplicate marketing sections must not return to the active graph.')
-must(css.trim()==="@import '../premium/premium.css';",'Only one v48 presentation system may be imported.')
+must(css.trim()==="@import '../premium/premium.css';",'Only one presentation system may be imported.')
 for(const phrase of ['Technical alpha','Solana Devnet',"mainnet: 'locked'",'2026-09-14','PROJECT_STATUS.md','WS95eXrGB'])must(copy.includes(phrase),`Public fact/source missing: ${phrase}`)
 for(const term of ['CopyCube','RUN_FUP_TRUMP','Mizuzi','DNBQtqw6R'])must(!`${site}\n${copy}`.includes(term),`Removed content returned: ${term}`)
 must(copy.includes('earth-trading-1600.webp')&&!copy.includes('cinematic-environment-v46'),'Only the restored Earth/trading-room artwork may be active.')
