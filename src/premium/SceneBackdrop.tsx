@@ -1,60 +1,64 @@
-import { useLayoutEffect, useRef, useState } from 'react'
-import { useMotion } from '../components/Experience'
-import { ART } from './content'
+import {useEffect,useLayoutEffect,useRef,useState} from 'react'
+import {useMotion} from '../components/Experience'
+import {themeForPath,sceneSource,SCENE_THEMES,type SceneTheme} from './sceneThemes'
 
-/** One persistent image, outside all moving page/overlay ancestors. */
-export function SceneBackdrop({ routeKey }: { routeKey: string }) {
-  const { modal } = useMotion()
-  const layer = useRef<HTMLDivElement>(null)
-  const [ready, setReady] = useState(false)
-  useLayoutEffect(() => {
-    const node = layer.current
-    if (!node) return
-    const defaults = routeKey.endsWith(':/') ? 'hero' : 'document'
-    node.dataset.scene = defaults
-    const scenes = [...document.querySelectorAll<HTMLElement>('main [data-scene]')]
-    if (!scenes.length || !('IntersectionObserver' in window)) return
-    // A narrow viewport band chooses one scene. No per-scroll frame loop.
-    let observer: IntersectionObserver | undefined
-    let resizeFrame = 0
-    const chooseScene = () => {
-      const y = innerHeight * .43
-      const nearest = scenes.reduce<HTMLElement | null>((best, item) => {
-        const a = item.getBoundingClientRect()
-        const distance = Math.max(a.top - y, y - a.bottom, 0)
-        if (!best) return item
-        const b = best.getBoundingClientRect()
-        return distance < Math.max(b.top - y, y - b.bottom, 0) ? item : best
-      }, null)
-      if (nearest) node.dataset.scene = nearest.dataset.scene || defaults
+/** Native-resolution route art; at most one outgoing background during a handoff. */
+export function SceneBackdrop({routeKey}:{routeKey:string}) {
+  const motion=useMotion(),routeTheme=themeForPath(routeKey.slice(routeKey.indexOf(':')+1))
+  const [theme,setTheme]=useState<SceneTheme>(routeTheme),[previous,setPrevious]=useState<SceneTheme|null>(null)
+  const [wanted,setWanted]=useState<SceneTheme>(routeTheme),[ready,setReady]=useState(false)
+  const layer=useRef<HTMLDivElement>(null),loaded=useRef(new Set<SceneTheme>()),current=useRef(theme),request=useRef(0),sectionTheme=useRef<SceneTheme>(routeTheme)
+  const canAnimate=!motion.paused&&!motion.reduced
+  useEffect(()=>{
+    const fn=(e:Event)=>{const path=(e as CustomEvent<string|null>).detail;setWanted(path?themeForPath(path):sectionTheme.current)}
+    addEventListener('copypump:scene-preview',fn);setWanted(routeTheme)
+    return()=>removeEventListener('copypump:scene-preview',fn)
+  },[routeTheme])
+  useEffect(()=>{if(!motion.modal)setWanted(sectionTheme.current)},[motion.modal,routeTheme])
+  useEffect(()=>{
+    if(wanted===current.current)return
+    const token=++request.current
+    const delay=window.setTimeout(async()=>{
+      try {
+        if(!loaded.current.has(wanted)){const img=new Image();img.src=sceneSource(wanted);await img.decode();loaded.current.add(wanted)}
+        if(request.current!==token)return
+        setPrevious(canAnimate?current.current:null);current.current=wanted;setTheme(wanted)
+      }catch{/* The last decoded scene remains visible. Navigation is not blocked. */}
+    },motion.modal?100:0)
+    return()=>{clearTimeout(delay);request.current++}
+  },[wanted,canAnimate,motion.modal])
+  useEffect(()=>{
+    if(!canAnimate){setPrevious(null);return}
+    if(!previous)return
+    const timer=setTimeout(()=>setPrevious(null),1050);return()=>clearTimeout(timer)
+  },[previous,theme,canAnimate])
+  useLayoutEffect(()=>{
+    const node=layer.current;if(!node)return
+    sectionTheme.current=routeTheme;node.dataset.scene=routeTheme==='home'?'hero':'document'
+    let observer:IntersectionObserver|undefined,frame=0,sections:HTMLElement[]=[]
+    const choose=()=>{
+      if(!sections.length)return
+      const y=innerHeight*.46
+      let best=sections[0],distance=Infinity
+      for(const section of sections){const r=section.getBoundingClientRect(),d=Math.max(r.top-y,y-r.bottom,0);if(d<distance){distance=d;best=section}}
+      node.dataset.scene=best.dataset.scene||'document'
+      if(routeTheme==='home'){sectionTheme.current=best.id==='community'?'community':'home';if(!document.documentElement.classList.contains('nav-open'))setWanted(sectionTheme.current)}
     }
-    const observe = () => {
-      resizeFrame = 0
-      observer?.disconnect()
-      // IntersectionObserver resolves percentages against WIDTH, including vertical
-      // margins. Use height-derived pixels so the band also works in landscape.
-      const top = Math.round(innerHeight * .38), bottom = Math.round(innerHeight * .52)
-      observer = new IntersectionObserver(chooseScene, {
-        threshold: 0, rootMargin: `-${top}px 0px -${bottom}px 0px`,
-      })
-      scenes.forEach(item => observer!.observe(item))
-      chooseScene()
+    const discover=()=>{
+      frame=0;observer?.disconnect();sections=[...document.querySelectorAll<HTMLElement>('main [data-scene]')]
+      if(!('IntersectionObserver'in window))return
+      observer=new IntersectionObserver(choose,{threshold:0,rootMargin:`-${Math.round(innerHeight*.38)}px 0px -${Math.round(innerHeight*.5)}px 0px`})
+      sections.forEach(s=>observer?.observe(s));choose()
     }
-    const resize = () => { if (!resizeFrame) resizeFrame = requestAnimationFrame(observe) }
-    observe()
-    addEventListener('resize', resize, { passive: true })
-    return () => { observer?.disconnect(); removeEventListener('resize', resize); cancelAnimationFrame(resizeFrame) }
-  }, [routeKey])
-  return <div ref={layer} className="scene-backdrop" data-menu={modal ? 'true' : 'false'}
-    data-ready={ready ? 'true' : 'false'} aria-hidden="true">
-    <picture className="scene-art">
-      <source media="(max-width:760px)" srcSet={ART.backgroundSmall}/>
-      <img src={ART.background} width="1600" height="900" fetchPriority="high"
-        decoding="async" onLoad={() => setReady(true)} alt=""/>
-    </picture>
-    <div className="scene-scrim"/>
-    <div className="scene-reading-veil"/>
-    <div className="scene-light scene-light--cyan"/>
-    <div className="scene-light scene-light--violet"/>
+    const resize=()=>{if(!frame)frame=requestAnimationFrame(discover)}
+    discover();addEventListener('resize',resize,{passive:true});addEventListener('copypump:content-ready',discover)
+    return()=>{observer?.disconnect();cancelAnimationFrame(frame);removeEventListener('resize',resize);removeEventListener('copypump:content-ready',discover)}
+  },[routeKey,routeTheme])
+  return <div ref={layer} className="scene-backdrop" data-theme={theme} data-menu={motion.modal?'true':'false'} data-ready={ready?'true':'false'} aria-hidden="true">
+    <picture className="scene-art"><img data-art-theme={theme} src={sceneSource(theme)} width="1672" height="941" fetchPriority="high" decoding="async" alt="" onLoad={()=>{setReady(true);loaded.current.add(theme)}}/></picture>
+    {previous&&previous!==theme&&<img className="scene-art-previous" key={`${previous}-${theme}`} data-art-theme={previous} src={sceneSource(previous)} width="1672" height="941" alt=""/>}
+    <div className="scene-scrim"/><div className="scene-reading-veil"/>
+    <div className="scene-light scene-light--cyan"/><div className="scene-light scene-light--violet"/>
+    <div className="scene-atmosphere"/>
   </div>
 }
