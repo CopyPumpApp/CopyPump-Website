@@ -1,0 +1,44 @@
+name: Apply exact v51 final review fixes
+on:
+  push:
+    branches: [feat/premium-v51-motion]
+    paths: [.github/workflows/v51-final-integration.yml]
+permissions:
+  contents: write
+jobs:
+  integrate:
+    if: github.ref == 'refs/heads/feat/premium-v51-motion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/premium-v51-motion
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Verify inputs and apply the reviewed patch
+        run: |
+          python - <<'PY'
+          import json,hashlib,subprocess
+          from pathlib import Path
+          changes=json.loads(Path('.ops/v51-final-fixes.json').read_text())
+          expected={'scripts/ui-regression-audit.mjs','scripts/v51-audit.mjs','src/components/Experience.tsx','src/premium/Site.tsx','src/premium/premium.css'}
+          assert {c['path'] for c in changes}==expected
+          for c in changes:
+              assert hashlib.sha256(Path(c['path']).read_bytes()).hexdigest()==c['before'],c['path']+' input mismatch'
+          subprocess.run(['git','apply','--check','--unidiff-zero','.ops/v51-final-fixes.patch'],check=True)
+          subprocess.run(['git','apply','--unidiff-zero','.ops/v51-final-fixes.patch'],check=True)
+          for c in changes:
+              assert hashlib.sha256(Path(c['path']).read_bytes()).hexdigest()==c['after'],c['path']+' output mismatch'
+          PY
+      - run: npm ci --audit=false && npm run check
+      - name: Commit only validated fixes to the preview branch
+        run: |
+          git config user.name 'CopyPump website review'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/ui-regression-audit.mjs scripts/v51-audit.mjs src/components/Experience.tsx src/premium/Site.tsx src/premium/premium.css
+          git rm .ops/v51-final-fixes.patch .ops/v51-final-fixes.json .github/workflows/v51-final-integration.yml
+          git commit -m 'fix: protect transparent header readability and sequence page entry after menu exit'
+          git push origin HEAD:feat/premium-v51-motion
