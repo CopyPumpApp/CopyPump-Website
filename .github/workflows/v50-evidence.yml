@@ -1,0 +1,41 @@
+name: Preserve reviewed Radar evidence
+on:
+  push:
+    branches: [feat/premium-v50-radar]
+    paths: [.github/workflows/v50-evidence.yml]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  evidence:
+    if: github.ref == 'refs/heads/feat/premium-v50-radar'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/premium-v50-radar
+      - name: Retrieve this repository's reviewed public-response artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download 35174119134 --repo CopyPumpApp/CopyPump-Website --name v50-baseline-and-evidence --dir /tmp/reviewed-radar
+      - name: Verify original bytes and stage only public ledger evidence
+        run: |
+          python - <<'PY'
+          import hashlib,json,shutil
+          from pathlib import Path
+          src=Path('/tmp/reviewed-radar/radar-evidence'); out=Path('public/radar/evidence'); out.mkdir(parents=True,exist_ok=True)
+          expected={'signatures.json':'c07d6b6c7c4899b04948e2fe78eec37997691e7a3a68c9ca3db612eb33137817','transaction-1.json':'155f4226ef80cb1834369ff3e46bff90c2f9037b8a9ff68d2f72c05d87262e67','transaction-2.json':'16a822a1c71a70e0e88aee661bc18937e122fb0b763ea467a5ad3c38fe1ba692','transaction-3.json':'9a774161ac20eb2fde63cd7d1c8ee44240a5ab7f2360831113f69798c8eb74d0','follow-up-statuses.json':'9ece139c46cae2138513c3f2a63fff053f61c5bafccab0a61e7f002a1e5a3f12'}
+          for name,digest in expected.items():
+              assert hashlib.sha256((src/name).read_bytes()).hexdigest()==digest,name
+              shutil.copy2(src/name,out/name)
+          provenance=json.loads((src/'provenance.json').read_text()); assert provenance['cluster']=='mainnet-beta'
+          assert all(c.get('ok') and expected[c['file']]==c['sha256'] for c in provenance['calls'])
+          shutil.copy2(src/'provenance.json',out/'provenance.json')
+          PY
+          git config user.name 'CopyPump evidence review'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/radar/evidence
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: preserve three public Mainnet observations and follow-up status checks'
+          git push origin HEAD:feat/premium-v50-radar
