@@ -50,17 +50,19 @@ function RadarArticle({id}:{id:string}){
   },[id,attempt])
   useLayoutEffect(()=>{if(state==='ready'){announceReady();if(location.hash==='#editorial-history')requestAnimationFrame(()=>document.getElementById('editorial-history')?.scrollIntoView({block:'start'}))}},[state,locale])
   const mismatch=!!(entry&&summary&&summary.version!==entry.version)
+  const absent=!!s.index&&!summary
   useEffect(()=>{
-    if(!entry||mismatch||!sentinel.current)return
+    if(!entry||mismatch||absent||!sentinel.current)return
     if(prior.current===null)prior.current=s.local.read[id]||0
     if(!('IntersectionObserver'in window))return
     let timer=0,inView=false
     const check=()=>{clearTimeout(timer);if(inView&&!document.hidden)timer=window.setTimeout(()=>s.markRead(id,entry.version),1400)}
-    const io=new IntersectionObserver(([e])=>{inView=e.isIntersecting;check()},{threshold:.5});io.observe(sentinel.current)
+    const io=new IntersectionObserver(([e])=>{inView=e.isIntersecting&&e.intersectionRatio>=.5;check()},{threshold:.5});io.observe(sentinel.current)
     document.addEventListener('visibilitychange',check)
     return()=>{clearTimeout(timer);io.disconnect();document.removeEventListener('visibilitychange',check)}
-  },[id,entry,mismatch,s.markRead])
-  if(!entry||state!=='ready')return <div className="app-shell radar-page"><Seo title={`${state==='missing'?c.notFound:c.name} — CopyPump`} description={c.intro} path={`/radar/${id}`} noIndex={state==='missing'}/><main id="main-content" tabIndex={-1} className="wrap radar-fallback"><Link to="/radar" className="text-link">← {c.back}</Link><h1>{state==='missing'?c.notFound:c.name}</h1><p role="status">{state==='loading'?c.loading:state==='missing'?c.notFoundText:c.detailError}</p>{state==='error'&&<button type="button" className="text-link" onClick={()=>setAttempt(x=>x+1)}>{c.retry} ↻</button>}</main></div>
+  },[id,entry,mismatch,absent,s.markRead])
+  const missing=state==='missing'||absent
+  if(!entry||state!=='ready'||missing)return <div className="app-shell radar-page"><Seo title={`${missing?c.notFound:c.name} — CopyPump`} description={c.intro} path={`/radar/${id}`} noIndex={missing}/><main id="main-content" tabIndex={-1} className="wrap radar-fallback"><Link to="/radar" className="text-link">← {c.back}</Link><h1>{missing?c.notFound:c.name}</h1><p role="status">{missing?c.notFoundText:state==='loading'?c.loading:c.detailError}</p>{state==='error'&&!missing&&<button type="button" className="text-link" onClick={()=>setAttempt(x=>x+1)}>{c.retry} ↻</button>}</main></div>
   const changed=hasUpdate(entry,s.local.read),baseline=prior.current||s.local.read[id]||0
   return <div className="app-shell premium-v50 radar-page"><Seo title={`${entry.title[locale]} — CopyPump Radar`} description={entry.summary[locale]} path={`/radar/${id}`}/><main id="main-content" tabIndex={-1}>
     <header className="document-hero wrap radar-article-hero" data-scene="document"><Link to="/radar" className="text-link">← {c.back}</Link><p className="eyebrow">{entry.category[locale]} · {entry.cluster==='mainnet-beta'?'SOLANA MAINNET':'SOLANA DEVNET'}</p><KineticHeading as="h1" lines={[{text:entry.title[locale],accent:true}]}/><p>{entry.summary[locale]}</p><div className="radar-article-actions"><Save id={id}/>{changed&&<Link to={`/radar/${id}#editorial-history`} className="text-link">{c.show} ↓</Link>}</div><LocalNotice/>{mismatch&&<p role="status" className="radar-notice">{c.mismatch}<button type="button" className="text-link" onClick={()=>{s.reload();setAttempt(x=>x+1)}}>{c.retry} ↻</button></p>}</header>

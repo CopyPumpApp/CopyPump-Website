@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useMotion } from '../components/Experience'
 
+const routeWithoutLocale = (path:string) => path.replace(/^\/ru(?=\/|$)/,'') || '/'
 type Phase = 'closed' | 'opening' | 'open' | 'closing'
 
 /** Bounded, reversible state machine. Modal lifetime is independent of animation. */
@@ -34,7 +35,7 @@ export function useAnimatedMenu() {
     }
     const focus = (e:FocusEvent) => { if (!sheet.current?.contains(e.target as Node)) closeButton.current?.focus({ preventScroll: true }) }
     const pop = () => {
-      if (location.pathname.replace(/^\/ru(?=\/|$)/,'') !== before.path.replace(/^\/ru(?=\/|$)/,'')) destination()
+      if (routeWithoutLocale(location.pathname) !== routeWithoutLocale(before.path)) destination()
     }
     document.addEventListener('keydown', keys); document.addEventListener('focusin', focus); window.addEventListener('popstate', pop)
     return () => {
@@ -58,9 +59,8 @@ export function useAnimatedMenu() {
       return
     }
     if (phase === 'opening') {
-      // Paint the initial mask once; reversing an exit uses current CSS interpolation.
       raf = requestAnimationFrame(() => { raf = requestAnimationFrame(() => setShown(true)) })
-      timer = window.setTimeout(() => setPhase(old => old === 'opening' ? 'open' : old), 680)
+      timer = window.setTimeout(() => setPhase(old => old === 'opening' ? 'open' : old), 760)
     } else if (phase === 'closing') {
       setShown(false)
       timer = window.setTimeout(() => setPhase(old => old === 'closing' ? 'closed' : old), 260)
