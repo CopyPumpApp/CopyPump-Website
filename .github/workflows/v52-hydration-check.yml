@@ -2,7 +2,7 @@ name: V52 hydration regression
 on:
   push:
     branches: [feat/v52-publication-ready]
-    paths: [src/main.tsx, src/radar/store.tsx, tests/e2e/hydration-local-state.spec.ts, .github/workflows/v52-hydration-check.yml]
+    paths: [src/App.tsx, src/main.tsx, src/radar/store.tsx, tests/e2e/hydration-local-state.spec.ts, .github/workflows/v52-hydration-check.yml]
 permissions:
   contents: read
 jobs:

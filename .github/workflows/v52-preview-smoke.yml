@@ -2,7 +2,7 @@ name: V52 actual preview verification
 on:
   push:
     branches: [feat/v52-publication-ready]
-    paths: [.github/workflows/v52-preview-smoke.yml, scripts/verify-public-preview.mjs, src/entry-server.tsx, src/main.tsx, src/radar/store.tsx]
+    paths: [.github/workflows/v52-preview-smoke.yml, scripts/verify-public-preview.mjs, src/entry-server.tsx, src/App.tsx, src/main.tsx, src/radar/store.tsx]
 permissions:
   contents: read
   checks: read

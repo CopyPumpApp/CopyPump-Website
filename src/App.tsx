@@ -18,6 +18,10 @@ export default function App({bootstrap,staticRadar}:{bootstrap?:SiteBootstrap;st
     if(location.hash){const id=decodeURIComponent(location.hash.slice(1));requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({block:'start',behavior:'auto'}))}
   },[loc.path,loc.locale])
   const RadarComponent=staticRadar||RadarPage
-  const page=loc.path==='/'?<PremiumLanding/>:loc.path==='/project'?<PremiumProject/>:loc.path==='/progress'?<PremiumProgress/>:(loc.path==='/radar'||loc.path.startsWith('/radar/'))?<Suspense fallback={<main id="main-content" tabIndex={-1} className="wrap" style={{minHeight:'65vh',paddingTop:80}}><p role="status">{loc.locale==='ru'?'Загружаем Radar…':'Loading Radar…'}</p></main>}><RadarComponent id={loc.path.split('/')[2]}/></Suspense>:loc.path==='/404'?<NotFoundPage path={loc.path}/>:<LegalPage kind={loc.path.slice(1) as LegalPageKind}/>
+  // A resolved initial route must hydrate with the rest of its providers in the
+  // same commit. Only later, client-only lazy navigation needs Suspense.
+  const radarNode=<RadarComponent id={loc.path.split('/')[2]}/>
+  const radarPage=staticRadar?radarNode:<Suspense fallback={<main id="main-content" tabIndex={-1} className="wrap" style={{minHeight:'65vh',paddingTop:80}}><p role="status">{loc.locale==='ru'?'Загружаем Radar…':'Loading Radar…'}</p></main>}>{radarNode}</Suspense>
+  const page=loc.path==='/'?<PremiumLanding/>:loc.path==='/project'?<PremiumProject/>:loc.path==='/progress'?<PremiumProgress/>:(loc.path==='/radar'||loc.path.startsWith('/radar/'))?radarPage:loc.path==='/404'?<NotFoundPage path={loc.path}/>:<LegalPage kind={loc.path.slice(1) as LegalPageKind}/>
   return <I18nProvider locale={loc.locale}><RadarProvider initialIndex={bootstrap?.radarIndex} initialObservation={bootstrap?.radarObservation}><Experience routeKey={`${loc.locale}:${loc.path}`}><PremiumShell routeKey={`${loc.locale}:${loc.path}`}>{page}</PremiumShell></Experience></RadarProvider></I18nProvider>
 }
