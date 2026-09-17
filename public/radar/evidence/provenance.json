@@ -1,0 +1,151 @@
+{
+  "cluster": "mainnet-beta",
+  "endpoint": "https://api.mainnet-beta.solana.com",
+  "startedAt": "2026-09-17T02:21:57.422975+00:00",
+  "calls": [
+    {
+      "method": "getSignaturesForAddress",
+      "requestedAt": "2026-09-17T02:21:57.422986+00:00",
+      "receivedAt": "2026-09-17T02:21:57.907648+00:00",
+      "file": "signatures.json",
+      "sha256": "c07d6b6c7c4899b04948e2fe78eec37997691e7a3a68c9ca3db612eb33137817",
+      "request": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "getSignaturesForAddress",
+        "params": [
+          "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          {
+            "limit": 12,
+            "commitment": "finalized"
+          }
+        ]
+      },
+      "ok": true
+    },
+    {
+      "method": "getTransaction",
+      "requestedAt": "2026-09-17T02:22:03.907830+00:00",
+      "receivedAt": "2026-09-17T02:22:04.511333+00:00",
+      "file": "transaction-1.json",
+      "sha256": "155f4226ef80cb1834369ff3e46bff90c2f9037b8a9ff68d2f72c05d87262e67",
+      "request": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "getTransaction",
+        "params": [
+          "4ojcdVhrz7vMHHSKcVSgkXZ3oft3oANdnVXj6K8nwmwxgXz8SrKxPCeNihXqJ28Z9JPSfyi47jHR4ap24o4cjZ9W",
+          {
+            "encoding": "jsonParsed",
+            "commitment": "finalized",
+            "maxSupportedTransactionVersion": 0
+          }
+        ]
+      },
+      "ok": true
+    },
+    {
+      "method": "getTransaction",
+      "requestedAt": "2026-09-17T02:22:10.511520+00:00",
+      "receivedAt": "2026-09-17T02:22:11.009774+00:00",
+      "file": "transaction-2.json",
+      "sha256": "16a822a1c71a70e0e88aee661bc18937e122fb0b763ea467a5ad3c38fe1ba692",
+      "request": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "getTransaction",
+        "params": [
+          "3WJhGfJKo9dYgvF6TDefzxRuLC92QoxJkmEAjjkJL3okBJpRhfiTkgRXGwmvrnLmoxSzz246z48F4Uk7zyd7xLFy",
+          {
+            "encoding": "jsonParsed",
+            "commitment": "finalized",
+            "maxSupportedTransactionVersion": 0
+          }
+        ]
+      },
+      "ok": true
+    },
+    {
+      "method": "getTransaction",
+      "requestedAt": "2026-09-17T02:22:17.009965+00:00",
+      "receivedAt": "2026-09-17T02:22:17.668294+00:00",
+      "file": "transaction-3.json",
+      "sha256": "9a774161ac20eb2fde63cd7d1c8ee44240a5ab7f2360831113f69798c8eb74d0",
+      "request": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "getTransaction",
+        "params": [
+          "3GrmBLU1asWEg8yvnCaowhSqLD2KpSfVcgtMorcQfyEvmhnrcFnmrs3kD2XJWFxUaeYny2UXySaLiR7qRhkJfK88",
+          {
+            "encoding": "jsonParsed",
+            "commitment": "finalized",
+            "maxSupportedTransactionVersion": 0
+          }
+        ]
+      },
+      "ok": true
+    },
+    {
+      "method": "getSignatureStatuses",
+      "requestedAt": "2026-09-17T02:22:23.668512+00:00",
+      "receivedAt": "2026-09-17T02:22:24.099834+00:00",
+      "file": "follow-up-statuses.json",
+      "sha256": "9ece139c46cae2138513c3f2a63fff053f61c5bafccab0a61e7f002a1e5a3f12",
+      "request": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "getSignatureStatuses",
+        "params": [
+          [
+            "4ojcdVhrz7vMHHSKcVSgkXZ3oft3oANdnVXj6K8nwmwxgXz8SrKxPCeNihXqJ28Z9JPSfyi47jHR4ap24o4cjZ9W",
+            "3WJhGfJKo9dYgvF6TDefzxRuLC92QoxJkmEAjjkJL3okBJpRhfiTkgRXGwmvrnLmoxSzz246z48F4Uk7zyd7xLFy",
+            "3GrmBLU1asWEg8yvnCaowhSqLD2KpSfVcgtMorcQfyEvmhnrcFnmrs3kD2XJWFxUaeYny2UXySaLiR7qRhkJfK88"
+          ],
+          {
+            "searchTransactionHistory": true
+          }
+        ]
+      },
+      "ok": true
+    }
+  ],
+  "selection": "First failed, first successful, then first not already selected in a 12-signature finalized Token Program sample. No price or identity selection.",
+  "selected": [
+    {
+      "blockTime": 1789611706,
+      "confirmationStatus": "finalized",
+      "err": {
+        "InstructionError": [
+          6,
+          {
+            "Custom": 5000
+          }
+        ]
+      },
+      "memo": null,
+      "signature": "4ojcdVhrz7vMHHSKcVSgkXZ3oft3oANdnVXj6K8nwmwxgXz8SrKxPCeNihXqJ28Z9JPSfyi47jHR4ap24o4cjZ9W",
+      "slot": 447680207,
+      "transactionIndex": 1453
+    },
+    {
+      "blockTime": 1789611706,
+      "confirmationStatus": "finalized",
+      "err": null,
+      "memo": null,
+      "signature": "3WJhGfJKo9dYgvF6TDefzxRuLC92QoxJkmEAjjkJL3okBJpRhfiTkgRXGwmvrnLmoxSzz246z48F4Uk7zyd7xLFy",
+      "slot": 447680207,
+      "transactionIndex": 1455
+    },
+    {
+      "blockTime": 1789611706,
+      "confirmationStatus": "finalized",
+      "err": null,
+      "memo": null,
+      "signature": "3GrmBLU1asWEg8yvnCaowhSqLD2KpSfVcgtMorcQfyEvmhnrcFnmrs3kD2XJWFxUaeYny2UXySaLiR7qRhkJfK88",
+      "slot": 447680207,
+      "transactionIndex": 1454
+    }
+  ],
+  "finishedAt": "2026-09-17T02:22:24.099861+00:00"
+}
