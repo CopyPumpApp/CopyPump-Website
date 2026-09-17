@@ -1,0 +1,21 @@
+/* Actual scene cutout, not a black bar or unreliable backdrop-blur declaration. */
+.site-frame .site-header[data-scrolled]::before{content:none;display:none}
+.header-scene-canopy{position:absolute;inset:0 0 -32px;z-index:0;pointer-events:none;overflow:hidden;contain:layout paint;opacity:0;transition:opacity .4s ease;-webkit-mask-image:linear-gradient(#000 0 calc(100% - 32px),transparent 100%);mask-image:linear-gradient(#000 0 calc(100% - 32px),transparent 100%)}
+.site-header[data-scrolled=true] .header-scene-canopy{opacity:1}
+.header-scene-canopy__viewport{position:absolute;left:0;top:0;width:100%;height:100vh;background:var(--bg);overflow:hidden;pointer-events:none}
+.header-scene-canopy__art,.header-scene-canopy__previous{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 47%;pointer-events:none}
+.header-scene-canopy__previous{animation:scene-art-out 1.04s var(--ease) forwards}
+.header-scene-canopy__viewport[data-scene=hero] .scene-light--cyan{opacity:1}
+.header-scene-canopy__viewport[data-scene=experience] .scene-reading-veil{opacity:.32}
+.header-scene-canopy__viewport[data-scene=experience] .scene-light--violet{opacity:1}
+.header-scene-canopy__viewport[data-scene=status] .scene-reading-veil{opacity:.29}
+.header-scene-canopy__viewport[data-scene=status] .scene-light--cyan{opacity:.6}
+.header-scene-canopy__viewport[data-scene=community] .scene-reading-veil{opacity:.12}
+.header-scene-canopy__viewport[data-scene=community] .scene-light--violet{opacity:.5}
+.header-scene-canopy__viewport[data-scene=document] .scene-reading-veil{opacity:.34}
+.header-scene-canopy__viewport[data-scene=radar] .scene-reading-veil{opacity:.35}
+.header-scene-canopy__viewport[data-scene=radar] .scene-light--cyan{opacity:.8}
+@media(max-width:760px){.header-scene-canopy__viewport{height:100lvh}.header-scene-canopy__art,.header-scene-canopy__previous{object-position:51% 48%}.header-scene-canopy img[data-canopy-theme]:not([data-canopy-theme=home]){object-position:82% 48%}.header-scene-canopy__viewport[data-scene=experience] .scene-reading-veil{opacity:.28}.header-scene-canopy__viewport[data-scene=status] .scene-reading-veil{opacity:.22}.header-scene-canopy__viewport[data-scene=document] .scene-reading-veil{opacity:.39}}
+html[data-motion-preference=off] .header-scene-canopy{transition:none}
+@media(prefers-reduced-motion:reduce){.header-scene-canopy{transition:none}.header-scene-canopy__previous{animation:none}}
+@media(forced-colors:active){.header-scene-canopy{display:none}}

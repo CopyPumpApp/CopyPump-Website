@@ -8,25 +8,33 @@ async function tap(page:Page,selector:string,touch:boolean){
   if(touch)await page.touchscreen.tap(p.x,p.y);else await page.mouse.click(p.x,p.y)
 }
 
-test('transparent header softens overlapping copy without adding a black bar',async({page},info)=>{
-  await page.goto('/ru');await page.waitForTimeout(1800)
-  const header=page.locator('.site-header')
+test('transparent header preserves the scene and completely occludes overlapping body text',async({page},info)=>{
+  await page.emulateMedia({reducedMotion:'reduce'})
+  await page.goto('/ru');await page.waitForTimeout(700)
+  const header=page.locator('.site-header'),canopy=page.locator('.header-scene-canopy')
   await expect(header).toHaveCSS('background-color','rgba(0, 0, 0, 0)')
-  // Precisely recreate the reported composition: page text behind the logo.
-  await page.locator('.hero-bottom p').evaluate(n=>window.scrollTo({top:n.getBoundingClientRect().top+scrollY-28,behavior:'auto'}))
-  await expect(header).toHaveAttribute('data-scrolled','true');await page.waitForTimeout(650)
-  const canopy=await header.evaluate(n=>{
-    const s=getComputedStyle(n,'::before'),r=n.getBoundingClientRect()
-    return{blur:s.backdropFilter||s.getPropertyValue('-webkit-backdrop-filter'),mask:s.maskImage||s.getPropertyValue('-webkit-mask-image'),extension:parseFloat(s.bottom),height:r.height,background:getComputedStyle(n).backgroundColor}
-  })
-  expect(canopy.blur).toBe('blur(12px)');expect(canopy.mask).toContain('linear-gradient')
-  expect(canopy.extension).toBeGreaterThanOrEqual(-32);expect(canopy.height).toBeLessThan(130)
-  expect(canopy.background).toBe('rgba(0, 0, 0, 0)')
-  for(const selector of ['.scene-backdrop','.page-outlet','.scene-art'])await expect(page.locator(selector)).toHaveCSS('filter','none')
+  await expect(canopy).toHaveCSS('opacity','0')
+  const copy=page.locator('.hero-bottom p')
+  await copy.evaluate(n=>window.scrollTo({top:n.getBoundingClientRect().top+scrollY-28,behavior:'auto'}))
+  await expect(header).toHaveAttribute('data-scrolled','true');await expect(canopy).toHaveCSS('opacity','1')
+  await expect.poll(()=>page.locator('.header-scene-canopy__art').evaluate(n=>(n as HTMLImageElement).complete&&(n as HTMLImageElement).naturalWidth>0)).toBeTruthy()
+  await page.waitForTimeout(300)
+  const box=await header.boundingBox();expect(box).not.toBeNull()
+  const clip={x:Math.ceil(box!.x),y:Math.ceil(box!.y),width:Math.floor(box!.width),height:Math.floor(box!.height)-1}
+  const withCopy=await page.screenshot({clip})
+  await copy.evaluate(n=>(n as HTMLElement).style.visibility='hidden')
+  const withoutCopy=await page.screenshot({clip})
+  // A visual assertion: the rendered navigation must not change when the body
+  // text directly underneath is removed. A computed blur declaration cannot pass this.
+  expect(withCopy.equals(withoutCopy),'scrolling copy must not paint through the navigation').toBeTruthy()
+  await copy.evaluate(n=>(n as HTMLElement).style.visibility='')
   await page.screenshot({path:`test-results/visual-qa/${info.project.name}/v51-header-scrolled-fixed.png`})
-  await page.evaluate(()=>scrollTo({top:0,behavior:'auto'}));await page.waitForTimeout(550)
-  await expect(header).toHaveAttribute('data-scrolled','false')
-  expect(await header.evaluate(n=>getComputedStyle(n,'::before').opacity)).toBe('0')
+  const source=await page.locator('.scene-art img').getAttribute('src')
+  await expect(page.locator('.header-scene-canopy__art')).toHaveAttribute('src',source!)
+  expect(await canopy.evaluate(n=>n.getBoundingClientRect().height)).toBeLessThan(165)
+  for(const selector of ['.scene-backdrop','.page-outlet','.scene-art','.header-scene-canopy'])await expect(page.locator(selector)).toHaveCSS('filter','none')
+  await page.evaluate(()=>scrollTo({top:0,behavior:'auto'}));await expect(header).toHaveAttribute('data-scrolled','false')
+  await expect(canopy).toHaveCSS('opacity','0')
 })
 
 test('destination waits for menu exit, then reveals without overlapping navigation text',async({page,isMobile},info)=>{

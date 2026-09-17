@@ -1,6 +1,7 @@
 import {useEffect,useLayoutEffect,useRef,useState} from 'react'
 import {useMotion} from '../components/Experience'
 import {themeForPath,sceneSource,SCENE_THEMES,type SceneTheme} from './sceneThemes'
+import {HeaderSceneCanopy} from './HeaderSceneCanopy'
 
 /** Native-resolution route art; at most one outgoing background during a handoff. */
 export function SceneBackdrop({routeKey}:{routeKey:string}) {
@@ -54,11 +55,11 @@ export function SceneBackdrop({routeKey}:{routeKey:string}) {
     discover();addEventListener('resize',resize,{passive:true});addEventListener('copypump:content-ready',discover)
     return()=>{observer?.disconnect();cancelAnimationFrame(frame);removeEventListener('resize',resize);removeEventListener('copypump:content-ready',discover)}
   },[routeKey,routeTheme])
-  return <div ref={layer} className="scene-backdrop" data-theme={theme} data-menu={motion.modal?'true':'false'} data-ready={ready?'true':'false'} aria-hidden="true">
+  return <><div ref={layer} className="scene-backdrop" data-theme={theme} data-menu={motion.modal?'true':'false'} data-ready={ready?'true':'false'} aria-hidden="true">
     <picture className="scene-art"><img data-art-theme={theme} src={sceneSource(theme)} width="1672" height="941" fetchPriority="high" decoding="async" alt="" onLoad={()=>{setReady(true);loaded.current.add(theme)}}/></picture>
     {previous&&previous!==theme&&<img className="scene-art-previous" key={`${previous}-${theme}`} data-art-theme={previous} src={sceneSource(previous)} width="1672" height="941" alt=""/>}
     <div className="scene-scrim"/><div className="scene-reading-veil"/>
     <div className="scene-light scene-light--cyan"/><div className="scene-light scene-light--violet"/>
     <div className="scene-atmosphere"/>
-  </div>
+  </div><HeaderSceneCanopy theme={theme} previous={previous} sceneRef={layer}/></>
 }
