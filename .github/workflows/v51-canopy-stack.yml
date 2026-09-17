@@ -1,0 +1,44 @@
+name: Correct v51 canopy stacking
+on:
+  push:
+    branches: [feat/premium-v51-motion]
+    paths: [.github/workflows/v51-canopy-stack.yml]
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.ref == 'refs/heads/feat/premium-v51-motion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/premium-v51-motion
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Preserve the preceding prefix correction and fix only foreground stacking
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          p=Path('src/premium/premium.css')
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='be73da6c71dbda1708d81908915de4b7af093d50f608d8cff20b8c070dcd42a7'
+          s=p.read_text()
+          changes=[('.site-header::before{content:"";position:absolute;inset:0 0 -32px;z-index:-1;','.site-header::before{content:"";position:absolute;inset:0 0 -32px;z-index:0;'),('.site-header__inner{display:flex;','.site-header__inner{position:relative;z-index:1;display:flex;')]
+          for old,new in changes:
+              assert s.count(old)==1,old
+              s=s.replace(old,new)
+          assert hashlib.sha256(s.encode()).hexdigest()=='c8842f64d342a334a0d4237b535d40b198f84026005fde88f68664ea77bc68a4'
+          p.write_text(s)
+          PY
+      - run: npm ci --audit=false && npm run check
+      - name: Commit validated stylesheet and remove the one-time workflow
+        run: |
+          git config user.name 'CopyPump website review'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/premium/premium.css
+          git rm .github/workflows/v51-canopy-stack.yml
+          git commit -m 'fix: paint the feathered canopy above page text and below navigation'
+          git push origin HEAD:feat/premium-v51-motion
