@@ -36,9 +36,9 @@ test('a refresh failure retains the last loaded edition and does not claim no ac
  await page.route('**/radar/index.json',r=>r.fulfill({status:503,body:'Unavailable'}));await page.getByRole('button',{name:'Refresh edition'}).click();await expect(page.locator('.radar-notice')).toContainText('not evidence of no new activity');await expect(page.locator('.radar-row')).toHaveCount(3)
 })
 test('invalid JSON, absent record and missing evidence remain explicit',async({page})=>{
- await page.route('**/radar/index.json',r=>r.fulfill({contentType:'application/json',body:'{"schemaVersion":1,"items":[{"id":"bad"}]}'}));await page.goto('/radar');await expect(page.locator('.radar-notice')).toBeVisible();await expect(page.locator('.radar-row')).toHaveCount(0)
+ await page.route('**/radar/index.json',r=>r.fulfill({contentType:'application/json',body:'{"schemaVersion":1,"items":[{"id":"bad"}]}'}));await page.goto('/radar');await expect(page.locator('.radar-notice')).toBeVisible();await expect(page.locator('.radar-row')).toHaveCount(3) // Pre-rendered, previously verified edition is retained.
  await page.unroute('**/radar/index.json');await page.route('**/radar/observations/not-found.json',r=>r.fulfill({status:404}));await page.goto('/radar/not-found');await expect(page.locator('h1')).toHaveText('Observation not found')
- await page.route('**/radar/observations/'+id+'.json',r=>r.fulfill({status:503}));await page.goto('/radar/'+id);await expect(page.locator('.radar-fallback')).toContainText('could not be loaded')
+ await page.route('**/radar/observations/'+id+'.json',r=>r.fulfill({status:503}));await page.goto('/radar');await page.locator('.radar-row h2 a').first().click();await expect(page.locator('.radar-fallback')).toContainText('could not be loaded')
 })
 test('Home requests the index only; no RPC, transaction calls or detail payload',async({page})=>{
  const requests:string[]=[];page.on('request',r=>requests.push(r.url()));await page.goto('/');await expect(page.locator('.radar-teaser-story h3')).toBeVisible()

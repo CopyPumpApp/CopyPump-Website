@@ -1,13 +1,14 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import {createRoot,hydrateRoot} from 'react-dom/client'
 import App from './App'
-import { ErrorBoundary } from './components/ErrorBoundary'
+import {ErrorBoundary} from './components/ErrorBoundary'
+import {readBootstrap} from './site/bootstrap'
 import pkg from '../package.json'
 import './styles/index.css'
-
-export const SITE_RELEASE = pkg.version
-
-// Locale is determined only by the URL. The root is always English.
-document.documentElement.dataset.build = SITE_RELEASE
-console.info(`[CopyPump] ${SITE_RELEASE} premium stabilization runtime loaded`)
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><ErrorBoundary><App/></ErrorBoundary></React.StrictMode>)
+export const SITE_RELEASE=pkg.version
+const root=document.getElementById('root')!,bootstrap=readBootstrap()
+document.documentElement.dataset.build=SITE_RELEASE
+const app=<React.StrictMode><ErrorBoundary><App bootstrap={bootstrap}/></ErrorBoundary></React.StrictMode>
+if(root.dataset.prerendered==='true'&&bootstrap){
+  hydrateRoot(root,app,{onRecoverableError:error=>console.error('[CopyPump] hydration recovery',error)})
+}else createRoot(root).render(app)

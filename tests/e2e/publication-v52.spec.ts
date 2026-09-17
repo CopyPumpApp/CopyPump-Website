@@ -27,7 +27,7 @@ test('no JavaScript: Home, Product and source-backed Radar remain readable',asyn
  await expect(page.locator('.responsibility-columns')).toContainText('Задачи системы')
  await expect(page.locator('a[href$="/tools/README.md"]')).toBeVisible()
  await page.goto('/ru/project');await expect(page.locator('.architecture-parts article')).toHaveCount(4)
- await page.goto('/ru/radar/gross-transfer-net-change');await expect(page.locator('.radar-narrative')).toContainText('Сверка')
+ await page.goto('/ru/radar/gross-transfer-net-change');await expect(page.locator('.radar-narrative')).toContainText('Что видно в источнике')
  await expect(page.locator('.radar-sources a').first()).toHaveAttribute('href',/evidence/)
  await context.close()
 })

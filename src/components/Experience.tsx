@@ -9,9 +9,9 @@ const visible = (node:HTMLElement) => {
 
 /** One transform owner per element. Menu state never re-arms page entrances. */
 export function Experience({children,routeKey}:{children:ReactNode;routeKey:string}) {
-  const [paused,setPaused] = useState(()=>{try{return localStorage.getItem('copypump.motion')==='paused'}catch{return false}})
-  const [reduced,setReduced] = useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches)
-  const [pageVisible,setPageVisible] = useState(!document.hidden)
+  const [paused,setPaused] = useState(false)
+  const [reduced,setReduced] = useState(false)
+  const [pageVisible,setPageVisible] = useState(true)
   const [modal,setModal] = useState(false)
   const running = !paused && !reduced && pageVisible && !modal
   const allowed = useRef(!paused && !reduced)
@@ -24,6 +24,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
   useEffect(()=>{
     const media=matchMedia('(prefers-reduced-motion: reduce)')
     const change=()=>setReduced(media.matches),visibility=()=>setPageVisible(!document.hidden)
+    change();visibility();try{setPaused(localStorage.getItem('copypump.motion')==='paused')}catch{}
     media.addEventListener('change',change);document.addEventListener('visibilitychange',visibility)
     return()=>{media.removeEventListener('change',change);document.removeEventListener('visibilitychange',visibility)}
   },[])
@@ -33,6 +34,10 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
 
   useLayoutEffect(()=>{
     const nodes=new Set<HTMLElement>()
+    const initialDocument=document.getElementById('root')?.dataset.prerendered==='true'
+    const initialPath=document.documentElement.dataset.initialPath
+    const initialRoute=routeKey.slice(routeKey.indexOf(':')+1)
+    const keepInitial=initialDocument&&initialPath===initialRoute
     if(!allowed.current||!('IntersectionObserver'in window)) {
       document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(visible);return
     }
@@ -63,7 +68,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
       if(nodes.has(node))return
       nodes.add(node)
       const r=node.getBoundingClientRect()
-      if(r.bottom<0||node.dataset.revealed==='true'){visible(node);return}
+      if(r.bottom<0||node.dataset.revealed==='true'||(keepInitial&&r.top<innerHeight&&r.bottom>0)){visible(node);return}
       node.dataset.revealed='false'
       if(typeof node.animate==='function')node.style.opacity='0'
       io.observe(node)

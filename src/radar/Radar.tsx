@@ -7,8 +7,9 @@ import {hasUpdate,useRadar} from './store'
 import {parseObservation,validId,type Observation,type ObservationSummary} from './schema'
 import {radarCopy} from './copy'
 import './radar.css'
+import {publicDate} from '../site/bootstrap'
 const announceReady=()=>{window.dispatchEvent(new Event('copypump:content-ready'))}
-function Stamp({value}:{value:string}){const {locale}=useI18n();return <time dateTime={value}>{new Intl.DateTimeFormat(locale==='ru'?'ru-RU':'en-GB',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(new Date(value))} UTC</time>}
+function Stamp({value}:{value:string}){const {locale}=useI18n();return <time dateTime={value}>{publicDate(value,locale,true)} UTC</time>}
 function Save({id}:{id:string}){const {locale}=useI18n(),s=useRadar(),c=radarCopy[locale],saved=s.local.saved.includes(id);return <button type="button" className="radar-save" aria-pressed={saved} onClick={()=>s.toggleSave(id)}><svg aria-hidden="true" width="17" height="20" viewBox="0 0 20 24" fill={saved?'currentColor':'none'}><path d="M4 3h12v18l-6-4-6 4V3Z" stroke="currentColor" strokeWidth="1.4"/></svg>{saved?c.remove:c.save}</button>}
 function LocalNotice(){const {locale}=useI18n(),{persistent}=useRadar(),c=radarCopy[locale];return <p className={`radar-local ${persistent?'':'radar-warning'}`} role={persistent?undefined:'status'}>{persistent?c.local:c.temporary}</p>}
 function Row({item,ordinal}:{item:ObservationSummary;ordinal:number}){
@@ -34,10 +35,11 @@ export default function RadarPage({id}:{id?:string}){
   </main></div>
 }
 function RadarArticle({id}:{id:string}){
-  const {locale}=useI18n(),c=radarCopy[locale],s=useRadar(),[entry,setEntry]=useState<Observation|null>(null),[state,setState]=useState<'loading'|'ready'|'error'|'missing'>('loading'),[attempt,setAttempt]=useState(0)
+  const {locale}=useI18n(),c=radarCopy[locale],s=useRadar(),[entry,setEntry]=useState<Observation|null>(()=>s.initialObservation?.id===id?s.initialObservation:null),[state,setState]=useState<'loading'|'ready'|'error'|'missing'>(()=>s.initialObservation?.id===id?'ready':'loading'),[attempt,setAttempt]=useState(0)
   const summary=s.index?.items.find(x=>x.id===id),sentinel=useRef<HTMLDivElement>(null),prior=useRef<number|null>(null)
   useEffect(()=>{
     if(!validId(id)){setState('missing');return}
+    if(attempt===0&&s.initialObservation?.id===id)return
     const abort=new AbortController(),timeout=window.setTimeout(()=>abort.abort(),10000);let live=true
     setState('loading');setEntry(null)
     fetch(`/radar/observations/${id}.json`,{signal:abort.signal,cache:'no-cache'}).then(async response=>{

@@ -14,7 +14,7 @@ test('transparent header preserves the scene and completely occludes overlapping
   const header=page.locator('.site-header'),canopy=page.locator('.header-scene-canopy')
   await expect(header).toHaveCSS('background-color','rgba(0, 0, 0, 0)')
   await expect(canopy).toHaveCSS('opacity','0')
-  const copy=page.locator('.hero-bottom p')
+  const copy=page.locator('.hero-context')
   await copy.evaluate(n=>window.scrollTo({top:n.getBoundingClientRect().top+scrollY-28,behavior:'auto'}))
   await expect(header).toHaveAttribute('data-scrolled','true');await expect(canopy).toHaveCSS('opacity','1')
   await expect.poll(()=>page.locator('.header-scene-canopy__art').evaluate(n=>(n as HTMLImageElement).complete&&(n as HTMLImageElement).naturalWidth>0)).toBeTruthy()

@@ -16,7 +16,7 @@ must(!withoutCanopy.includes('filter:'),'Only the scrolled header canopy may app
 must(css.includes('backdrop-filter:blur(12px)'),'Header text bleed requires the bounded readability canopy.')
 must(!motion.includes('pointermove')&&!motion.includes('scrollY'),'No pointer/scroll-driven scene transform loop.')
 must(!css.includes('animation-play-state:paused'),'Never freeze the menu on a hidden entrance frame.')
-must(statSync('src/premium/premium.css').size<46000,'Presentation CSS must stay within the 46KB source budget.')
+must(statSync('src/premium/premium.css').size<52000,'V52 adds six content layouts; presentation CSS must remain below 52KB source.')
 must(site.includes('aria-selected')&&site.includes('policy-result'),'Interactive chapters and policy illustration must remain functional.')
 must(!site.includes('hero-art')&&site.includes('<SceneBackdrop routeKey='),'Artwork must be persistent environment, not a Hero illustration.')
 must(scene.includes('scene-backdrop')&&!site.includes('community-monogram'),'No repeated background or decorative CP monogram.')
