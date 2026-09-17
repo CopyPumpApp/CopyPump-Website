@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useMotion } from '../components/Experience'
 
+const routeWithoutLocale = (path:string) => path.replace(/^\/ru(?=\/|$)/,'') || '/'
 type Phase = 'closed' | 'opening' | 'open' | 'closing'
 
 /** Bounded, reversible state machine. Modal lifetime is independent of animation. */
@@ -34,13 +35,13 @@ export function useAnimatedMenu() {
     }
     const focus = (e:FocusEvent) => { if (!sheet.current?.contains(e.target as Node)) closeButton.current?.focus({ preventScroll: true }) }
     const pop = () => {
-      if (location.pathname.replace(/^\/ru(?=\/|$)/,'') !== before.path.replace(/^\/ru(?=\/|$)/,'')) destination()
+      if (routeWithoutLocale(location.pathname) !== routeWithoutLocale(before.path)) destination()
     }
     document.addEventListener('keydown', keys); document.addEventListener('focusin', focus); window.addEventListener('popstate', pop)
     return () => {
       document.removeEventListener('keydown', keys); document.removeEventListener('focusin', focus); window.removeEventListener('popstate', pop)
       if (app) app.inert = before.inert
-      root.style.overflow = before.root; body.style.overflow = before.body; root.classList.remove('nav-open'); setModal(false)
+      root.style.overflow = before.root; body.style.overflow = before.body; root.classList.remove('nav-open'); setModal(false); window.dispatchEvent(new Event('copypump:menu-settled'))
       if (restore.current) {
         if (location.pathname === before.path && Math.abs(scrollY - before.y) > 2) scrollTo({ top: before.y, behavior: 'auto' })
         trigger.current?.focus({ preventScroll: true })
@@ -58,12 +59,11 @@ export function useAnimatedMenu() {
       return
     }
     if (phase === 'opening') {
-      // Paint the initial mask once; reversing an exit uses current CSS interpolation.
       raf = requestAnimationFrame(() => { raf = requestAnimationFrame(() => setShown(true)) })
-      timer = window.setTimeout(() => setPhase(old => old === 'opening' ? 'open' : old), 680)
+      timer = window.setTimeout(() => setPhase(old => old === 'opening' ? 'open' : old), 1100)
     } else if (phase === 'closing') {
       setShown(false)
-      timer = window.setTimeout(() => setPhase(old => old === 'closing' ? 'closed' : old), 260)
+      timer = window.setTimeout(() => setPhase(old => old === 'closing' ? 'closed' : old), 460)
     }
     return () => { cancelAnimationFrame(raf); clearTimeout(timer) }
   }, [phase, paused, reduced])

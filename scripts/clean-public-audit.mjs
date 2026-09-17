@@ -13,3 +13,7 @@ for(const asset of ['earth-trading-900','earth-trading-1600',...['detect','quali
 must(site.includes('ILLUSTRATIVE')||copy.includes('ILLUSTRATIVE DATA'),'The product illustration must not imply live trading.')
 if(failures.length){console.error(failures.join('\n'));process.exit(1)}
 console.log('Public claims, content architecture and artwork audit passed.')
+
+await import('./radar-audit.mjs')
+
+await import('./v51-audit.mjs')

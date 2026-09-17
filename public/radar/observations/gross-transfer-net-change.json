@@ -1,0 +1,136 @@
+{
+  "id": "gross-transfer-net-change",
+  "version": 2,
+  "category": {
+    "en": "RECONCILIATION / 03",
+    "ru": "СВЕРКА / 03"
+  },
+  "title": {
+    "en": "5.384 SOL moved. That is not the net result.",
+    "ru": "Переведено 5,384 SOL. Но это не итог."
+  },
+  "summary": {
+    "en": "One transaction contains wrapping, transfers and account closures. Following a single transfer hides the rest of the operation.",
+    "ru": "В одной транзакции — оборачивание SOL, переводы и закрытия аккаунта. Один перевод не описывает результат всей операции."
+  },
+  "facts": [
+    {
+      "en": "The transaction at slot 447680207 reports no execution error and contains ten top-level instructions, including a System transfer of 5,384,061,455 lamports to a token account.",
+      "ru": "Транзакция в слоте 447680207 не содержит ошибки исполнения. Среди десяти инструкций верхнего уровня есть System-перевод 5 384 061 455 лампорт на токен-аккаунт."
+    },
+    {
+      "en": "The same message contains syncNative and two closeAccount instructions. The recorded inner instructions include wrapped-SOL transfers in both directions.",
+      "ru": "В том же сообщении есть syncNative и две инструкции closeAccount. Среди записанных внутренних инструкций присутствуют переводы обёрнутого SOL в обе стороны."
+    },
+    {
+      "en": "The later status response confirms finalized without an execution error. The balance reconciliation below is a separate editorial check of this same transaction.",
+      "ru": "Последующий ответ о статусе подтверждает finalized без ошибки исполнения. Сверка балансов ниже — отдельная редакционная проверка этой же транзакции."
+    }
+  ],
+  "interpretation": {
+    "en": "A gross transfer is one step, not portfolio PnL. Account creation, wrapped SOL, returned funds, token balances and fees need to be considered together before describing an outcome.",
+    "ru": "Валовой перевод — лишь один шаг, не PnL портфеля. Создание аккаунта, обёрнутый SOL, возврат средств, токен-балансы и комиссия требуют совместного рассмотрения."
+  },
+  "unknowns": [
+    {
+      "en": "No fiat prices or acquisition cost were verified. A SOL balance decrease alone is not labelled a loss; other assets also changed.",
+      "ru": "Цены в фиатной валюте и стоимость приобретения не проверялись. Снижение SOL-баланса не называем убытком: изменились и другие активы."
+    },
+    {
+      "en": "This is an editorial study of a third-party transaction, not execution evidence for CopyPump or a recommendation to repeat it.",
+      "ru": "Это редакционный разбор чужой транзакции, не доказательство исполнения CopyPump и не рекомендация её повторять."
+    }
+  ],
+  "publishedAt": "2026-09-17T02:27:05Z",
+  "updatedAt": "2026-09-17T02:27:05Z",
+  "observedAt": "2026-09-17T02:21:46Z",
+  "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+  "cluster": "mainnet-beta",
+  "signature": "3GrmBLU1asWEg8yvnCaowhSqLD2KpSfVcgtMorcQfyEvmhnrcFnmrs3kD2XJWFxUaeYny2UXySaLiR7qRhkJfK88",
+  "followUps": 1,
+  "sources": [
+    {
+      "id": "transaction",
+      "label": {
+        "en": "Archived RPC transaction response",
+        "ru": "Сохранённый ответ RPC: транзакция"
+      },
+      "url": "/radar/evidence/transaction-3.json",
+      "checkedAt": "2026-09-17T02:22:17.668294+00:00",
+      "sha256": "9a774161ac20eb2fde63cd7d1c8ee44240a5ab7f2360831113f69798c8eb74d0"
+    },
+    {
+      "id": "status",
+      "label": {
+        "en": "Subsequent status lookup",
+        "ru": "Последующая проверка статуса"
+      },
+      "url": "/radar/evidence/follow-up-statuses.json",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00",
+      "sha256": "9ece139c46cae2138513c3f2a63fff053f61c5bafccab0a61e7f002a1e5a3f12"
+    },
+    {
+      "id": "explorer",
+      "label": {
+        "en": "Open transaction in Solana Explorer",
+        "ru": "Транзакция в Solana Explorer"
+      },
+      "url": "https://explorer.solana.com/tx/3GrmBLU1asWEg8yvnCaowhSqLD2KpSfVcgtMorcQfyEvmhnrcFnmrs3kD2XJWFxUaeYny2UXySaLiR7qRhkJfK88?cluster=mainnet-beta",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00"
+    },
+    {
+      "id": "method",
+      "label": {
+        "en": "Collection method & source hashes",
+        "ru": "Метод отбора и контрольные суммы"
+      },
+      "url": "/radar/evidence/provenance.json",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00"
+    },
+    {
+      "id": "docs",
+      "label": {
+        "en": "Solana RPC response fields",
+        "ru": "Поля ответа Solana RPC"
+      },
+      "url": "https://solana.com/docs/rpc/json-structures",
+      "checkedAt": "2026-09-17T02:27:05Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-17T02:27:05Z",
+      "kind": "initial",
+      "title": {
+        "en": "Initial evidence review",
+        "ru": "Первичная проверка источника"
+      },
+      "text": {
+        "en": "The initial reading identifies a large transfer and surrounding instructions. The additional reconciliation was prepared within the first edition; it is not presented as a later market development.",
+        "ru": "Первичный разбор выделяет крупный перевод и окружающие инструкции. Дополнительная сверка подготовлена в первом выпуске; она не выдана за более позднее рыночное событие."
+      },
+      "sourceIds": [
+        "transaction",
+        "status"
+      ]
+    },
+    {
+      "version": 2,
+      "at": "2026-09-17T02:27:05Z",
+      "kind": "addendum",
+      "title": {
+        "en": "Net balances, not one gross transfer",
+        "ru": "Итоговые балансы вместо одного перевода"
+      },
+      "text": {
+        "en": "Additional first-edition check: the fee-payer SOL balance changes by −55,897,338 lamports (−0.055897338 SOL), including the 5,601-lamport network fee. Token account index 3 increases by 243,974,449,436 raw units with 6 decimals. This is not a monetary PnL calculation; the token valuation and cost basis are unknown.",
+        "ru": "Дополнительная проверка первого выпуска: SOL-баланс плательщика меняется на −55 897 338 лампорт (−0,055897338 SOL), включая сетевую комиссию 5 601 лампорт. Баланс токен-аккаунта с индексом 3 увеличивается на 243 974 449 436 исходных единиц при 6 знаках после запятой. Это не расчёт денежного PnL: оценка токена и стоимость приобретения неизвестны."
+      },
+      "sourceIds": [
+        "transaction",
+        "status"
+      ]
+    }
+  ]
+}

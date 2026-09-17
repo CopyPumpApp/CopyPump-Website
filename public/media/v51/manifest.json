@@ -1,0 +1,70 @@
+{
+  "source": "backgrounds/copypump-global-market-background.png",
+  "sourceSha256": "b24d9f52fde10df8e30b9fb2e722e538e983fbdc30d9b97dd319016eaa633470",
+  "method": "Native-resolution compositions of the approved room and original canonical cutouts, plus decorative geometry. No generated claims, charts or text. Baked light only.",
+  "scenes": [
+    {
+      "theme": "home",
+      "file": "scene-home.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 291876,
+      "sha256": "f99bb1c6e778c90aa7c2db41ed315da3c0c62fae710df3d8920421d1c8c4f9f6",
+      "motif": null
+    },
+    {
+      "theme": "product",
+      "file": "scene-product.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 279368,
+      "sha256": "8dc0d303ca29fc8dafa03f8736f0dbb0c002d16644164a6e89d1fcbc373f795b",
+      "motif": "qualify"
+    },
+    {
+      "theme": "radar",
+      "file": "scene-radar.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 290634,
+      "sha256": "1491714d0b05a7ff511cc64561e02073fbdac7ebab85f1cd2f4eed61704d27e2",
+      "motif": "detect"
+    },
+    {
+      "theme": "progress",
+      "file": "scene-progress.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 268348,
+      "sha256": "af59558ec606f5886730a53a499fa0a735478d5080fe5d6a6335a6cc3720e4f1",
+      "motif": null
+    },
+    {
+      "theme": "community",
+      "file": "scene-community.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 270480,
+      "sha256": "7408992f5ca5e3f64b79997cecda5551baa0cc3da56892522405745baa841a2e",
+      "motif": null
+    },
+    {
+      "theme": "security",
+      "file": "scene-security.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 279946,
+      "sha256": "51c54a6d46384fd481528a32d5c35c7dec1bf7b55770cc8a737e6e4c92db7569",
+      "motif": "constrain"
+    },
+    {
+      "theme": "contact",
+      "file": "scene-contact.webp",
+      "width": 1672,
+      "height": 941,
+      "bytes": 272404,
+      "sha256": "c7ab73330f5b95ca10ed95dc8b692ae37defecbc3f5aa692d76cc6b07be23224",
+      "motif": null
+    }
+  ]
+}

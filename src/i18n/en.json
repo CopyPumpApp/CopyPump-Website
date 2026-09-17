@@ -853,15 +853,6 @@
       "intro": "Use official channels for project questions, collaboration, security reports and development updates.",
       "sections": [
         {
-          "heading": "Official channels",
-          "paragraphs": [
-            "X: @CopyPumpAI",
-            "Discord: https://discord.gg/DNBQtqw6R",
-            "GitHub: CopyPumpApp/CopyPump",
-            "Email: copypumphq@gmail.com"
-          ]
-        },
-        {
           "heading": "Before you contact us",
           "paragraphs": [
             "For security issues, use the Security page and avoid posting vulnerability details publicly. Never send a seed phrase or private key."

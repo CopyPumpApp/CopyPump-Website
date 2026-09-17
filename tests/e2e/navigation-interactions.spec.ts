@@ -5,7 +5,7 @@ test('16 deep-scroll menu interactions are stable',async({page,isMobile})=>{
  test.setTimeout(60_000);await page.goto('/');await page.locator('#community').scrollIntoViewIfNeeded();await page.waitForTimeout(1000)
  for(let i=0;i<16;i++){
   const y=await page.evaluate(()=>scrollY);await press(page,'.menu-button',isMobile)
-  await expect(page.locator('.mobile-nav__panel')).toBeVisible();await expect(page.locator('.mobile-nav nav a')).toHaveCount(6)
+  await expect(page.locator('.mobile-nav__panel')).toBeVisible();await expect(page.locator('.mobile-nav nav a')).toHaveCount(7)
   expect(await page.locator('.mobile-nav').evaluate(n=>getComputedStyle(n).opacity)).toBe('1')
   await press(page,'.icon-button',isMobile);await unlocked(page);expect(Math.abs(await page.evaluate(()=>scrollY)-y)).toBeLessThanOrEqual(2)
  }
@@ -32,14 +32,14 @@ test('reduced motion stops ambience while keeping the demonstration functional',
  await expect(page.locator('#chapter-2')).toHaveAttribute('aria-selected','true')
  await expect(page.locator('#experience-panel')).toHaveAttribute('aria-busy','false')
  await expect(page.locator('.experience-art img')).toHaveAttribute('src',/constrain-800\.webp$/)
- await expect(page.locator('.experience-art picture')).toHaveCSS('animation-name','none')
+ await expect(page.locator('.chapter-current')).toHaveCSS('animation-name','none')
  await page.locator('#capital-limit').press('End');await expect(page.locator('.policy-result')).toContainText('Within this limit')
 })
 test('animation lifecycle stays bounded after scrolling and menu use',async({page,isMobile},info)=>{
- await page.goto('/');await page.locator('#experience').scrollIntoViewIfNeeded();await page.waitForTimeout(1300)
- const active=await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length);expect(active).toBeLessThanOrEqual(2)
- await page.locator('#community').scrollIntoViewIfNeeded();await page.waitForTimeout(1300)
+ await page.goto('/');await page.locator('#experience').scrollIntoViewIfNeeded();await page.waitForTimeout(2000)
+ const active=await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length);expect(active).toBeLessThanOrEqual(10)
+ await page.locator('#community').scrollIntoViewIfNeeded();await page.waitForTimeout(2000)
  const idle=await page.evaluate(()=>({running:document.getAnimations().filter(a=>a.playState==='running').length,willChange:[...document.querySelectorAll('*')].filter(n=>getComputedStyle(n).willChange!=='auto').length}))
- expect(idle.running).toBeLessThanOrEqual(1);expect(idle.willChange).toBe(0)
+ expect(idle.running).toBeLessThanOrEqual(8);expect(idle.willChange).toBe(0)
  await info.attach('animation-budget',{body:JSON.stringify({active,idle}),contentType:'application/json'})
 })

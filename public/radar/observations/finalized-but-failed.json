@@ -1,0 +1,119 @@
+{
+  "id": "finalized-but-failed",
+  "version": 1,
+  "category": {
+    "en": "EXECUTION / 01",
+    "ru": "ИСПОЛНЕНИЕ / 01"
+  },
+  "title": {
+    "en": "Finalized does not mean successful.",
+    "ru": "Финализировано — не значит успешно."
+  },
+  "summary": {
+    "en": "A finalized transaction carries an execution error—and a 5,001-lamport fee. Two different questions, one public record.",
+    "ru": "У финализированной транзакции есть ошибка исполнения и комиссия 5 001 лампорт. Два разных вопроса — одна публичная запись."
+  },
+  "facts": [
+    {
+      "en": "At slot 447680207, the sampled transaction reports InstructionError at instruction index 6, with custom code 5000. The later status lookup still reports finalized and the same error.",
+      "ru": "В слоте 447680207 транзакция содержит InstructionError на инструкции с индексом 6, код программы — 5000. Последующая проверка статуса также показывает finalized и ту же ошибку."
+    },
+    {
+      "en": "The metadata fee is 5,001 lamports. The fee-payer SOL balance decreases by exactly that amount in the recorded pre/post balances.",
+      "ru": "Комиссия в метаданных — 5 001 лампорт. В сохранённых балансах до и после операции SOL-баланс плательщика уменьшается ровно на эту сумму."
+    },
+    {
+      "en": "All 11 token-balance entries present both before and after this transaction have unchanged raw amounts in the response.",
+      "ru": "У всех 11 записей токен-балансов, присутствующих до и после транзакции, исходные количества совпадают."
+    }
+  ],
+  "interpretation": {
+    "en": "Finality and execution outcome are separate fields. This record supports a failed execution with a charged fee—not a completed buy. Reading a signature or finality label alone would miss that distinction.",
+    "ru": "Финальность и результат исполнения — разные поля. Эта запись подтверждает ошибку исполнения и списанную комиссию, а не завершённую покупку. Одной подписи или метки финальности недостаточно."
+  },
+  "unknowns": [
+    {
+      "en": "We did not identify the fee payer or infer their strategy. Custom code 5000 is not interpreted as a universal Solana error.",
+      "ru": "Мы не устанавливали личность плательщика и его стратегию. Код 5000 не трактуется как универсальная ошибка Solana."
+    },
+    {
+      "en": "Balance comparisons do not inspect every account-data change. This transaction contains a durable-nonce instruction; fee and nonce behavior are not evidence that absolutely all state remained untouched.",
+      "ru": "Сравнение балансов не проверяет все изменения данных аккаунтов. В транзакции есть инструкция durable nonce: нельзя утверждать, что вообще всё состояние осталось неизменным."
+    }
+  ],
+  "publishedAt": "2026-09-17T02:27:05Z",
+  "updatedAt": "2026-09-17T02:27:05Z",
+  "observedAt": "2026-09-17T02:21:46Z",
+  "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+  "cluster": "mainnet-beta",
+  "signature": "4ojcdVhrz7vMHHSKcVSgkXZ3oft3oANdnVXj6K8nwmwxgXz8SrKxPCeNihXqJ28Z9JPSfyi47jHR4ap24o4cjZ9W",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "transaction",
+      "label": {
+        "en": "Archived RPC transaction response",
+        "ru": "Сохранённый ответ RPC: транзакция"
+      },
+      "url": "/radar/evidence/transaction-1.json",
+      "checkedAt": "2026-09-17T02:22:04.511333+00:00",
+      "sha256": "155f4226ef80cb1834369ff3e46bff90c2f9037b8a9ff68d2f72c05d87262e67"
+    },
+    {
+      "id": "status",
+      "label": {
+        "en": "Subsequent status lookup",
+        "ru": "Последующая проверка статуса"
+      },
+      "url": "/radar/evidence/follow-up-statuses.json",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00",
+      "sha256": "9ece139c46cae2138513c3f2a63fff053f61c5bafccab0a61e7f002a1e5a3f12"
+    },
+    {
+      "id": "explorer",
+      "label": {
+        "en": "Open transaction in Solana Explorer",
+        "ru": "Транзакция в Solana Explorer"
+      },
+      "url": "https://explorer.solana.com/tx/4ojcdVhrz7vMHHSKcVSgkXZ3oft3oANdnVXj6K8nwmwxgXz8SrKxPCeNihXqJ28Z9JPSfyi47jHR4ap24o4cjZ9W?cluster=mainnet-beta",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00"
+    },
+    {
+      "id": "method",
+      "label": {
+        "en": "Collection method & source hashes",
+        "ru": "Метод отбора и контрольные суммы"
+      },
+      "url": "/radar/evidence/provenance.json",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00"
+    },
+    {
+      "id": "docs",
+      "label": {
+        "en": "Solana RPC response fields",
+        "ru": "Поля ответа Solana RPC"
+      },
+      "url": "https://solana.com/docs/rpc/json-structures",
+      "checkedAt": "2026-09-17T02:27:05Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-17T02:27:05Z",
+      "kind": "initial",
+      "title": {
+        "en": "Initial evidence review",
+        "ru": "Первичная проверка источника"
+      },
+      "text": {
+        "en": "Initial review of the signature list, transaction metadata and subsequent status response. All three checks were completed for this first edition.",
+        "ru": "Первичная проверка списка подписей, метаданных транзакции и последующего ответа о статусе. Все три проверки выполнены для первого выпуска."
+      },
+      "sourceIds": [
+        "transaction",
+        "status"
+      ]
+    }
+  ]
+}

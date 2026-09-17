@@ -10,4 +10,12 @@
 <url><loc>https://copypump-website.copypumphq.workers.dev/terms</loc></url>
 <url><loc>https://copypump-website.copypumphq.workers.dev/security</loc></url>
 <url><loc>https://copypump-website.copypumphq.workers.dev/contact</loc></url>
+<url><loc>https://copypump-website.copypumphq.workers.dev/radar</loc></url>
+<url><loc>https://copypump-website.copypumphq.workers.dev/radar/gross-transfer-net-change</loc></url>
+<url><loc>https://copypump-website.copypumphq.workers.dev/radar/finalized-but-failed</loc></url>
+<url><loc>https://copypump-website.copypumphq.workers.dev/radar/success-without-token-movement</loc></url>
+<url><loc>https://copypump-website.copypumphq.workers.dev/ru/radar</loc></url>
+<url><loc>https://copypump-website.copypumphq.workers.dev/ru/radar/gross-transfer-net-change</loc></url>
+<url><loc>https://copypump-website.copypumphq.workers.dev/ru/radar/finalized-but-failed</loc></url>
+<url><loc>https://copypump-website.copypumphq.workers.dev/ru/radar/success-without-token-movement</loc></url>
 </urlset>

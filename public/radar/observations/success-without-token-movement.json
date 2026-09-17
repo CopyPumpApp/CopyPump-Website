@@ -1,0 +1,119 @@
+{
+  "id": "success-without-token-movement",
+  "version": 1,
+  "category": {
+    "en": "POSTCONDITIONS / 02",
+    "ru": "РЕЗУЛЬТАТ / 02"
+  },
+  "title": {
+    "en": "A success flag is not a trade receipt.",
+    "ru": "Статус success — ещё не отчёт о сделке."
+  },
+  "summary": {
+    "en": "This successful call references 41 accounts. Its ten reported token balances do not change. A program outcome is not the same as a verified swap.",
+    "ru": "Успешный вызов ссылается на 41 аккаунт. Десять указанных токен-балансов не меняются. Успех программы — не подтверждение обмена."
+  },
+  "facts": [
+    {
+      "en": "The transaction at slot 447680207 has meta.err = null and three top-level instructions. The subsequent status lookup is finalized, without an execution error.",
+      "ru": "У транзакции в слоте 447680207 meta.err = null и три инструкции верхнего уровня. Последующая проверка показывает finalized без ошибки исполнения."
+    },
+    {
+      "en": "The response lists 41 message account keys and no recorded inner instructions. All ten matching pre/post token amounts are unchanged.",
+      "ru": "Ответ содержит 41 ключ аккаунта и не содержит записанных внутренних инструкций. У всех десяти сопоставленных записей токенов количества до и после совпадают."
+    },
+    {
+      "en": "The fee is 5,002 lamports; the recorded fee-payer SOL delta is −5,002 lamports.",
+      "ru": "Комиссия — 5 002 лампорт; зафиксированное изменение SOL-баланса плательщика — −5 002 лампорт."
+    }
+  ],
+  "interpretation": {
+    "en": "The record establishes that execution returned without an error. It does not establish that a purchase happened. Check the intended postconditions and the actual balance changes rather than treating every successful transaction as a trade.",
+    "ru": "Запись подтверждает исполнение без ошибки, но не доказывает покупку. Проверяйте ожидаемый результат и реальные изменения балансов, а не считайте любую успешную транзакцию сделкой."
+  },
+  "unknowns": [
+    {
+      "en": "No conclusion is made about the program’s purpose, private off-chain activity or changes in account data not covered by token-balance fields.",
+      "ru": "Мы не делаем выводов о назначении программы, внецепочной активности или изменениях данных аккаунтов, не отражённых в токен-балансах."
+    },
+    {
+      "en": "This one record is not a profitability assessment, a wallet ranking or a representative sample of Solana activity.",
+      "ru": "Одна запись — не оценка доходности, не рейтинг кошельков и не репрезентативная выборка активности Solana."
+    }
+  ],
+  "publishedAt": "2026-09-17T02:27:05Z",
+  "updatedAt": "2026-09-17T02:27:05Z",
+  "observedAt": "2026-09-17T02:21:46Z",
+  "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+  "cluster": "mainnet-beta",
+  "signature": "3WJhGfJKo9dYgvF6TDefzxRuLC92QoxJkmEAjjkJL3okBJpRhfiTkgRXGwmvrnLmoxSzz246z48F4Uk7zyd7xLFy",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "transaction",
+      "label": {
+        "en": "Archived RPC transaction response",
+        "ru": "Сохранённый ответ RPC: транзакция"
+      },
+      "url": "/radar/evidence/transaction-2.json",
+      "checkedAt": "2026-09-17T02:22:11.009774+00:00",
+      "sha256": "16a822a1c71a70e0e88aee661bc18937e122fb0b763ea467a5ad3c38fe1ba692"
+    },
+    {
+      "id": "status",
+      "label": {
+        "en": "Subsequent status lookup",
+        "ru": "Последующая проверка статуса"
+      },
+      "url": "/radar/evidence/follow-up-statuses.json",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00",
+      "sha256": "9ece139c46cae2138513c3f2a63fff053f61c5bafccab0a61e7f002a1e5a3f12"
+    },
+    {
+      "id": "explorer",
+      "label": {
+        "en": "Open transaction in Solana Explorer",
+        "ru": "Транзакция в Solana Explorer"
+      },
+      "url": "https://explorer.solana.com/tx/3WJhGfJKo9dYgvF6TDefzxRuLC92QoxJkmEAjjkJL3okBJpRhfiTkgRXGwmvrnLmoxSzz246z48F4Uk7zyd7xLFy?cluster=mainnet-beta",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00"
+    },
+    {
+      "id": "method",
+      "label": {
+        "en": "Collection method & source hashes",
+        "ru": "Метод отбора и контрольные суммы"
+      },
+      "url": "/radar/evidence/provenance.json",
+      "checkedAt": "2026-09-17T02:22:24.099861+00:00"
+    },
+    {
+      "id": "docs",
+      "label": {
+        "en": "Solana RPC response fields",
+        "ru": "Поля ответа Solana RPC"
+      },
+      "url": "https://solana.com/docs/rpc/json-structures",
+      "checkedAt": "2026-09-17T02:27:05Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-17T02:27:05Z",
+      "kind": "initial",
+      "title": {
+        "en": "Initial evidence review",
+        "ru": "Первичная проверка источника"
+      },
+      "text": {
+        "en": "Initial review compares error state, instruction counts, fee and matching token-balance entries in the archived RPC response.",
+        "ru": "Первичная проверка сопоставляет ошибку исполнения, количество инструкций, комиссию и токен-балансы в сохранённом ответе RPC."
+      },
+      "sourceIds": [
+        "transaction",
+        "status"
+      ]
+    }
+  ]
+}

@@ -32,20 +32,23 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
   useEffect(()=>{if(!pageVisible)revealAll()},[pageVisible,revealAll])
 
   useLayoutEffect(()=>{
-    const nodes=[...document.querySelectorAll<HTMLElement>('main [data-reveal]')]
-    if(!allowed.current||!('IntersectionObserver'in window)||document.documentElement.classList.contains('nav-open')) {
-      nodes.forEach(visible);return
+    const nodes=new Set<HTMLElement>()
+    if(!allowed.current||!('IntersectionObserver'in window)) {
+      document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(visible);return
     }
     let disposed=false
+    const waitingForMenu=new Set<HTMLElement>()
     const enter=(node:HTMLElement)=>{
+      if(!node.isConnected)return
+      if(document.documentElement.classList.contains('nav-open')){waitingForMenu.add(node);return}
       if(node.dataset.revealed==='true'||!allowed.current||typeof node.animate!=='function'){visible(node);return}
-      node.dataset.revealed='true';node.style.opacity='1';node.style.willChange='opacity, transform'
+      node.dataset.revealed='true';node.style.opacity='1';node.style.willChange='opacity, transform';const section=node.closest<HTMLElement>('section,.document-hero');if(section)section.dataset.entered='true'
       const kind=node.dataset.reveal
-      const from = kind==='heading'?{opacity:.25,transform:'translate3d(0,108%,0)'}:
-        kind==='depth'?{opacity:0,transform:'translate3d(0,20px,0) scale(.985)'}:
+      const from = kind==='heading'?{opacity:.08,transform:'translate3d(0,116%,0) rotate(2deg)'}:
+        kind==='depth'?{opacity:0,transform:'translate3d(0,38px,0) scale(.92)'}:
           {opacity:0,transform:'translate3d(0,16px,0)'}
-      const duration=kind==='heading'?880:kind==='depth'?820:680
-      const delay=Math.min(210,Math.max(0,Number(node.dataset.delay)||0))
+      const duration=kind==='heading'?1120:kind==='depth'?1250:kind==='label'?650:kind==='record'?960:880
+      const delay=Math.min(360,Math.max(0,Number(node.dataset.delay)||0))
       const animation=node.animate([from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],
         {duration,delay,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'})
       active.current.set(node,animation)
@@ -56,27 +59,30 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     const io=new IntersectionObserver(entries=>{
       entries.forEach(e=>{if(e.isIntersecting){io.unobserve(e.target);enter(e.target as HTMLElement)}})
     },{threshold:0,rootMargin:'70px 0px'})
-    nodes.forEach(node=>{
+    const discover=()=>{nodes.forEach(node=>{if(!node.isConnected){io.unobserve(node);active.current.get(node)?.cancel();active.current.delete(node);nodes.delete(node)}});document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(node=>{
+      if(nodes.has(node))return
+      nodes.add(node)
       const r=node.getBoundingClientRect()
-      if(r.bottom<0){visible(node);return}
+      if(r.bottom<0||node.dataset.revealed==='true'){visible(node);return}
       node.dataset.revealed='false'
-      // Hide only when the observer/animation API can reliably reveal again.
       if(typeof node.animate==='function')node.style.opacity='0'
       io.observe(node)
-    })
+    })}
+    const afterMenu=()=>{waitingForMenu.forEach(enter);waitingForMenu.clear()}
+    window.addEventListener('copypump:menu-settled',afterMenu)
+    discover();window.addEventListener('copypump:content-ready',discover)
     const focus=(event:FocusEvent)=>{
       const target=event.target as Element|null
       const node=target?.closest<HTMLElement>('[data-reveal]')
       if(node){io.unobserve(node);active.current.get(node)?.cancel();active.current.delete(node);visible(node)}
     }
     document.addEventListener('focusin',focus)
-    return()=>{disposed=true;io.disconnect();document.removeEventListener('focusin',focus);active.current.forEach(a=>a.cancel());active.current.clear();nodes.forEach(visible)}
+    return()=>{disposed=true;waitingForMenu.clear();window.removeEventListener('copypump:menu-settled',afterMenu);io.disconnect();window.removeEventListener('copypump:content-ready',discover);document.removeEventListener('focusin',focus);active.current.forEach(a=>a.cancel());active.current.clear();nodes.forEach(visible)}
   },[routeKey])
 
   // A single visible accent may run. Mobile uses one finite sweep, not a loop.
   useLayoutEffect(()=>{
-    const inks=[...document.querySelectorAll<HTMLElement>('main [data-gradient]')]
-    if(!inks.length)return
+    let inks:HTMLElement[]=[]
     const select=()=>{
       let selected:HTMLElement|undefined,score=Infinity
       for(const ink of inks){const r=ink.getBoundingClientRect();if(r.bottom>70&&r.top<innerHeight){const d=Math.abs(r.top-innerHeight*.35);if(d<score){score=d;selected=ink}}}
@@ -84,8 +90,9 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     }
     if(!('IntersectionObserver'in window))return
     const io=new IntersectionObserver(select,{threshold:[0,.1,.5,1]})
-    inks.forEach(ink=>io.observe(ink));select()
-    return()=>{io.disconnect();inks.forEach(ink=>delete ink.dataset.gradientRunning)}
+    const discover=()=>{io.disconnect();inks=[...document.querySelectorAll<HTMLElement>('main [data-gradient]')];inks.forEach(ink=>io.observe(ink));select()}
+    discover();window.addEventListener('copypump:content-ready',discover)
+    return()=>{io.disconnect();window.removeEventListener('copypump:content-ready',discover);inks.forEach(ink=>delete ink.dataset.gradientRunning)}
   },[routeKey])
   const toggle=useCallback(()=>setPaused(old=>{const next=!old;try{localStorage.setItem('copypump.motion',next?'paused':'playing')}catch{}return next}),[])
   const value=useMemo(()=>({running,paused,reduced,modal,toggle,setModal}),[running,paused,reduced,modal,toggle])
