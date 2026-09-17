@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useI18n } from '../i18n'
 import { useMotion } from './Experience'
-export const workflowObjects = ['detect-cutout-final', 'qualify-cutout-final', 'constrain-cutout-final', 'execute-prove-cutout-final']
-const workflowAsset = (name:string) => `/workflow-objects/${name}.webp?v=20260916-light`
+export const workflowObjects = ['detect-cutout-final-v47', 'qualify-cutout-final-v47', 'constrain-cutout-final-v47', 'execute-prove-cutout-final-v47']
+const workflowAsset = (name:string) => `/workflow-objects/${name}.webp?v=20260915-canonical`
 export function HeroScene() {
   const { dict } = useI18n(), c = dict.cinema.hero, motion = useMotion()
   const [stage, setStage] = useState(0), [held, setHeld] = useState(false), [inView, setInView] = useState(true), [firstReady, setFirstReady] = useState(false)
@@ -19,13 +19,7 @@ export function HeroScene() {
     const ready = () => { if (!cancelled) setFirstReady(true) }
     if (typeof first.decode === 'function') first.decode().then(ready, ready)
     else { first.onload = ready; first.onerror = ready }
-    const warmRest = () => workflowObjects.slice(1).forEach(name => { const image = new Image(); image.src = workflowAsset(name); image.decoding = 'async' })
-    const win = window as Window & typeof globalThis & { requestIdleCallback?: (cb: IdleRequestCallback, options?: IdleRequestOptions) => number; cancelIdleCallback?: (id:number) => void }
-    let idleId: number | undefined
-    let timeoutId: number | undefined
-    if (win.requestIdleCallback) idleId = win.requestIdleCallback(warmRest, { timeout: 1800 })
-    else timeoutId = globalThis.setTimeout(warmRest, 700) as unknown as number
-    return () => { cancelled = true; if (idleId !== undefined) win.cancelIdleCallback?.(idleId); if (timeoutId !== undefined) globalThis.clearTimeout(timeoutId) }
+    return () => { cancelled = true }
   }, [])
   const cycling = motion.running && inView && !held && firstReady
   useEffect(() => { if (!cycling) return; const id = setInterval(() => setStage(n => (n + 1) % 4), 5200); return () => clearInterval(id) }, [cycling])

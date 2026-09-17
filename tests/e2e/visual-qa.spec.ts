@@ -1,59 +1,14 @@
-import { test, expect, type Page } from '@playwright/test'
-
-const shot = (project:string, name:string) => `test-results/visual-qa/${project}/${name}.png`
-
-async function settle(page:Page, ms=850){ await page.waitForTimeout(ms) }
-async function captureViewport(page:Page, project:string, name:string){
-  await page.screenshot({ path: shot(project, name), fullPage:false })
-}
-async function captureMenu(page:Page, project:string, name:string){
-  await page.locator('.menu-button').click()
-  await expect(page.locator('.mobile-nav__panel')).toBeVisible()
-  await expect(page.locator('.mobile-nav__top')).toBeVisible()
-  await expect(page.locator('.mobile-nav nav button').first()).toBeVisible()
-  await expect(page.locator('.mobile-nav__footer')).toBeVisible()
-  await settle(page,650)
-  await captureViewport(page, project, name)
-  await page.keyboard.press('Escape')
-  await expect(page.locator('#mobile-navigation')).toHaveCount(0)
-}
-
-test('capture Home, Project and mobile menu recovery surfaces', async ({ page, isMobile }, testInfo) => {
-  const project = testInfo.project.name
-
-  await page.goto('/')
-  await expect(page.locator('#main-content')).toBeVisible()
-  await settle(page)
-  await captureViewport(page, project, 'home-top')
-  if(isMobile) await captureMenu(page, project, 'mobile-menu-top')
-
-  await page.locator('.product-story').scrollIntoViewIfNeeded()
-  await settle(page)
-  await captureViewport(page, project, 'home-product-story')
-
-  await page.locator('#journey').scrollIntoViewIfNeeded()
-  await settle(page)
-  await captureViewport(page, project, 'home-journey')
-
-  await page.locator('#journal').scrollIntoViewIfNeeded()
-  await settle(page)
-  await captureViewport(page, project, 'home-progress')
-  if(isMobile) await captureMenu(page, project, 'mobile-menu-scrolled')
-
-  await page.goto('/project')
-  await expect(page.locator('.project-page')).toBeVisible()
-  await settle(page)
-  await captureViewport(page, project, 'project-top')
-
-  await page.locator('.project-details').scrollIntoViewIfNeeded()
-  await settle(page)
-  await captureViewport(page, project, 'project-details')
-
-  const faq = page.locator('.project-faq__item').first()
-  if (await faq.count()) {
-    await faq.scrollIntoViewIfNeeded()
-    await faq.locator('summary').click()
-    await settle(page,450)
-    await captureViewport(page, project, 'project-faq-open')
-  }
+import {test,expect} from '@playwright/test'
+test('capture the premium design and actual active states',async({page,isMobile},info)=>{
+ test.setTimeout(80_000)
+ const dir=`test-results/visual-qa/${info.project.name}`
+ for(const path of ['/','/ru','/project','/ru/project','/progress']){
+  await page.goto(path);await page.waitForTimeout(1250)
+  await page.screenshot({path:`${dir}/${path==='/'?'home':path.slice(1).replaceAll('/','-')}-top.png`})
+ }
+ await page.goto('/');await page.waitForTimeout(800)
+ await page.locator('.menu-button').click();await expect(page.locator('.mobile-nav nav a')).toHaveCount(6);await expect(page.locator('.mobile-nav')).toHaveAttribute('data-phase','open');await page.waitForTimeout(130);await page.screenshot({path:`dir/menu.png`.replace('dir',dir)});await page.locator('.icon-button').click();await expect(page.locator('.mobile-nav')).toHaveCount(0)
+ for(const id of ['experience','status','community']){await page.locator(`#${id}`).scrollIntoViewIfNeeded();await page.waitForTimeout(1100);await page.screenshot({path:`${dir}/home-${id}.png`})}
+ await page.locator('#chapter-2').click();await page.locator('#capital-limit').scrollIntoViewIfNeeded();await page.waitForTimeout(500);await page.screenshot({path:`${dir}/policy-blocked.png`});await page.locator('#capital-limit').press('End');await page.screenshot({path:`${dir}/policy-allowed.png`})
+ await page.goto('/project');await page.locator('#product-tab-2').click();await page.locator('.faq-item').first().locator('summary').click();await page.waitForTimeout(300);await page.screenshot({path:`${dir}/faq-open.png`})
 })

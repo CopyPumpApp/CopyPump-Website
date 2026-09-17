@@ -1,34 +1,25 @@
-import { test, expect } from '@playwright/test'
-
-test('home renders without horizontal overflow',async({page})=>{
- await page.goto('/'); await expect(page.locator('main')).toBeVisible();
- const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+1)
- expect(overflow).toBeFalsy()
+import {test,expect} from '@playwright/test'
+for(const path of ['/','/project','/progress','/ru','/ru/project','/ru/progress','/privacy','/contact','/404']){
+ test(`${path}: page renders, no console errors or horizontal overflow`,async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message))
+  await page.goto(path);await expect(page.locator('main')).toBeVisible();await expect(page.locator('h1')).toHaveCount(1)
+  await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
+  expect(errors).toEqual([])
+ })
+}
+test('policy illustration responds without wallet or transaction calls',async({page})=>{
+ const external:string[]=[]
+ page.on('request',r=>{if(/solana|jupiter|rpc/i.test(r.url())&&!r.url().includes('127.0.0.1'))external.push(r.url())})
+ await page.goto('/');await page.locator('#chapter-2').click()
+ await expect(page.locator('.policy-result')).toContainText('Blocked by your limit')
+ await page.locator('#capital-limit').press('End');await expect(page.locator('.policy-result')).toContainText('Within this limit')
+ await expect(page.locator('.policy-result')).toContainText('Every other required check')
+ await page.locator('#capital-limit').press('Home');await expect(page.locator('.policy-result')).toContainText('Blocked by your limit')
+ expect(external).toEqual([])
 })
-
-test('mobile menu opens, renders, closes and cleans root lock',async({page,isMobile})=>{
- test.skip(!isMobile)
- await page.goto('/'); const trigger=page.locator('.menu-button'); await trigger.click()
- await expect(page.locator('#mobile-navigation')).toBeVisible(); await expect(page.locator('.mobile-nav__panel')).toBeVisible()
- await page.locator('.mobile-nav__top .icon-button').click(); await expect(page.locator('#mobile-navigation')).toHaveCount(0)
- await expect(page.locator('html')).not.toHaveClass(/nav-open/)
-})
-
-test('project disclosures open and close',async({page})=>{
- await page.goto('/project'); const item=page.locator('.project-detail').first(); await expect(item).toBeVisible()
- await item.locator('summary').click(); await expect(item).toHaveAttribute('open','')
- await item.locator('summary').click(); await expect(item).not.toHaveAttribute('open','')
-})
-
-test('motion toggle never hides reveal content',async({page,isMobile})=>{
- await page.goto('/')
- let toggle=page.locator('.header-actions .motion-toggle')
- if(isMobile){
-   await page.locator('.menu-button').click()
-   await expect(page.locator('#mobile-navigation')).toBeVisible()
-   toggle=page.locator('.mobile-nav__footer .motion-toggle')
- }
- await expect(toggle).toBeVisible(); await toggle.click()
- await expect(page.locator('html')).toHaveAttribute('data-motion','off')
- await expect.poll(async()=>page.locator('[data-reveal]').evaluateAll(nodes=>nodes.every(n=>getComputedStyle(n).opacity!=='0'))).toBeTruthy()
+test('product tabs and FAQ are usable, no repeated workflow on the product page',async({page})=>{
+ await page.goto('/project');await expect(page.locator('.control-grid article')).toHaveCount(4)
+ await page.locator('#product-tab-1').click();await expect(page.locator('.authority-records article')).toHaveCount(3)
+ await page.locator('#product-tab-2').click();const item=page.locator('.faq-item').first();await item.locator('summary').click();await expect(item).toHaveAttribute('open','')
+ await expect(page.locator('#experience')).toHaveCount(0)
 })

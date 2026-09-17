@@ -1,59 +1,15 @@
-import { readFile } from 'node:fs/promises'
-
-const landing = await readFile(new URL('../src/pages/LandingPage.tsx', import.meta.url), 'utf8')
-const rails = await readFile(new URL('../src/components/ProjectRails.tsx', import.meta.url), 'utf8')
-const hero = await readFile(new URL('../src/components/HeroScene.tsx', import.meta.url), 'utf8')
-const en = await readFile(new URL('../src/i18n/en.json', import.meta.url), 'utf8')
-const ru = await readFile(new URL('../src/i18n/ru.json', import.meta.url), 'utf8')
-const appCss = await readFile(new URL('../src/styles/app.css', import.meta.url), 'utf8')
-const indexCss = await readFile(new URL('../src/styles/index.css', import.meta.url), 'utf8')
-const uiCleanup = await readFile(new URL('../src/styles/ui-cleanup.css', import.meta.url), 'utf8')
-const projectCss = await readFile(new URL('../src/styles/project-page.css', import.meta.url), 'utf8')
-const mobileNav = await readFile(new URL('../src/styles/mobile-nav-hotfix.css', import.meta.url), 'utf8')
-const failures = []
-
-const requireText = (source, text, message) => {
-  if (!source.includes(text)) failures.push(message)
-}
-const forbidText = (source, text, message) => {
-  if (source.includes(text)) failures.push(message)
-}
-
-requireText(landing, 'https://discord.gg/WS95eXrGB', 'Landing page must use the current official Discord invite.')
-requireText(landing, "navigateLocal('/project')", 'Landing page must link to the dedicated Project page.')
-requireText(landing, 'decision-demo', 'Landing page must retain the interactive decision demo.')
-requireText(landing, '<ProductStory/>', 'Recovered Product Story section must stay on Home.')
-requireText(landing, 'ProjectRail variant="journey"', 'Recovered signal journey rail must stay on Home.')
-requireText(landing, 'id="journal"', 'Recovered public Progress journal must stay on Home.')
-requireText(landing, 'ProjectRail variant="roadmap"', 'Public roadmap rail must stay on Home.')
-requireText(appCss, 'copypump-global-market-background.png', 'Core cinematic canvas must keep the approved CopyPump background asset.')
-requireText(uiCleanup, 'copypump-global-market-background.png', 'Home must keep the approved CopyPump background asset.')
-requireText(projectCss, 'copypump-global-market-background.png', 'Project must keep the approved CopyPump background asset.')
-requireText(indexCss, "@import './mobile-nav-hotfix.css';", 'Responsive navigation source of truth must remain imported.')
-requireText(mobileNav, 'backdrop-filter:blur(10px) saturate(118%)', 'Mobile header must keep the approved light crystal blur.')
-requireText(mobileNav, 'backdrop-filter:blur(7px) saturate(112%)', 'Mobile menu must keep the approved light glass blur.')
-requireText(mobileNav, 'background:rgba(2,7,15,.42)', 'Mobile menu backdrop must remain translucent rather than opaque black.')
-requireText(mobileNav, 'background:linear-gradient(150deg,rgba(9,20,35,.58)', 'Mobile menu panel must keep the translucent premium glass gradient.')
-
-forbidText(landing, 'Change the capital limit, signal age or emergency stop.', 'Decision demo must not render redundant operating instructions.')
-forbidText(landing, 'Измените лимит капитала', 'Decision demo must not render redundant operating instructions.')
-forbidText(landing, 'DNBQtqw6R', 'Stale Discord invite is still rendered.')
-forbidText(landing, 'useSystem', 'Developer-facing website API status hook is still wired into the landing page.')
-forbidText(landing, 'c.journal.updateTitle', 'Non-CopyPump ecosystem update is still rendered in public progress.')
-forbidText(landing, 'PROJECT_STATUS.md', 'Developer source controls should not be rendered in the marketing flow.')
-forbidText(landing, 'SECURITY_MODEL.md', 'Developer source controls should not be rendered in the marketing flow.')
-forbidText(rails, 'github.com/CopyPumpApp/CopyPump/blob/main/docs/', 'Roadmap rail must not expose developer documentation controls in the marketing flow.')
-forbidText(rails, 'ROADMAP.md', 'Roadmap rail must not expose a developer-document link.')
-forbidText(rails, 'ARCHITECTURE.md', 'Roadmap rail must not expose a developer-document link.')
-forbidText(`${en}\n${ru}`, 'CopyCube', 'CopyCube must remain completely absent from public EN/RU content.')
-forbidText(`${landing}\n${hero}`, '-cutout-final-v47', 'Obsolete v47 workflow cutouts must not return to active UI code.')
-forbidText(appCss, 'copypump-cinematic-environment-v46', 'Stale v46 background references must never return to the active CSS cascade.')
-forbidText(indexCss, 'premium-navigation.css', 'Superseded navigation stylesheet must not return to the CSS import graph.')
-
-if (failures.length) {
-  console.error('Public-site audit failed:')
-  failures.forEach(item => console.error(`- ${item}`))
-  process.exit(1)
-}
-
-console.log('Public-site audit passed.')
+import { readFileSync, existsSync } from 'node:fs'
+const read=p=>readFileSync(p,'utf8')
+const app=read('src/App.tsx'),site=read('src/premium/Site.tsx'),copy=read('src/premium/content.ts'),css=read('src/styles/index.css')
+const failures=[]
+const must=(condition,message)=>{if(!condition)failures.push(message)}
+must(app.includes('PremiumLanding')&&app.includes('PremiumProject')&&app.includes('PremiumProgress'),'Three explicit content destinations must remain active.')
+must(!app.includes("from './pages/LandingPage'")&&!app.includes("from './pages/ProjectPage'"),'Legacy duplicate marketing sections must not return to the active graph.')
+must(css.trim()==="@import '../premium/premium.css';",'Only one presentation system may be imported.')
+for(const phrase of ['Technical alpha','Solana Devnet',"mainnet: 'locked'",'2026-09-14','PROJECT_STATUS.md','WS95eXrGB'])must(copy.includes(phrase),`Public fact/source missing: ${phrase}`)
+for(const term of ['CopyCube','RUN_FUP_TRUMP','Mizuzi','DNBQtqw6R'])must(!`${site}\n${copy}`.includes(term),`Removed content returned: ${term}`)
+must(copy.includes('earth-trading-1600.webp')&&!copy.includes('cinematic-environment-v46'),'Only the restored Earth/trading-room artwork may be active.')
+for(const asset of ['earth-trading-900','earth-trading-1600',...['detect','qualify','constrain','execute-prove'].flatMap(x=>[`${x}-480`,`${x}-800`])])must(existsSync(`public/media/v48/${asset}.webp`),`Responsive asset missing: ${asset}`)
+must(site.includes('ILLUSTRATIVE')||copy.includes('ILLUSTRATIVE DATA'),'The product illustration must not imply live trading.')
+if(failures.length){console.error(failures.join('\n'));process.exit(1)}
+console.log('Public claims, content architecture and artwork audit passed.')

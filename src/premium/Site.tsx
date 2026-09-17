@@ -1,0 +1,92 @@
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type MouseEvent, type ReactNode, type CSSProperties } from 'react'
+import { createPortal } from 'react-dom'
+import { useI18n } from '../i18n'
+import { useMotion } from '../components/Experience'
+import { Seo } from '../components/Seo'
+import officialMark from '../imports/CopyPump_Official_Mark.webp'
+import { navigateLocal } from '../lib/motion'
+import { ART, CHANNELS, STATUS, premiumCopy } from './content'
+import { SceneBackdrop } from './SceneBackdrop'
+import { KineticHeading } from './KineticHeading'
+import { useAnimatedMenu } from './useAnimatedMenu'
+
+const useCopy = () => { const { locale } = useI18n(); return premiumCopy[locale] }
+function Arrow({ diagonal = false }: { diagonal?: boolean }) { return <svg className="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={diagonal?'M6 18 18 6M6 6h12v12':'M4 12h15m-6-6 6 6-6 6'} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg> }
+function Link({ to, children, className = '', onNavigate, ...rest }: {to:string;children:ReactNode;className?:string;onNavigate?:()=>void;[key:string]:unknown}) {
+  const { pathFor } = useI18n()
+  const click=(event:MouseEvent<HTMLAnchorElement>)=>{if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();onNavigate?.();navigateLocal(to)}
+  return <a {...rest} href={pathFor(to)} onClick={click} className={className}>{children}</a>
+}
+function External({href,children,className=''}:{href:string;children:ReactNode;className?:string}){return <a href={href} className={className} {...(!href.startsWith('mailto:')?{target:'_blank',rel:'noopener noreferrer'}:{})}>{children}</a>}
+function Mark({onNavigate}:{onNavigate?:()=>void}){const c=useCopy();return <Link to="/" className="brand" aria-label={`CopyPump — ${c.nav.home}`} onNavigate={onNavigate}><img src={officialMark} width="38" height="38" alt=""/><span>Copy<span>Pump</span></span></Link>}
+function LocaleSwitch(){const {locale,setLocale}=useI18n();return <div className="locale-switch" role="group" aria-label={locale==='ru'?'Язык':'Language'}>{(['en','ru'] as const).map(l=><button type="button" key={l} aria-pressed={locale===l} onClick={()=>setLocale(l)}>{l.toUpperCase()}</button>)}</div>}
+export function PremiumMotionToggle(){const m=useMotion(),c=useCopy().nav;return <button type="button" className="motion-toggle" onClick={m.toggle} aria-pressed={!m.paused&&!m.reduced} disabled={m.reduced} aria-label={m.reduced?c.reduced:m.paused?c.play:c.pause}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h3l3-7 5 14 3-7h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{c.motion}</span><i/></button>}
+
+export function PremiumHeader({simple=false}:{simple?:boolean}) {
+  const c=useCopy(), menu=useAnimatedMenu()
+  const items=[['/',c.nav.home],['/project',c.nav.product],['/progress',c.nav.progress],['/#community',c.nav.community],['/security',c.nav.security],['/contact',c.nav.contact]]
+  return <><header className="site-header"><a className="skip-link" href="#main-content">{c.nav.skip}</a>
+    <div className="site-header__inner wrap"><Mark/>
+      <nav className="desktop-nav" aria-label={c.nav.label}><Link to="/project">{c.nav.product}</Link><Link to="/progress">{c.nav.progress}<i className="tiny-dot"/></Link>{!simple&&<Link to="/#community">{c.nav.community}</Link>}</nav>
+      <div className="header-actions"><LocaleSwitch/><PremiumMotionToggle/>
+        <button ref={menu.trigger} type="button" className="menu-button" aria-label={c.nav.menu} aria-expanded={menu.mounted} aria-haspopup="dialog" aria-controls="mobile-navigation" onClick={menu.open}><span/><span/></button>
+      </div>
+    </div>
+  </header>
+  {menu.mounted&&createPortal(<div className="mobile-nav" id="mobile-navigation" role="dialog" aria-modal="true" aria-label={c.nav.label} data-phase={menu.phase} data-shown={menu.shown?'true':'false'}>
+    <div className="mobile-nav__panel" ref={menu.sheet}>
+      <div className="mobile-nav__top wrap"><Mark onNavigate={menu.destination}/><button ref={menu.closeButton} type="button" className="icon-button" aria-label={c.nav.close} onClick={menu.reverse}><span/><span/></button></div>
+      <div className="mobile-nav__body wrap"><p className="eyebrow">{c.nav.explore}</p><nav>{items.map(([to,label],i)=><Link key={to} to={to} onNavigate={menu.destination} style={{'--item-delay':`${120+i*45}ms`} as CSSProperties}><small>0{i+1}</small><span className="nav-label-mask"><strong>{label}</strong></span><Arrow diagonal/></Link>)}</nav></div>
+      <div className="mobile-nav__footer wrap"><LocaleSwitch/><div className="mobile-nav__external"><External href={CHANNELS.github}>GitHub</External><External href={CHANNELS.discord}>Discord</External><External href={CHANNELS.x}>X</External></div><PremiumMotionToggle/></div>
+    </div>
+  </div>,document.body)}
+  </>
+}
+/** Header and scene retain their DOM identity across all routes, including legal pages. */
+export function PremiumShell({children,routeKey}:{children:ReactNode;routeKey:string}) {
+  const outlet=useRef<HTMLDivElement>(null),previous=useRef(routeKey)
+  const motion=useMotion()
+  useLayoutEffect(()=>{
+    const changed=previous.current!==routeKey;previous.current=routeKey
+    if(!changed||!motion.running||!outlet.current?.animate)return
+    const animation=outlet.current.animate([{opacity:.45},{opacity:1}],{duration:240,easing:'ease-out'})
+    return()=>animation.cancel()
+  },[routeKey])
+  return <><SceneBackdrop routeKey={routeKey}/><div className="site-frame"><PremiumHeader/><div ref={outlet} className="page-outlet">{children}</div><PremiumFooter/></div></>
+}
+export function PremiumFooter(){const c=useCopy();return <footer className="site-footer wrap"><div className="footer-brand"><Mark/><p>{c.footer.line}</p><small>© 2026 CopyPump</small></div><div className="footer-links"><nav aria-label="CopyPump"><External href={CHANNELS.x}>X <Arrow diagonal/></External><External href={CHANNELS.discord}>Discord <Arrow diagonal/></External><External href={CHANNELS.github}>GitHub <Arrow diagonal/></External><External href={CHANNELS.email}>Email <Arrow diagonal/></External></nav><nav aria-label="Legal"><Link to="/privacy">{c.footer.privacy}</Link><Link to="/terms">{c.footer.terms}</Link><Link to="/security">{c.footer.security}</Link><Link to="/contact">{c.footer.contact}</Link></nav><p>{c.footer.disclaimer}</p></div></footer>}
+function Layout({children,title,description,path}:{children:ReactNode;title:string;description:string;path:string}){return <div className="app-shell premium-v49" data-release="49.0-cinematic"><Seo title={title} description={description} path={path}/><main id="main-content" tabIndex={-1}>{children}</main></div>}
+function DateLabel(){const {locale}=useI18n();return <time dateTime={STATUS.sourceDate}>{new Intl.DateTimeFormat(locale==='ru'?'ru-RU':'en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(`${STATUS.sourceDate}T12:00:00Z`))}</time>}
+function StatusBadge(){const c=useCopy();return <Link to="/progress" className="status-badge"><i/>{c.hero.label}<Arrow diagonal/></Link>}
+
+function ProductExperience(){
+  const c=useCopy().experience,m=useMotion()
+  const [active,setActive]=useState(0),[limit,setLimit]=useState(0.35),[inView,setInView]=useState(false)
+  const requestId=useRef(0),[requested,setRequested]=useState(0)
+  const selectChapter=async(index:number)=>{
+    const request=++requestId.current;setRequested(index)
+    const img=new Image();img.src=`/media/v48/${ART.objects[index]}-${matchMedia('(max-width:600px)').matches?480:800}.webp`
+    try{await img.decode();if(request===requestId.current)setActive(index)}catch{if(request===requestId.current)setRequested(active)}
+  }
+  useEffect(()=>()=>{requestId.current++},[])
+  const root=useRef<HTMLDivElement>(null),buttons=useRef<(HTMLButtonElement|null)[]>([])
+  useEffect(()=>{if(!root.current||!('IntersectionObserver'in window))return;const io=new IntersectionObserver(([e])=>setInView(e.isIntersecting));io.observe(root.current);return()=>io.disconnect()},[])
+  const chapter=c.chapters[active],name=ART.objects[active],allowed=limit>=0.5
+  return <section className="experience wrap section-space" id="experience" data-scene="experience" aria-labelledby="experience-title"><div className="section-heading"><div><p className="eyebrow">01 / {c.eyebrow}</p><KineticHeading id="experience-title" lines={[{text:c.title},{text:c.accent,accent:true}]}/></div><p>{c.intro}</p></div><div className="experience-tabs" role="tablist" aria-label={c.eyebrow}>{c.chapters.map((s,i)=><button key={i} type="button" role="tab" id={`chapter-${i}`} aria-controls="experience-panel" aria-selected={active===i} tabIndex={active===i?0:-1} ref={el=>{buttons.current[i]=el}} onClick={()=>void selectChapter(i)} onKeyDown={e=>{let next=i;if(e.key==='ArrowRight')next=(i+1)%4;else if(e.key==='ArrowLeft')next=(i+3)%4;else if(e.key==='Home')next=0;else if(e.key==='End')next=3;else return;e.preventDefault();void selectChapter(next);buttons.current[next]?.focus()}}><span>0{i+1}</span>{s.name}<i/></button>)}</div>
+    <div className="experience-stage" ref={root} id="experience-panel" aria-busy={requested!==active} role="tabpanel" aria-labelledby={`chapter-${active}`} tabIndex={0} data-ambient={m.running&&inView?'on':'off'}>
+      <div className="experience-art" data-reveal="depth"><div className="art-orbit" aria-hidden="true"/><picture key={name}><source media="(max-width:600px)" srcSet={`/media/v48/${name}-480.webp`}/><img src={`/media/v48/${name}-800.webp`} width="800" height="1019" decoding="async" loading="lazy" alt=""/></picture><span className="art-coordinate" aria-hidden="true">CP / 0{active+1}</span></div>
+      <div className="experience-story chapter-enter" key={active}><p className="eyebrow">{chapter.key}</p><h3>{chapter.title}</h3><p>{chapter.copy}</p><div className={`instrument ${active===2?'instrument--policy':''}`}><div className="instrument-heading"><i className="tiny-dot"/><span>{c.example}</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor"/></svg></div>{active===2?<><div className="policy-readout"><span>{c.test}</span><b>0.50 <small>SOL</small></b></div><label className="policy-range" htmlFor="capital-limit"><span>{c.limit}</span><output htmlFor="capital-limit">{limit.toFixed(2)} SOL</output><input id="capital-limit" type="range" min="0.1" max="1" step="0.05" value={limit} onChange={e=>setLimit(Number(e.target.value))}/><small>0.10 SOL</small><small>1.00 SOL</small></label><div className={`policy-result ${allowed?'allowed':'blocked'}`} role="status" aria-live="polite"><strong><i/>{allowed?c.allowed:c.blocked}</strong><p>{allowed?c.allowedNote:c.blockedNote}</p></div></>:<dl className="signal-record">{chapter.rows.map(([k,v])=><div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>}</div><Link to="/project" className="text-link">{active===2?c.policyLink:c.detail}<Arrow/></Link></div>
+    </div></section>
+}
+export function PremiumLanding(){const c=useCopy();return <Layout title="CopyPump — Smart money. Your rules." description={c.hero.intro} path="/">
+  <section className="hero" data-scene="hero" aria-labelledby="hero-title"><div className="hero-content wrap"><div className="hero-topline"><p className="eyebrow">{c.hero.eyebrow}</p><StatusBadge/></div><div className="hero-type"><KineticHeading as="h1" id="hero-title" lines={[{text:c.hero.line1},{text:c.hero.line2,accent:true}]}/><p className="hero-intro" data-reveal data-delay="140">{c.hero.intro}</p><div className="hero-actions" data-reveal data-delay="210"><Link to="/#experience" className="button button-primary">{c.hero.primary}<Arrow/></Link><Link to="/progress" className="text-link">{c.hero.secondary}<Arrow diagonal/></Link></div></div><div className="hero-bottom"><span className="hero-signature">{c.hero.stamp}</span><p>{c.hero.bottom}</p><span className="hero-discover" aria-hidden="true">↓</span></div></div></section>
+  <ProductExperience/>
+  <section className="status-section wrap section-space" id="status" data-scene="status" aria-labelledby="status-title"><div className="status-copy"><p className="eyebrow">02 / {c.status.eyebrow}</p><KineticHeading id="status-title" lines={[{text:c.status.title},{text:c.status.accent,accent:true}]}/><p>{c.status.intro}</p><Link to="/progress" className="text-link">{c.status.link}<Arrow/></Link></div><div className="status-card"><div className="status-card-top"><p className="eyebrow">{c.status.label}</p></div><h3 data-reveal>{c.status.now}</h3><dl><div data-reveal data-delay="70"><dt>{c.status.network}</dt><dd>Solana Devnet</dd></div><div data-reveal data-delay="140"><dt>{c.status.mainnet}</dt><dd className="locked-label">{c.status.locked}</dd></div></dl><p className="status-source" data-reveal data-delay="210">{c.status.source} <DateLabel/></p><p className="fine-print">{c.status.note}</p></div></section>
+  <section className="community wrap section-space" id="community" data-scene="community" aria-labelledby="community-title"><div><p className="eyebrow">03 / {c.cta.eyebrow}</p><KineticHeading id="community-title" lines={[{text:c.cta.title,accent:true}]}/><p>{c.cta.copy}</p><div className="community-actions" data-reveal data-delay="140"><External href={CHANNELS.discord} className="button button-primary">{c.cta.community}<Arrow diagonal/></External><External href={CHANNELS.github} className="text-link">{c.cta.builder}<Arrow diagonal/></External></div><External href={CHANNELS.email} className="partner-link">{c.cta.partners} ↗</External></div></section>
+  </Layout>}
+
+export function PremiumProject(){const c=useCopy(),[tab,setTab]=useState(0),tabs=useRef<(HTMLButtonElement|null)[]>([]);return <Layout title={`${c.nav.product} — CopyPump`} description={c.product.intro} path="/project"><section className="document-hero wrap" data-scene="document"><p className="eyebrow">{c.product.eyebrow}</p><KineticHeading as="h1" lines={[{text:c.product.title},{text:c.product.accent,accent:true}]}/><p>{c.product.intro}</p></section><section className="product-document wrap" aria-label={c.nav.product}><div className="document-tabs" role="tablist" aria-label={c.nav.product}>{c.product.tabs.map((label,i)=><button key={label} ref={el=>{tabs.current[i]=el}} type="button" role="tab" id={`product-tab-${i}`} aria-selected={tab===i} aria-controls="product-panel" tabIndex={tab===i?0:-1} onClick={()=>setTab(i)} onKeyDown={e=>{let n=i;if(e.key==='ArrowRight')n=(i+1)%3;else if(e.key==='ArrowLeft')n=(i+2)%3;else if(e.key==='Home')n=0;else if(e.key==='End')n=2;else return;e.preventDefault();setTab(n);tabs.current[n]?.focus()}}>{label}</button>)}</div><div role="tabpanel" id="product-panel" aria-labelledby={`product-tab-${tab}`} tabIndex={0} className="document-panel"><div className="document-tab-content" key={tab}>
+    {tab===0?<><header><h2>{c.product.policyTitle}</h2><p>{c.product.policyIntro}</p></header><div className="control-grid">{c.product.controls.map((x,i)=><article key={x.name}><div className="control-label"><span>0{i+1}</span><p className="eyebrow">{x.tag}</p></div><h3>{x.name}</h3><p>{x.detail}</p></article>)}</div></>:tab===1?<><header><h2>{c.product.authorityTitle}</h2><p>{c.product.authorityIntro}</p></header><div className="authority-records">{c.product.authority.map((x,i)=><article key={x.title}><span className="record-number">0{i+1}</span><div><h3>{x.title}</h3><p>{x.copy}</p></div></article>)}</div></>:<><header><h2>{c.product.faqTitle}</h2></header><div className="faq-list">{c.product.faq.map(x=><details className="faq-item" key={x.q}><summary>{x.q}<span aria-hidden="true">+</span></summary><p>{x.a}</p></details>)}</div></>}
+    <Link to="/progress" className="text-link document-source">{c.product.evidence}<Arrow/></Link></div></div></section></Layout>}
+
+export function PremiumProgress(){const c=useCopy();return <Layout title={`${c.nav.progress} — CopyPump`} description={c.progress.intro} path="/progress"><section className="document-hero wrap" data-scene="document"><p className="eyebrow">{c.progress.eyebrow}</p><KineticHeading as="h1" lines={[{text:c.progress.title},{text:c.progress.accent,accent:true}]}/><p>{c.progress.intro}</p><p className="dated-source">{c.progress.date} <DateLabel/></p></section><section className="progress-overview wrap" aria-labelledby="progress-stage"><div className="progress-stage" data-reveal><span className="eyebrow">SOLANA / DEVNET</span><h2 id="progress-stage">{c.progress.summaryTitle}</h2><p>{c.progress.summaryCopy}</p></div><div className="progress-gates" data-reveal>{c.progress.gates.map(x=><article key={x.name}><div><h3>{x.name}</h3><span className={`gate-tag ${x.tone}`}><i/>{x.state}</span></div><p>{x.copy}</p></article>)}</div></section><section className="milestone-section wrap section-space"><div><p className="eyebrow">{c.progress.currentLabel}</p><KineticHeading lines={[{text:c.progress.currentTitle,accent:true}]}/><p>{c.progress.currentCopy}</p></div><details className="engineering-note"><summary>{c.progress.noteTitle}<span>+</span></summary><p>{c.progress.note}</p></details></section><section className="roadmap-section wrap section-space" id="roadmap"><div><p className="eyebrow">{c.progress.roadmapLabel}</p><KineticHeading lines={[{text:c.progress.roadmapTitle,accent:true}]}/></div><ol>{c.progress.roadmap.map((x,i)=><li key={x.title} data-reveal><span>0{i+1}</span><h3>{x.title}</h3><p>{x.copy}</p></li>)}</ol><div className="source-record"><External href={STATUS.source} className="text-link">{c.progress.source}<Arrow diagonal/></External><p>{c.progress.update}</p></div></section></Layout>}

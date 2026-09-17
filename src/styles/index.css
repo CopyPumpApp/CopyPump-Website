@@ -1,7 +1,1 @@
-@import './app.css';
-@import './demo-spacing.css';
-@import './product-story.css';
-@import './project-details.css';
-@import './project-page.css';
-@import './ui-cleanup.css';
-@import './mobile-nav-hotfix.css';
+@import '../premium/premium.css';
