@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "edition": "01",
+  "publishedAt": "2026-09-17T02:27:05Z",
+  "items": [
+    {
+      "id": "gross-transfer-net-change",
+      "version": 2,
+      "publishedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-17T02:27:05Z",
+      "observedAt": "2026-09-17T02:21:46Z",
+      "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+      "cluster": "mainnet-beta",
+      "title": {
+        "en": "5.384 SOL moved. That is not the net result.",
+        "ru": "Переведено 5,384 SOL. Но это не итог."
+      },
+      "summary": {
+        "en": "One transaction contains wrapping, transfers and account closures. Following a single transfer hides the rest of the operation.",
+        "ru": "В одной транзакции — оборачивание SOL, переводы и закрытия аккаунта. Один перевод не описывает результат всей операции."
+      },
+      "category": {
+        "en": "RECONCILIATION / 03",
+        "ru": "СВЕРКА / 03"
+      },
+      "followUps": 1
+    },
+    {
+      "id": "finalized-but-failed",
+      "version": 1,
+      "publishedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-17T02:27:05Z",
+      "observedAt": "2026-09-17T02:21:46Z",
+      "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+      "cluster": "mainnet-beta",
+      "title": {
+        "en": "Finalized does not mean successful.",
+        "ru": "Финализировано — не значит успешно."
+      },
+      "summary": {
+        "en": "A finalized transaction carries an execution error—and a 5,001-lamport fee. Two different questions, one public record.",
+        "ru": "У финализированной транзакции есть ошибка исполнения и комиссия 5 001 лампорт. Два разных вопроса — одна публичная запись."
+      },
+      "category": {
+        "en": "EXECUTION / 01",
+        "ru": "ИСПОЛНЕНИЕ / 01"
+      },
+      "followUps": 0
+    },
+    {
+      "id": "success-without-token-movement",
+      "version": 1,
+      "publishedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-17T02:27:05Z",
+      "observedAt": "2026-09-17T02:21:46Z",
+      "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+      "cluster": "mainnet-beta",
+      "title": {
+        "en": "A success flag is not a trade receipt.",
+        "ru": "Статус success — ещё не отчёт о сделке."
+      },
+      "summary": {
+        "en": "This successful call references 41 accounts. Its ten reported token balances do not change. A program outcome is not the same as a verified swap.",
+        "ru": "Успешный вызов ссылается на 41 аккаунт. Десять указанных токен-балансов не меняются. Успех программы — не подтверждение обмена."
+      },
+      "category": {
+        "en": "POSTCONDITIONS / 02",
+        "ru": "РЕЗУЛЬТАТ / 02"
+      },
+      "followUps": 0
+    }
+  ]
+}

@@ -5,7 +5,7 @@ test('16 deep-scroll menu interactions are stable',async({page,isMobile})=>{
  test.setTimeout(60_000);await page.goto('/');await page.locator('#community').scrollIntoViewIfNeeded();await page.waitForTimeout(1000)
  for(let i=0;i<16;i++){
   const y=await page.evaluate(()=>scrollY);await press(page,'.menu-button',isMobile)
-  await expect(page.locator('.mobile-nav__panel')).toBeVisible();await expect(page.locator('.mobile-nav nav a')).toHaveCount(6)
+  await expect(page.locator('.mobile-nav__panel')).toBeVisible();await expect(page.locator('.mobile-nav nav a')).toHaveCount(7)
   expect(await page.locator('.mobile-nav').evaluate(n=>getComputedStyle(n).opacity)).toBe('1')
   await press(page,'.icon-button',isMobile);await unlocked(page);expect(Math.abs(await page.evaluate(()=>scrollY)-y)).toBeLessThanOrEqual(2)
  }
@@ -32,7 +32,7 @@ test('reduced motion stops ambience while keeping the demonstration functional',
  await expect(page.locator('#chapter-2')).toHaveAttribute('aria-selected','true')
  await expect(page.locator('#experience-panel')).toHaveAttribute('aria-busy','false')
  await expect(page.locator('.experience-art img')).toHaveAttribute('src',/constrain-800\.webp$/)
- await expect(page.locator('.experience-art picture')).toHaveCSS('animation-name','none')
+ await expect(page.locator('.chapter-current')).toHaveCSS('animation-name','none')
  await page.locator('#capital-limit').press('End');await expect(page.locator('.policy-result')).toContainText('Within this limit')
 })
 test('animation lifecycle stays bounded after scrolling and menu use',async({page,isMobile},info)=>{

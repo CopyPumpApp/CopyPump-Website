@@ -20,9 +20,9 @@ test('only restored same-art responsive background is active',async({page,isMobi
  const requests=await page.evaluate(()=>performance.getEntriesByType('resource').map(x=>x.name))
  expect(requests.some(x=>x.includes('cinematic-environment-v46')||x.includes('cutout-final-v47.webp'))).toBeFalsy()
 })
-test('chapters mount only one canonical object at a time',async({page})=>{
+test('chapters settle on one decoded canonical object after the bounded crossfade',async({page})=>{
  await page.goto('/')
- for(let i=0;i<4;i++){await page.locator(`#chapter-${i}`).click();await expect(page.locator('.experience-art img')).toHaveCount(1);await expect.poll(()=>page.locator('.experience-art img').evaluate(n=>(n as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)}
+ for(let i=0;i<4;i++){await page.locator(`#chapter-${i}`).click();await expect(page.locator(`#chapter-${i}`)).toHaveAttribute('aria-selected','true');await expect(page.locator('.chapter-ghost')).toHaveCount(0);await expect(page.locator('.experience-art img')).toHaveCount(1);await expect.poll(()=>page.locator('.experience-art img').evaluate(n=>(n as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)}
 })
 test('new information architecture does not duplicate long paragraphs',async({page})=>{
  const seen=new Set<string>()

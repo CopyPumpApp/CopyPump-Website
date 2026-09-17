@@ -32,9 +32,9 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
   useEffect(()=>{if(!pageVisible)revealAll()},[pageVisible,revealAll])
 
   useLayoutEffect(()=>{
-    const nodes=[...document.querySelectorAll<HTMLElement>('main [data-reveal]')]
+    const nodes=new Set<HTMLElement>()
     if(!allowed.current||!('IntersectionObserver'in window)||document.documentElement.classList.contains('nav-open')) {
-      nodes.forEach(visible);return
+      document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(visible);return
     }
     let disposed=false
     const enter=(node:HTMLElement)=>{
@@ -56,27 +56,28 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     const io=new IntersectionObserver(entries=>{
       entries.forEach(e=>{if(e.isIntersecting){io.unobserve(e.target);enter(e.target as HTMLElement)}})
     },{threshold:0,rootMargin:'70px 0px'})
-    nodes.forEach(node=>{
+    const discover=()=>document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(node=>{
+      if(nodes.has(node))return
+      nodes.add(node)
       const r=node.getBoundingClientRect()
-      if(r.bottom<0){visible(node);return}
+      if(r.bottom<0||node.dataset.revealed==='true'){visible(node);return}
       node.dataset.revealed='false'
-      // Hide only when the observer/animation API can reliably reveal again.
       if(typeof node.animate==='function')node.style.opacity='0'
       io.observe(node)
     })
+    discover();window.addEventListener('copypump:content-ready',discover)
     const focus=(event:FocusEvent)=>{
       const target=event.target as Element|null
       const node=target?.closest<HTMLElement>('[data-reveal]')
       if(node){io.unobserve(node);active.current.get(node)?.cancel();active.current.delete(node);visible(node)}
     }
     document.addEventListener('focusin',focus)
-    return()=>{disposed=true;io.disconnect();document.removeEventListener('focusin',focus);active.current.forEach(a=>a.cancel());active.current.clear();nodes.forEach(visible)}
+    return()=>{disposed=true;io.disconnect();window.removeEventListener('copypump:content-ready',discover);document.removeEventListener('focusin',focus);active.current.forEach(a=>a.cancel());active.current.clear();nodes.forEach(visible)}
   },[routeKey])
 
   // A single visible accent may run. Mobile uses one finite sweep, not a loop.
   useLayoutEffect(()=>{
-    const inks=[...document.querySelectorAll<HTMLElement>('main [data-gradient]')]
-    if(!inks.length)return
+    let inks:HTMLElement[]=[]
     const select=()=>{
       let selected:HTMLElement|undefined,score=Infinity
       for(const ink of inks){const r=ink.getBoundingClientRect();if(r.bottom>70&&r.top<innerHeight){const d=Math.abs(r.top-innerHeight*.35);if(d<score){score=d;selected=ink}}}
@@ -84,8 +85,9 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     }
     if(!('IntersectionObserver'in window))return
     const io=new IntersectionObserver(select,{threshold:[0,.1,.5,1]})
-    inks.forEach(ink=>io.observe(ink));select()
-    return()=>{io.disconnect();inks.forEach(ink=>delete ink.dataset.gradientRunning)}
+    const discover=()=>{io.disconnect();inks=[...document.querySelectorAll<HTMLElement>('main [data-gradient]')];inks.forEach(ink=>io.observe(ink));select()}
+    discover();window.addEventListener('copypump:content-ready',discover)
+    return()=>{io.disconnect();window.removeEventListener('copypump:content-ready',discover);inks.forEach(ink=>delete ink.dataset.gradientRunning)}
   },[routeKey])
   const toggle=useCallback(()=>setPaused(old=>{const next=!old;try{localStorage.setItem('copypump.motion',next?'paused':'playing')}catch{}return next}),[])
   const value=useMemo(()=>({running,paused,reduced,modal,toggle,setModal}),[running,paused,reduced,modal,toggle])
