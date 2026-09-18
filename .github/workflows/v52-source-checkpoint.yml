@@ -1,0 +1,29 @@
+name: V52 source checkpoint
+on:
+  push:
+    branches: [ops/v52-final-review]
+    paths: [.github/workflows/v52-source-checkpoint.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: 768254928459c46390b0b987f5cfc395d7295f61
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false
+      - name: Allowlisted public website sources only
+        run: |
+          tar -czf /tmp/v52-source.tar.gz src public scripts tests docs node_modules index.html package.json package-lock.json tsconfig.json vite.config.ts playwright.config.ts wrangler.jsonc .github/workflows
+      - uses: actions/upload-artifact@v7
+        with:
+          name: v52-source-checkpoint
+          path: /tmp/v52-source.tar.gz
+          retention-days: 2
