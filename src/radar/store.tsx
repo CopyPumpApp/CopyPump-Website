@@ -13,15 +13,17 @@ export function parseLocal(raw:string|null):LocalState{
 }
 export const hasUpdate=(item:ObservationSummary,read:Record<string,number>)=>!!read[item.id]&&item.version>read[item.id]
 const Context=createContext<{
-  initialObservation?:Observation; index:RadarIndex|null; loading:boolean; error:boolean; local:LocalState; persistent:boolean;
+  ready:boolean; initialObservation?:Observation; index:RadarIndex|null; loading:boolean; error:boolean; local:LocalState; persistent:boolean;
   reload:()=>void; toggleSave:(id:string)=>void; markRead:(id:string,version:number)=>void
-}>({index:null,loading:true,error:false,local:empty(),persistent:true,reload:()=>{},toggleSave:()=>{},markRead:()=>{}})
+}>({ready:false,index:null,loading:true,error:false,local:empty(),persistent:true,reload:()=>{},toggleSave:()=>{},markRead:()=>{}})
 export const useRadar=()=>useContext(Context)
 export function RadarProvider({children,initialIndex,initialObservation}:{children:ReactNode;initialIndex?:RadarIndex;initialObservation?:Observation}){
   const [index,setIndex]=useState<RadarIndex|null>(initialIndex||null),[loading,setLoading]=useState(!initialIndex),[error,setError]=useState(false)
-  const [local,setLocal]=useState<LocalState>(empty),[persistent,setPersistent]=useState(true)
+  const [local,setLocal]=useState<LocalState>(empty),[persistent,setPersistent]=useState(true),[ready,setReady]=useState(false)
   const current=useRef(local),abort=useRef<AbortController|null>(null)
-  useLayoutEffect(()=>{try{const next=parseLocal(localStorage.getItem(KEY));current.current=next;setLocal(next)}catch{setPersistent(false)}},[])
+  // SSR controls stay disabled until handlers are attached and browser preferences
+  // have been restored. A visible server-rendered Save must not lose its first click.
+  useLayoutEffect(()=>{try{const next=parseLocal(localStorage.getItem(KEY));current.current=next;setLocal(next)}catch{setPersistent(false)}finally{setReady(true)}},[])
   const reload=useCallback(()=>{
     abort.current?.abort();const controller=new AbortController();abort.current=controller
     setLoading(true)
@@ -42,6 +44,6 @@ export function RadarProvider({children,initialIndex,initialObservation}:{childr
   },[])
   const toggleSave=useCallback((id:string)=>{if(!validId(id))return;change(s=>({...s,saved:s.saved.includes(id)?s.saved.filter(x=>x!==id):[...s.saved,id].slice(-500)}))},[change])
   const markRead=useCallback((id:string,version:number)=>{if(!validId(id)||!Number.isInteger(version)||version<=0||current.current.read[id]>=version)return;change(s=>({...s,read:{...s.read,[id]:version}}))},[change])
-  const value=useMemo(()=>({initialObservation,index,loading,error,local,persistent,reload,toggleSave,markRead}),[initialObservation,index,loading,error,local,persistent,reload,toggleSave,markRead])
+  const value=useMemo(()=>({ready,initialObservation,index,loading,error,local,persistent,reload,toggleSave,markRead}),[ready,initialObservation,index,loading,error,local,persistent,reload,toggleSave,markRead])
   return <Context.Provider value={value}>{children}</Context.Provider>
 }
