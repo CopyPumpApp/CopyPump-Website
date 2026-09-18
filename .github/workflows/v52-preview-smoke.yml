@@ -1,0 +1,49 @@
+name: V52 actual preview verification
+on:
+  push:
+    branches: [feat/v52-publication-ready]
+    paths: [.github/workflows/v52-preview-smoke.yml, scripts/verify-public-preview.mjs, src/entry-server.tsx, src/App.tsx, src/main.tsx, src/radar/store.tsx]
+permissions:
+  contents: read
+  checks: read
+jobs:
+  public-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --audit=false && npx playwright install --with-deps chromium webkit
+      - name: Find this exact commit's successful Cloudflare preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p evidence
+          python - <<'PY'
+          import os,json,re,time,urllib.request
+          url=f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/commits/{os.environ['GITHUB_SHA']}/check-runs"
+          for attempt in range(36):
+              req=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+              with urllib.request.urlopen(req,timeout=20) as r: runs=json.load(r)['check_runs']
+              cf=next((r for r in runs if r['name']=='Workers Builds: copypump-website'),None)
+              if cf and cf['status']=='completed':
+                  assert cf['conclusion']=='success',cf['conclusion']
+                  version=re.search(r'Version ID:\s*([0-9a-f-]{36})',cf['output']['summary']).group(1)
+                  origin=f'https://{version[:8]}-copypump-website.copypumphq.workers.dev'
+                  open('evidence/deployment.json','w').write(json.dumps({'head':os.environ['GITHUB_SHA'],'version':version,'origin':origin},indent=2))
+                  with open(os.environ['GITHUB_ENV'],'a') as f:f.write('V52_ORIGIN='+origin+'\n')
+                  break
+              time.sleep(10)
+          else:raise RuntimeError('No successful exact-head preview within the bounded wait')
+          PY
+      - name: Verify actual HTTP, hydration, Radar and invite destinations
+        run: node scripts/verify-public-preview.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: v52-public-preview-verification
+          path: evidence
+          retention-days: 7

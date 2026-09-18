@@ -2,12 +2,12 @@ import { Seo } from '../components/Seo'
 import { useI18n } from '../i18n'
 import { navigateLocal } from '../lib/motion'
 
-export function NotFoundPage() {
+export function NotFoundPage({path="/404"}:{path?:string}) {
   const { dict } = useI18n()
   const c = dict.common
   return (
     <div className="app-shell not-found-page">
-      <Seo title={c.notFoundSeoTitle} description={c.notFoundSeoDescription} path={window.location.pathname} noIndex />
+      <Seo title={c.notFoundSeoTitle} description={c.notFoundSeoDescription} path={path} noIndex />
       
       <main id="main-content" tabIndex={-1} className="not-found-main">
         <div className="section-shell not-found-shell">

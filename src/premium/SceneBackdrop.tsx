@@ -10,6 +10,7 @@ export function SceneBackdrop({routeKey}:{routeKey:string}) {
   const [wanted,setWanted]=useState<SceneTheme>(routeTheme),[ready,setReady]=useState(false)
   const layer=useRef<HTMLDivElement>(null),loaded=useRef(new Set<SceneTheme>()),current=useRef(theme),request=useRef(0),sectionTheme=useRef<SceneTheme>(routeTheme)
   const canAnimate=!motion.paused&&!motion.reduced
+  useLayoutEffect(()=>{const img=layer.current?.querySelector<HTMLImageElement>('.scene-art img');if(img?.complete&&img.naturalWidth){setReady(true);loaded.current.add(theme)}},[theme])
   useEffect(()=>{
     const fn=(e:Event)=>{const path=(e as CustomEvent<string|null>).detail;setWanted(path?themeForPath(path):sectionTheme.current)}
     addEventListener('copypump:scene-preview',fn);setWanted(routeTheme)
