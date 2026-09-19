@@ -1,8 +1,13 @@
 import { useI18n } from '../i18n'
 import { KineticHeading } from './KineticHeading'
-import { Link } from './Site'
+import { navigateLocal } from '../lib/motion'
 import { premiumCopy } from './content'
 import './HomePublicationContent.css'
+
+function LocalLink({to,children,className=''}:{to:string;children:React.ReactNode;className?:string}){
+  const {pathFor}=useI18n()
+  return <a href={pathFor(to)} className={className} onClick={event=>{if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();navigateLocal(to)}}>{children}</a>
+}
 
 const copy = {
   en: {
@@ -100,7 +105,7 @@ export function HomeControlStory(){
       <p className="eyebrow" data-reveal="label">{c.controlEyebrow}</p>
       <KineticHeading id="home-control-title" lines={[{text:c.controlTitle},{text:c.controlAccent,accent:true}]}/>
       <p data-reveal>{c.controlIntro}</p>
-      <Link to="/project" className="text-link">{c.productLink} →</Link>
+      <LocalLink to="/project" className="text-link">{c.productLink} →</LocalLink>
     </div>
     <div className="home-control-list">
       {controls.map((item,i)=><article key={item.name} data-reveal="record" data-delay={i*60}>
@@ -140,6 +145,6 @@ export function HomeProductMap(){
         <strong className={item[1].toLowerCase().includes('lock')||item[1].toLowerCase().includes('закры')?'locked':item[1].toLowerCase().includes('verif')||item[1].toLowerCase().includes('провер')?'active':'good'}>{item[1]}</strong>
       </article>)}
     </div>
-    <Link to="/progress" className="text-link">{c.progressLink} →</Link>
+    <Link to="/progress" className="text-link">{c.progressLink} →</LocalLink>
   </section>
 }
