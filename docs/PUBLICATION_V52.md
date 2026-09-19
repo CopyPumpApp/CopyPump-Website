@@ -102,7 +102,8 @@ Before moving from the Workers address to the final custom domain, update and ve
 
 - `public/robots.txt`;
 - `public/sitemap.xml`;
-- any release/deployment documentation.
+- any release/deployment documentation;
+- `public/.well-known/security.txt` Canonical/Policy URLs.
 
 Dynamic canonical/OG URLs use the current site origin and therefore should be rechecked on the custom domain rather than hard-coded early.
 
