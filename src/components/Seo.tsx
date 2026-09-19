@@ -11,7 +11,7 @@ export function Seo({ title, description, path = window.location.pathname, noInd
     document.title=title
     setMeta('meta[name="description"]',description)
     setMeta('meta[name="robots"]', noIndex ? 'noindex,nofollow' : 'index,follow')
-    setMeta('meta[property="og:title"]',title); setMeta('meta[property="og:description"]',description); setMeta('meta[name="twitter:title"]',title); setMeta('meta[name="twitter:description"]',description)
+    setMeta('meta[property="og:title"]',title); setMeta('meta[property="og:description"]',description); setMeta('meta[property="og:locale"]',locale==='ru'?'ru_RU':'en_US'); setMeta('meta[property="og:locale:alternate"]',locale==='ru'?'en_US':'ru_RU'); setMeta('meta[name="twitter:title"]',title); setMeta('meta[name="twitter:description"]',description)
     const base = path === '/ru' ? '/' : path.startsWith('/ru/') ? path.slice(3) : path
     const canonicalUrl=`${window.location.origin}${localizedPath(base,locale)}`
     const socialImage = `${window.location.origin}/og-card.webp`
