@@ -24,7 +24,7 @@ const detailed=[
 ]
 for(const phrase of detailed)must(!home.includes(phrase),'Detailed Product copy duplicated into Home: '+phrase)
 
-for(const forbidden of ['lorem ipsum','example.com','localhost:','TODO','COMING SOON','guaranteed profit','guaranteed returns','Mainnet live'])must(!full.toLowerCase().includes(forbidden.toLowerCase()),'Placeholder/unsupported publication text found: '+forbidden)
+for(const forbidden of ['lorem ipsum','example.com','localhost:','TODO','COMING SOON','guaranteed profit','guaranteed income','risk-free returns','Mainnet live'])must(!full.toLowerCase().includes(forbidden.toLowerCase()),'Placeholder/unsupported publication text found: '+forbidden)
 
 must(seo.includes('link[rel="canonical"]'),'Canonical SEO handling missing.')
 must(seo.includes('hreflang'),'Hreflang handling missing.')
