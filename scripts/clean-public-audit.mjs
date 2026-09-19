@@ -17,3 +17,5 @@ console.log('Public claims, content architecture and artwork audit passed.')
 await import('./radar-audit.mjs')
 
 await import('./v51-audit.mjs')
+
+await import('./publication-v52-audit.mjs')
