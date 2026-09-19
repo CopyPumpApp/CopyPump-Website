@@ -16,6 +16,7 @@ import {BrandIcon,BrandText,brandForUrl} from './BrandIcon'
 import {previewScene} from './sceneThemes'
 import {usePageEntrance} from './usePageEntrance'
 import {useArtworkSwipe} from './useArtworkSwipe'
+import {HomeValueStrip,HomeControlStory,HomePipelineStory,HomeProductMap} from './HomePublicationContent'
 
 const useCopy = () => { const { locale } = useI18n(); return premiumCopy[locale] }
 function Arrow({ diagonal = false }: { diagonal?: boolean }) { return <svg className="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={diagonal?'M6 18 18 6M6 6h12v12':'M4 12h15m-6-6 6 6-6 6'} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg> }
@@ -109,9 +110,13 @@ function ProductExperience(){
 }
 export function PremiumLanding(){const c=useCopy();return <Layout title="CopyPump — Smart money. Your rules." description={c.hero.intro} path="/">
   <section className="hero" data-scene="hero" aria-labelledby="hero-title"><div className="hero-content wrap"><div className="hero-topline"><p className="eyebrow" data-reveal="label">{c.hero.eyebrow}</p><StatusBadge/></div><div className="hero-type"><KineticHeading as="h1" id="hero-title" lines={[{text:c.hero.line1},{text:c.hero.line2,accent:true}]}/><p className="hero-intro" data-reveal data-delay="140">{c.hero.intro}</p><div className="hero-actions" data-reveal data-delay="210"><Link to="/#experience" className="button button-primary">{c.hero.primary}<Arrow/></Link><Link to="/progress" className="text-link">{c.hero.secondary}<Arrow diagonal/></Link></div></div><div className="hero-bottom" data-reveal="record"><p>{c.hero.bottom}</p><span className="hero-discover" aria-hidden="true">↓</span></div></div></section>
+  <HomeValueStrip/>
   <ProductExperience/>
+  <HomeControlStory/>
+  <HomePipelineStory/>
   <RadarTeaser/>
   <section className="status-section wrap section-space" id="status" data-scene="status" aria-labelledby="status-title"><div className="status-copy"><p className="eyebrow" data-reveal="label">{c.status.eyebrow}</p><KineticHeading id="status-title" lines={[{text:c.status.title},{text:c.status.accent,accent:true}]}/><p data-reveal>{c.status.intro}</p><Link to="/progress" className="text-link">{c.status.link}<Arrow/></Link></div><div className="status-card"><h3 data-reveal>{c.status.now}</h3><dl><div data-reveal data-delay="70"><dt>{c.status.network}</dt><dd>Solana Devnet</dd></div><div data-reveal data-delay="140"><dt>{c.status.mainnet}</dt><dd className="locked-label">{c.status.locked}</dd></div></dl><p className="status-source" data-reveal data-delay="210">{c.status.source} <DateLabel/></p><p className="fine-print">{c.status.note}</p></div></section>
+  <HomeProductMap/>
   <section className="community wrap section-space" id="community" data-scene="community" aria-labelledby="community-title"><div><p className="eyebrow" data-reveal="label">{c.cta.eyebrow}</p><KineticHeading id="community-title" lines={[{text:c.cta.title,accent:true}]}/><p data-reveal>{c.cta.copy}</p><div className="community-actions" data-reveal data-delay="140"><External href={CHANNELS.discord} className="button button-primary">{c.cta.community}<Arrow diagonal/></External><External href={CHANNELS.github} className="text-link">{c.cta.builder}<Arrow diagonal/></External></div><External href={CHANNELS.email} className="partner-link">{c.cta.partners} ↗</External></div></section>
   </Layout>}
 
