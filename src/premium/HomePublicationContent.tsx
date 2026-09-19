@@ -1,10 +1,11 @@
+import type { ReactNode } from 'react'
 import { useI18n } from '../i18n'
 import { KineticHeading } from './KineticHeading'
 import { navigateLocal } from '../lib/motion'
 import { premiumCopy } from './content'
 import './HomePublicationContent.css'
 
-function LocalLink({to,children,className=''}:{to:string;children:React.ReactNode;className?:string}){
+function LocalLink({to,children,className=''}:{to:string;children:ReactNode;className?:string}){
   const {pathFor}=useI18n()
   return <a href={pathFor(to)} className={className} onClick={event=>{if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();navigateLocal(to)}}>{children}</a>
 }
