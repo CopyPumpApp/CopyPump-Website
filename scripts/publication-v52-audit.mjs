@@ -7,6 +7,7 @@ const robots=read('public/robots.txt')
 const sitemap=read('public/sitemap.xml')
 const marker=read('public/release-marker.txt')
 const indexHtml=read('index.html')
+const securityTxt=read('public/.well-known/security.txt')
 const failures=[]
 const must=(condition,message)=>{if(!condition)failures.push(message)}
 const full=site+'\n'+home
@@ -40,6 +41,9 @@ must(indexHtml.includes('<title>CopyPump — Smart money. Your rules.</title>'),
 must(indexHtml.includes('og:image:alt" content="CopyPump — Smart money. Your rules."'),'Static share-image alt text is stale.')
 
 must(robots.includes('Sitemap:'),'robots.txt must declare sitemap.')
+must(securityTxt.includes('Contact: mailto:copypumphq@gmail.com'),'security.txt contact is missing.')
+must(securityTxt.includes('Policy: https://copypump-website.copypumphq.workers.dev/security'),'security.txt policy URL is stale.')
+must(Number.isFinite(Date.parse((securityTxt.match(/^Expires:\s*(.+)$/m)||[])[1])),'security.txt expiry is missing or invalid.')
 for(const route of ['/','/ru','/project','/ru/project','/progress','/ru/progress','/privacy','/ru/privacy','/terms','/ru/terms','/security','/ru/security','/contact','/ru/contact','/radar','/ru/radar']){
   const url='https://copypump-website.copypumphq.workers.dev'+(route==='/'?'/':route)
   must(sitemap.includes('<loc>'+url+'</loc>'),'Sitemap route missing: '+route)
