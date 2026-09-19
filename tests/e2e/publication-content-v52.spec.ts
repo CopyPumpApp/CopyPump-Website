@@ -7,7 +7,7 @@ test('Home has meaningful publication density without restoring card clutter',as
   await expect(page.locator('.home-pipeline-flow li')).toHaveCount(5)
   await expect(page.locator('.home-map-list article')).toHaveCount(6)
   await expect(page.locator('.radar-teaser-item')).toHaveCount(3)
-  await expect(page.locator('.status-current')).toContainText('Prove the complete lifecycle')
+  await expect(page.locator('.status-current')).toContainText('Close the Devnet loop')
   await expect(page.locator('.home-control')).not.toHaveCSS('background-color','rgb(16, 29, 40)')
 })
 
@@ -34,7 +34,7 @@ test('Russian Home explains automatic discovery and current public state',async(
   await expect(page.locator('.home-pipeline')).toContainText('Движения кошелька')
   await expect(page.locator('.home-map')).toContainText('Mainnet торговля')
   await expect(page.locator('.home-map')).toContainText('Закрыта')
-  await expect(page.locator('.status-current')).toContainText('Подтвердить полный цикл')
+  await expect(page.locator('.status-current')).toContainText('Замкнуть цикл в Devnet')
 })
 
 test('publication Home remains compact and overflow-free across mobile widths',async({page,browserName,isMobile})=>{
