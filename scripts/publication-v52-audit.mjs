@@ -9,6 +9,7 @@ const marker=read('public/release-marker.txt')
 const failures=[]
 const must=(condition,message)=>{if(!condition)failures.push(message)}
 const full=site+'\n'+home
+const landing=site.slice(site.indexOf('export function PremiumLanding'),site.indexOf('export function PremiumProject'))
 
 for(const name of ['HomeValueStrip','HomeControlStory','HomePipelineStory','HomeProductMap'])must(site.includes('<'+name),'Home publication scene missing: '+name)
 for(const phrase of ['Automatic discovery','Qualification before capital','User-defined boundaries','Emergency stop','Discover','Reconcile','Mainnet trading'])must(home.includes(phrase),'Publication content missing: '+phrase)
@@ -23,6 +24,8 @@ const detailed=[
   'Recovery must respect the current user policy',
 ]
 for(const phrase of detailed)must(!home.includes(phrase),'Detailed Product copy duplicated into Home: '+phrase)
+must(!home.includes("premiumCopy"),'Home publication component must not import canonical Product long-form copy.')
+must(!landing.includes('c.progress.currentTitle')&&!landing.includes('c.progress.currentCopy'),'Home must use its own concise proof target instead of duplicating Progress milestone copy.')
 
 for(const forbidden of ['lorem ipsum','example.com','localhost:','TODO','COMING SOON','guaranteed profit','guaranteed income','risk-free returns','Mainnet live'])must(!full.toLowerCase().includes(forbidden.toLowerCase()),'Placeholder/unsupported publication text found: '+forbidden)
 
