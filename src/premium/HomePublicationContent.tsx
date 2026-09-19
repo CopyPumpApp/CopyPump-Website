@@ -146,6 +146,6 @@ export function HomeProductMap(){
         <strong className={item[1].toLowerCase().includes('lock')||item[1].toLowerCase().includes('закры')?'locked':item[1].toLowerCase().includes('verif')||item[1].toLowerCase().includes('провер')?'active':'good'}>{item[1]}</strong>
       </article>)}
     </div>
-    <Link to="/progress" className="text-link">{c.progressLink} →</LocalLink>
+    <LocalLink to="/progress" className="text-link">{c.progressLink} →</LocalLink>
   </section>
 }
