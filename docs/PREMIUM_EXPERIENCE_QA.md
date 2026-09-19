@@ -29,4 +29,8 @@ Base: `145c520` on `CopyPumpApp/CopyPump-Website/main` (v52). The older local RC
 - EN/RU layout matrix: 320, 390, 768, 1024, 1440 and 1920px, with no positive horizontal overflow.
 - Visually reviewed Home, product artwork, limit illustration, control, pipeline, Radar, status, product map, community and menu. Desktop RU Home at 1440×900 decreased from 6777px to 6079px while retaining its content. The chapter row reserves the tallest scene to avoid automatic layout jumps.
 
-Full regression result is recorded in the pull request after the run completes. Production publication still requires merging the pull request through the repository's normal process.
+Local full suite (4 workers): 256 passed, 8 skipped, 2 flaky, 1 failed. The failure was the existing 20-interruption navigation stress test in WebKit; retry passes were that test on Chromium and a frame-sampling test on WebKit. A single-worker rerun of all new scenarios plus both timing-sensitive tests passed 27/27 without changing legacy tests.
+
+The final menu/reveal ordering change was checked with all new scenarios and existing navigation/reduced-motion regressions: 39/39 passed (2 workers). GitHub CI status is recorded on the PR. The initial full local run was not entirely green.
+
+Production publication still requires merging the pull request through the normal repository process.
