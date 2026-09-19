@@ -6,6 +6,7 @@ const seo=read('src/components/Seo.tsx')
 const robots=read('public/robots.txt')
 const sitemap=read('public/sitemap.xml')
 const marker=read('public/release-marker.txt')
+const indexHtml=read('index.html')
 const failures=[]
 const must=(condition,message)=>{if(!condition)failures.push(message)}
 const full=site+'\n'+home
@@ -33,6 +34,11 @@ must(seo.includes('link[rel="canonical"]'),'Canonical SEO handling missing.')
 must(seo.includes('hreflang'),'Hreflang handling missing.')
 must(seo.includes('og:image')&&seo.includes('twitter:image'),'Share image metadata missing.')
 must(existsSync('public/og-card.webp'),'OG share card missing.')
+must(indexHtml.includes('<meta property="og:title" content="CopyPump — Smart money. Your rules." />'),'Static Open Graph title is stale.')
+must(indexHtml.includes('<meta name="twitter:title" content="CopyPump — Smart money. Your rules." />'),'Static X/Twitter title is stale.')
+must(indexHtml.includes('<title>CopyPump — Smart money. Your rules.</title>'),'Static document title is stale.')
+must(indexHtml.includes('og:image:alt" content="CopyPump — Smart money. Your rules."'),'Static share-image alt text is stale.')
+
 must(robots.includes('Sitemap:'),'robots.txt must declare sitemap.')
 for(const route of ['/','/ru','/project','/ru/project','/progress','/ru/progress','/privacy','/ru/privacy','/terms','/ru/terms','/security','/ru/security','/contact','/ru/contact','/radar','/ru/radar']){
   const url='https://copypump-website.copypumphq.workers.dev'+(route==='/'?'/':route)
