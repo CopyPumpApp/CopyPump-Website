@@ -1,0 +1,5 @@
+Contact: mailto:copypumphq@gmail.com
+Canonical: https://copypump-website.copypumphq.workers.dev/.well-known/security.txt
+Policy: https://copypump-website.copypumphq.workers.dev/security
+Expires: 2027-09-19T00:00:00Z
+Preferred-Languages: en, ru

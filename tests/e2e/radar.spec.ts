@@ -41,7 +41,7 @@ test('invalid JSON, absent record and missing evidence remain explicit',async({p
  await page.route('**/radar/observations/'+id+'.json',r=>r.fulfill({status:503}));await page.goto('/radar/'+id);await expect(page.locator('.radar-fallback')).toContainText('could not be loaded')
 })
 test('Home requests the index only; no RPC, transaction calls or detail payload',async({page})=>{
- const requests:string[]=[];page.on('request',r=>requests.push(r.url()));await page.goto('/');await expect(page.locator('.radar-teaser-story h3')).toBeVisible()
+ const requests:string[]=[];page.on('request',r=>requests.push(r.url()));await page.goto('/');const headlines=page.locator('.radar-teaser-list h3');await expect(headlines).toHaveCount(3);await expect(headlines.first()).toBeVisible()
  expect(requests.some(x=>x.includes('/radar/observations/'))).toBeFalsy();expect(requests.some(x=>/api\.mainnet|api\.devnet|getTransaction|walletconnect/.test(x))).toBeFalsy()
 })
 test('cross-tab storage state updates without a server',async({page,context})=>{
