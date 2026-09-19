@@ -29,7 +29,13 @@ function External({href,children,className=''}:{href:string;children:ReactNode;c
   const brand=brandForUrl(href)
   return <a href={href} className={`${className} ${brand?'external-brand':''}`} {...(!href.startsWith('mailto:')?{target:'_blank',rel:'noopener noreferrer'}:{})}>{brand&&<BrandIcon brand={brand}/>}<span className="external-label">{children}</span></a>
 }
-function Mark({onNavigate}:{onNavigate?:()=>void}){const c=useCopy();return <Link to="/" className="brand" aria-label={`CopyPump — ${c.nav.home}`} onNavigate={onNavigate}><img src={officialMark} width="38" height="38" alt=""/><span>Copy<span>Pump</span></span></Link>}
+function Mark({onNavigate}:{onNavigate?:()=>void}) {
+  const c=useCopy()
+  return <Link to="/" className="brand" aria-label={`CopyPump — ${c.nav.home}`} onNavigate={onNavigate}>
+    <img src={officialMark} width="38" height="38" alt=""/>
+    <span className="brand-wordmark" aria-hidden="true"><span className="brand-copy">Copy</span><span className="brand-pump">Pump</span></span>
+  </Link>
+}
 function LocaleSwitch(){const {locale,setLocale}=useI18n();return <div className="locale-switch" role="group" aria-label={locale==='ru'?'Язык':'Language'}>{(['en','ru'] as const).map(l=><button type="button" key={l} aria-pressed={locale===l} onClick={()=>setLocale(l)}>{l.toUpperCase()}</button>)}</div>}
 export function PremiumMotionToggle(){const m=useMotion(),c=useCopy().nav;return <button type="button" className="motion-toggle" onClick={m.toggle} aria-pressed={!m.paused&&!m.reduced} disabled={m.reduced} aria-label={m.reduced?c.reduced:m.paused?c.play:c.pause}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h3l3-7 5 14 3-7h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{c.motion}</span><i/></button>}
 
