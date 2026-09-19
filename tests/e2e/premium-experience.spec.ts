@@ -130,3 +130,17 @@ test('delayed observer delivery cannot leave the asset or text layer invisible',
   expect(await page.locator('main [data-reveal]').evaluateAll(nodes=>nodes.every(n=>getComputedStyle(n).opacity==='1'))).toBeTruthy()
 })
 
+
+
+test('a destination queues word reveals until the inert navigation overlay closes',async({page})=>{
+  await page.goto('/')
+  await page.locator('.menu-button').click()
+  await expect(page.locator('.mobile-nav')).toHaveAttribute('data-phase','open')
+  await page.locator('.mobile-nav nav a[href="/progress"]').click()
+  await expect(page.locator('.mobile-nav')).toHaveCount(0)
+  const word=page.locator('h1 .heading-motion').first()
+  await expect.poll(()=>word.evaluate(n=>n.getAnimations().some(a=>a.playState==='running'))).toBeTruthy()
+  await expect(word).toHaveCSS('opacity','1')
+  await expect.poll(()=>word.evaluate(n=>n.getAnimations().length)).toBe(0)
+})
+

@@ -43,8 +43,9 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
       active.current.delete(node);animation?.cancel();visible(node)
     }
     const enter=(node:HTMLElement)=>{
-      if(!node.isConnected||node.closest('[inert]'))return
+      if(!node.isConnected)return
       if(document.documentElement.classList.contains('nav-open')){waitingForMenu.add(node);return}
+      if(node.closest('[inert]'))return
       if(node.dataset.revealed==='true'||!allowed.current||typeof node.animate!=='function'){visible(node);return}
       node.dataset.revealed='true';node.style.opacity='1';node.style.willChange='opacity, transform'
       const section=node.closest<HTMLElement>('section,.document-hero');if(section)section.dataset.entered='true'
