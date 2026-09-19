@@ -106,6 +106,23 @@ Before moving from the Workers address to the final custom domain, update and ve
 
 Dynamic canonical/OG URLs use the current site origin and therefore should be rechecked on the custom domain rather than hard-coded early.
 
+## 7.1 Deployment security headers gate
+
+The repository does not currently contain an authoritative Workers response-header configuration. Do **not** add a decorative Pages-style `_headers` file unless the deployed Workers asset pipeline is confirmed to consume it.
+
+Before declaring the final custom-domain launch complete, verify the actual HTTPS responses at the deployment layer:
+
+- HTTPS redirect/canonical host behavior;
+- HSTS on the final custom domain after HTTPS is stable;
+- an explicit Content-Security-Policy appropriate to the real asset/external-link set;
+- anti-framing protection via CSP `frame-ancestors` (and compatible fallback where appropriate);
+- `Referrer-Policy`;
+- a conservative `Permissions-Policy`;
+- MIME sniffing protection;
+- no accidental cache of private/user-specific data (the current site has no server-side personal state).
+
+These must be checked against **real response headers** after the custom domain is connected. Meta tags are not a substitute for response security headers.
+
 ## 8. Performance gate
 
 Do not call the site “lag-free” from CI emulation.
