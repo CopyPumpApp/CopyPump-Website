@@ -69,3 +69,23 @@ test('current interaction and disclosure remain available after content expansio
   await expect(page.locator('.policy-result')).toContainText('В пределах лимита')
   await expect(page.locator('.experience-disclosure')).toContainText('Без подключения кошелька')
 })
+
+test('capture v52 publication scenes in desktop and mobile profiles',async({page},testInfo)=>{
+  test.setTimeout(60_000)
+  await page.goto('/ru')
+  const dir='test-results/visual-qa/'+testInfo.project.name
+  for(const [name,selector] of [
+    ['v52-why','.home-value'],
+    ['v52-control','.home-control'],
+    ['v52-pipeline','.home-pipeline'],
+    ['v52-radar','.radar-teaser--expanded'],
+    ['v52-status','.status-section'],
+    ['v52-product-map','.home-map'],
+    ['v52-community','.community'],
+  ] as const){
+    const node=page.locator(selector)
+    await node.scrollIntoViewIfNeeded()
+    await page.waitForTimeout(1350)
+    await page.screenshot({path:dir+'/'+name+'.png'})
+  }
+})
