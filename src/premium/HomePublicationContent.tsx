@@ -4,9 +4,9 @@ import { KineticHeading } from './KineticHeading'
 import { navigateLocal } from '../lib/motion'
 import './HomePublicationContent.css'
 
-function LocalLink({to,children,className=''}:{to:string;children:ReactNode;className?:string}){
+function LocalLink({to,children,className='',reveal=false}:{to:string;children:ReactNode;className?:string;reveal?:boolean}){
   const {pathFor}=useI18n()
-  return <a href={pathFor(to)} className={className} onClick={event=>{if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();navigateLocal(to)}}>{children}</a>
+  return <a href={pathFor(to)} className={className} data-reveal={reveal?'':undefined} data-delay="160" onClick={event=>{if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();navigateLocal(to)}}>{children}</a>
 }
 
 const copy = {
@@ -117,7 +117,7 @@ export function HomeControlStory(){
       <p className="eyebrow" data-reveal="label">{c.controlEyebrow}</p>
       <KineticHeading id="home-control-title" lines={[{text:c.controlTitle},{text:c.controlAccent,accent:true}]}/>
       <p data-reveal>{c.controlIntro}</p>
-      <LocalLink to="/project" className="text-link">{c.productLink} →</LocalLink>
+      <LocalLink to="/project" className="text-link" reveal>{c.productLink} →</LocalLink>
     </div>
     <div className="home-control-list">
       {c.controls.map((item,i)=><article key={item[0]} data-reveal="record" data-delay={i*60}>

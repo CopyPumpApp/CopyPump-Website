@@ -32,52 +32,70 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
   useEffect(()=>{if(!pageVisible)revealAll()},[pageVisible,revealAll])
 
   useLayoutEffect(()=>{
-    const nodes=new Set<HTMLElement>()
-    if(!allowed.current||!('IntersectionObserver'in window)) {
+    if(!('IntersectionObserver'in window)) {
       document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(visible);return
     }
     let disposed=false
+    const nodes=new Map<HTMLElement,Element>(),targets=new Map<Element,HTMLElement>()
     const waitingForMenu=new Set<HTMLElement>()
+    const cancel=(node:HTMLElement)=>{
+      const animation=active.current.get(node)
+      active.current.delete(node);animation?.cancel();visible(node)
+    }
     const enter=(node:HTMLElement)=>{
-      if(!node.isConnected)return
+      if(!node.isConnected||node.closest('[inert]'))return
       if(document.documentElement.classList.contains('nav-open')){waitingForMenu.add(node);return}
       if(node.dataset.revealed==='true'||!allowed.current||typeof node.animate!=='function'){visible(node);return}
-      node.dataset.revealed='true';node.style.opacity='1';node.style.willChange='opacity, transform';const section=node.closest<HTMLElement>('section,.document-hero');if(section)section.dataset.entered='true'
+      node.dataset.revealed='true';node.style.opacity='1';node.style.willChange='opacity, transform'
+      const section=node.closest<HTMLElement>('section,.document-hero');if(section)section.dataset.entered='true'
       const kind=node.dataset.reveal
-      const from = kind==='heading'?{opacity:.08,transform:'translate3d(0,116%,0) rotate(2deg)'}:
-        kind==='depth'?{opacity:0,transform:'translate3d(0,38px,0) scale(.92)'}:
+      const from=kind==='heading'?{opacity:.12,transform:'translate3d(0,108%,0)'}:
+        kind==='depth'?{opacity:0,transform:'translate3d(0,24px,0) scale(.97)'}:
           {opacity:0,transform:'translate3d(0,16px,0)'}
-      const duration=kind==='heading'?1120:kind==='depth'?1250:kind==='label'?650:kind==='record'?960:880
-      const delay=Math.min(360,Math.max(0,Number(node.dataset.delay)||0))
+      const duration=kind==='heading'?900:kind==='depth'?1000:kind==='label'?560:kind==='record'?760:700
+      const delay=Math.min(280,Math.max(0,Number(node.dataset.delay)||0))
       const animation=node.animate([from,{opacity:1,transform:'translate3d(0,0,0) scale(1)'}],
         {duration,delay,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'})
       active.current.set(node,animation)
       animation.finished.then(()=>{
         if(!disposed&&active.current.get(node)===animation){visible(node);active.current.delete(node);animation.cancel()}
-      },()=>{if(!disposed)visible(node)})
+      },()=>{/* The owner settles cancellation; a stale promise must not change a newer entrance. */})
     }
     const io=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{if(e.isIntersecting){io.unobserve(e.target);enter(e.target as HTMLElement)}})
-    },{threshold:0,rootMargin:'70px 0px'})
-    const discover=()=>{nodes.forEach(node=>{if(!node.isConnected){io.unobserve(node);active.current.get(node)?.cancel();active.current.delete(node);nodes.delete(node)}});document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(node=>{
-      if(nodes.has(node))return
-      nodes.add(node)
-      const r=node.getBoundingClientRect()
-      if(r.bottom<0||node.dataset.revealed==='true'){visible(node);return}
-      node.dataset.revealed='false'
-      if(typeof node.animate==='function')node.style.opacity='0'
-      io.observe(node)
-    })}
-    const afterMenu=()=>{waitingForMenu.forEach(enter);waitingForMenu.clear()}
-    window.addEventListener('copypump:menu-settled',afterMenu)
-    discover();window.addEventListener('copypump:content-ready',discover)
-    const focus=(event:FocusEvent)=>{
-      const target=event.target as Element|null
-      const node=target?.closest<HTMLElement>('[data-reveal]')
-      if(node){io.unobserve(node);active.current.get(node)?.cancel();active.current.delete(node);visible(node)}
+      entries.forEach(e=>{
+        const node=targets.get(e.target);if(!node)return
+        if(e.isIntersecting){enter(node);return}
+        // Reset beyond the entire viewport plus a small hysteresis margin.
+        cancel(node);waitingForMenu.delete(node);node.dataset.revealed='false'
+      })
+    },{threshold:0,rootMargin:'32px 0px'})
+    const discover=()=>{
+      nodes.forEach((target,node)=>{if(!node.isConnected){io.unobserve(target);targets.delete(target);cancel(node);nodes.delete(node)}})
+      document.querySelectorAll<HTMLElement>('main [data-reveal]').forEach(node=>{
+        if(nodes.has(node)){
+          if(node.closest('[inert]')){cancel(node);node.dataset.revealed='false'}
+          else {const r=nodes.get(node)!.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)enter(node)}
+          return
+        }
+        // Observe the stationary word mask, never its clipped, translating child.
+        const target=node.closest('.heading-word-mask')||node
+        nodes.set(node,target);targets.set(target,node);visible(node);node.dataset.revealed='false'
+        // Fail open: only a bounded running animation can hide content. No persistent opacity:0.
+        io.observe(target)
+      })
     }
-    document.addEventListener('focusin',focus)
-    return()=>{disposed=true;waitingForMenu.clear();window.removeEventListener('copypump:menu-settled',afterMenu);io.disconnect();window.removeEventListener('copypump:content-ready',discover);document.removeEventListener('focusin',focus);active.current.forEach(a=>a.cancel());active.current.clear();nodes.forEach(visible)}
+    const afterMenu=()=>{waitingForMenu.forEach(enter);waitingForMenu.clear()}
+    const focus=(event:FocusEvent)=>{
+      const node=(event.target as Element|null)?.closest<HTMLElement>('[data-reveal]')
+      if(node)cancel(node)
+    }
+    discover();window.addEventListener('copypump:content-ready',discover)
+    window.addEventListener('copypump:menu-settled',afterMenu);document.addEventListener('focusin',focus)
+    return()=>{
+      disposed=true;waitingForMenu.clear();io.disconnect();targets.clear()
+      window.removeEventListener('copypump:content-ready',discover);window.removeEventListener('copypump:menu-settled',afterMenu);document.removeEventListener('focusin',focus)
+      nodes.forEach((_target,node)=>cancel(node));nodes.clear()
+    }
   },[routeKey])
 
   // A single visible accent may run. Mobile uses one finite sweep, not a loop.
@@ -85,7 +103,7 @@ export function Experience({children,routeKey}:{children:ReactNode;routeKey:stri
     let inks:HTMLElement[]=[]
     const select=()=>{
       let selected:HTMLElement|undefined,score=Infinity
-      for(const ink of inks){const r=ink.getBoundingClientRect();if(r.bottom>70&&r.top<innerHeight){const d=Math.abs(r.top-innerHeight*.35);if(d<score){score=d;selected=ink}}}
+      for(const ink of inks){if(ink.closest('[inert]'))continue;const r=ink.getBoundingClientRect();if(r.bottom>70&&r.top<innerHeight){const d=Math.abs(r.top-innerHeight*.35);if(d<score){score=d;selected=ink}}}
       inks.forEach(ink=>{ink.dataset.gradientRunning=ink===selected?'true':'false'})
     }
     if(!('IntersectionObserver'in window))return
