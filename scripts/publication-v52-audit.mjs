@@ -17,7 +17,7 @@ for(const name of ['HomeValueStrip','HomeControlStory','HomePipelineStory','Home
 for(const phrase of ['Automatic discovery','Qualification before capital','User-defined boundaries','Emergency stop','Discover','Reconcile','Mainnet trading'])must(home.includes(phrase),'Publication content missing: '+phrase)
 must(site.includes('<RadarTeaser/>'),'Radar digest must remain on Home.')
 must(site.includes('status-current'),'Current verification target must remain visible on Home.')
-must(marker.includes('v52 preview'),'Release marker must identify the v52 preview.')
+must(marker.includes('CopyPump v52 / richer Home publication release'),'Release marker must identify the final v52 publication candidate.')
 
 const detailed=[
   'Set the maximum capital an individual action may use.',
