@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import { useI18n } from '../i18n'
 import { KineticHeading } from './KineticHeading'
 import { navigateLocal } from '../lib/motion'
-import { premiumCopy } from './content'
 import './HomePublicationContent.css'
 
 function LocalLink({to,children,className=''}:{to:string;children:ReactNode;className?:string}){
@@ -25,6 +24,12 @@ const copy = {
     controlTitle:'Autonomy has a boundary.',
     controlAccent:'You define it.',
     controlIntro:'A useful agent should be able to say “no”. CopyPump is built around independent checks that can stop a candidate before execution.',
+    controls:[
+      ['Capital','How much a single action is allowed to use.'],
+      ['Execution risk','Price impact, liquidity and other conditions can stop an action.'],
+      ['Exposure','Automation stays inside the position and portfolio boundaries you define.'],
+      ['Emergency stop','A separate stop control can halt automation without waiting for other checks.'],
+    ],
     differenceEyebrow:'WHY THE PIPELINE MATTERS',
     differenceTitle:'A wallet move is',
     differenceAccent:'not enough context.',
@@ -60,6 +65,12 @@ const copy = {
     controlTitle:'У автономности есть границы.',
     controlAccent:'Их задаёте вы.',
     controlIntro:'Полезный агент должен уметь сказать «нет». CopyPump строится вокруг независимых проверок, каждая из которых может остановить кандидата до исполнения.',
+    controls:[
+      ['Капитал','Сколько средств разрешено использовать одному действию.'],
+      ['Риск исполнения','Цена, ликвидность и другие условия могут остановить действие.'],
+      ['Экспозиция','Автоматизация остаётся внутри заданных вами границ позиции и портфеля.'],
+      ['Экстренная остановка','Отдельный stop-контроль может остановить автоматизацию независимо от остальных проверок.'],
+    ],
     differenceEyebrow:'ЗАЧЕМ НУЖЕН PIPELINE',
     differenceTitle:'Движения кошелька',
     differenceAccent:'недостаточно.',
@@ -100,7 +111,7 @@ export function HomeValueStrip(){
 }
 
 export function HomeControlStory(){
-  const {locale}=useI18n(),c=copy[locale],controls=premiumCopy[locale].product.controls
+  const {locale}=useI18n(),c=copy[locale]
   return <section className="home-control wrap section-space" data-scene="experience" aria-labelledby="home-control-title">
     <div className="home-control-heading">
       <p className="eyebrow" data-reveal="label">{c.controlEyebrow}</p>
@@ -109,8 +120,8 @@ export function HomeControlStory(){
       <LocalLink to="/project" className="text-link">{c.productLink} →</LocalLink>
     </div>
     <div className="home-control-list">
-      {controls.map((item,i)=><article key={item.name} data-reveal="record" data-delay={i*60}>
-        <span>0{i+1}</span><div><p className="eyebrow">{item.tag}</p><h3>{item.name}</h3><p>{item.detail}</p></div>
+      {c.controls.map((item,i)=><article key={item[0]} data-reveal="record" data-delay={i*60}>
+        <span>0{i+1}</span><div><h3>{item[0]}</h3><p>{item[1]}</p></div>
       </article>)}
     </div>
   </section>
