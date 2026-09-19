@@ -29,7 +29,13 @@ function External({href,children,className=''}:{href:string;children:ReactNode;c
   const brand=brandForUrl(href)
   return <a href={href} className={`${className} ${brand?'external-brand':''}`} {...(!href.startsWith('mailto:')?{target:'_blank',rel:'noopener noreferrer'}:{})}>{brand&&<BrandIcon brand={brand}/>}<span className="external-label">{children}</span></a>
 }
-function Mark({onNavigate}:{onNavigate?:()=>void}){const c=useCopy();return <Link to="/" className="brand" aria-label={`CopyPump — ${c.nav.home}`} onNavigate={onNavigate}><img src={officialMark} width="38" height="38" alt=""/><span>Copy<span>Pump</span></span></Link>}
+function Mark({onNavigate}:{onNavigate?:()=>void}) {
+  const c=useCopy()
+  return <Link to="/" className="brand" aria-label={`CopyPump — ${c.nav.home}`} onNavigate={onNavigate}>
+    <img src={officialMark} width="38" height="38" alt=""/>
+    <span className="brand-wordmark" aria-hidden="true"><span className="brand-copy">Copy</span><span className="brand-pump">Pump</span></span>
+  </Link>
+}
 function LocaleSwitch(){const {locale,setLocale}=useI18n();return <div className="locale-switch" role="group" aria-label={locale==='ru'?'Язык':'Language'}>{(['en','ru'] as const).map(l=><button type="button" key={l} aria-pressed={locale===l} onClick={()=>setLocale(l)}>{l.toUpperCase()}</button>)}</div>}
 export function PremiumMotionToggle(){const m=useMotion(),c=useCopy().nav;return <button type="button" className="motion-toggle" onClick={m.toggle} aria-pressed={!m.paused&&!m.reduced} disabled={m.reduced} aria-label={m.reduced?c.reduced:m.paused?c.play:c.pause}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h3l3-7 5 14 3-7h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg><span>{c.motion}</span><i/></button>}
 
@@ -49,7 +55,7 @@ export function PremiumHeader({simple=false,hideChannels=false}:{simple?:boolean
   {menu.mounted&&createPortal(<div className="mobile-nav" id="mobile-navigation" role="dialog" aria-modal="true" aria-label={c.nav.label} data-phase={menu.phase} data-shown={menu.shown?'true':'false'}>
     <div className="mobile-nav__panel" ref={menu.sheet}>
       <div className="mobile-nav__top wrap"><Mark onNavigate={menu.destination}/><button ref={menu.closeButton} type="button" className="icon-button" aria-label={c.nav.close} onClick={menu.reverse}><span/><span/></button></div>
-      <div className="mobile-nav__body wrap"><p className="eyebrow">{c.nav.explore}</p><nav onPointerLeave={()=>previewScene(null)}>{items.map(([to,label],i)=><Link key={to} to={to} onNavigate={menu.destination} onPointerEnter={(event:React.PointerEvent<HTMLAnchorElement>)=>{if(event.pointerType==='mouse')previewScene(to)}} onFocus={()=>previewScene(to)} style={{'--item-delay':`${110+i*65}ms`} as CSSProperties}><small>0{i+1}</small><span className="nav-label-mask"><strong>{label}{to==='/radar'&&<RadarIndicator/>}</strong></span><Arrow diagonal/></Link>)}</nav></div>
+      <div className="mobile-nav__body wrap"><p className="eyebrow">{c.nav.explore}</p><nav onPointerLeave={()=>previewScene(null)}>{items.map(([to,label],i)=><Link key={to} to={to} onNavigate={menu.destination} onPointerEnter={(event:React.PointerEvent<HTMLAnchorElement>)=>{if(event.pointerType==='mouse')previewScene(to)}} onFocus={()=>previewScene(to)} style={{'--item-delay':`${110+i*65}ms`} as CSSProperties}><span className="nav-label-mask"><strong>{label}{to==='/radar'&&<RadarIndicator/>}</strong></span><Arrow diagonal/></Link>)}</nav></div>
       <div className="mobile-nav__footer wrap"><LocaleSwitch/>{!hideChannels&&<div className="mobile-nav__external"><External href={CHANNELS.github}>GitHub</External><External href={CHANNELS.discord}>Discord</External><External href={CHANNELS.x}>X</External></div>}<PremiumMotionToggle/></div>
     </div>
   </div>,document.body)}
@@ -69,18 +75,18 @@ function StatusBadge(){const c=useCopy();return <Link to="/progress" className="
 
 function ProductExperience(){
   const {locale}=useI18n(), c=useCopy().experience,m=useMotion()
-  const [active,setActive]=useState(0),[limit,setLimit]=useState(.35),[inView,setInView]=useState(false),[requested,setRequested]=useState(0),[failed,setFailed]=useState(false)
+  const [active,setActive]=useState(0),[limit,setLimit]=useState(.35),[inView,setInView]=useState(false),[requested,setRequested]=useState(0),[failed,setFailed]=useState(false),[cycleHeld,setCycleHeld]=useState(false),[interaction,setInteraction]=useState(0)
   const requestId=useRef(0),root=useRef<HTMLDivElement>(null),buttons=useRef<(HTMLButtonElement|null)[]>([])
-  const selectChapter=async(index:number)=>{
+  const selectChapter=useCallback(async(index:number)=>{
     const request=++requestId.current;setRequested(index);setFailed(false)
     const img=new Image();img.src=`/media/v48/${ART.objects[index]}-${matchMedia('(max-width:600px)').matches?480:800}.webp`
     try {
       await img.decode()
       if(request===requestId.current)setActive(index)
     }catch{if(request===requestId.current){setRequested(active);setFailed(true)}}
-  }
+  },[active])
   useEffect(()=>()=>{requestId.current++},[])
-  useEffect(()=>{if(!root.current||!('IntersectionObserver'in window))return;const io=new IntersectionObserver(([e])=>setInView(e.isIntersecting));io.observe(root.current);return()=>io.disconnect()},[])
+  useEffect(()=>{if(!root.current)return;if(!('IntersectionObserver'in window)){setInView(true);return}const io=new IntersectionObserver(([e])=>setInView(e.isIntersecting));io.observe(root.current);return()=>io.disconnect()},[])
   useLayoutEffect(()=>{window.dispatchEvent(new Event('copypump:content-ready'))},[active,locale])
   const pending=useRef(requested);pending.current=requested
   const stepChapter=(direction:1|-1)=>{
@@ -89,22 +95,37 @@ function ProductExperience(){
     pending.current=next;void selectChapter(next)
   }
   const swipe=useArtworkSwipe(stepChapter)
-  const chapter=c.chapters[active],allowed=limit>=.5
+  // One timer, renewed after every selection or input. Hover never pauses it.
+  const cycling=m.running&&inView&&!cycleHeld&&requested===active
+  useEffect(()=>{
+    if(!cycling)return
+    const timer=window.setTimeout(()=>{
+      // Recheck real browser state as well as React state at the timer boundary.
+      if(document.hidden||document.documentElement.classList.contains('nav-open')||matchMedia('(prefers-reduced-motion: reduce)').matches)return
+      // Never replace a form or gesture while it is being operated.
+      if(root.current?.querySelector('[data-dragging=true],input:active')){setInteraction(n=>n+1);return}
+      void selectChapter((active+1)%ART.objects.length)
+    },7200)
+    return()=>clearTimeout(timer)
+  },[cycling,active,requested,interaction,selectChapter])
+  const allowed=limit>=.5
   return <section className="experience wrap section-space" id="experience" data-scene="experience" aria-labelledby="experience-title">
     <div className="section-heading"><div><p className="eyebrow" data-reveal="label">{c.eyebrow}</p><KineticHeading id="experience-title" lines={[{text:c.title},{text:c.accent,accent:true}]}/></div><p data-reveal>{locale==='ru'?'Четыре этапа — от наблюдения до проверяемого результата. Переключайте сцены, чтобы познакомиться с подходом CopyPump.':'Four stages—from an observation to a reviewable outcome. Explore each scene to discover the CopyPump approach.'}</p></div>
-    <div className="experience-tabs" role="tablist" aria-label={c.eyebrow}>{c.chapters.map((item,i)=><button key={i} type="button" role="tab" id={`chapter-${i}`} aria-controls="experience-panel" aria-selected={active===i} tabIndex={active===i?0:-1} ref={el=>{buttons.current[i]=el}} onClick={()=>void selectChapter(i)} onKeyDown={e=>{let next=i;if(e.key==='ArrowRight')next=(i+1)%4;else if(e.key==='ArrowLeft')next=(i+3)%4;else if(e.key==='Home')next=0;else if(e.key==='End')next=3;else return;e.preventDefault();void selectChapter(next);buttons.current[next]?.focus()}}>{item.name}<i aria-hidden="true"/></button>)}</div>
-    <div className="experience-stage" ref={root} id="experience-panel" aria-busy={requested!==active} role="tabpanel" aria-labelledby={`chapter-${active}`} tabIndex={0} data-ambient={m.running&&inView?'on':'off'}>
-      <div className="experience-art" data-reveal="depth" {...swipe} role="group" aria-label={locale==='ru'?'Переключение сцен продукта':'Product scene controls'} aria-describedby="artwork-swipe-hint" tabIndex={0} onKeyDown={event=>{if(event.target!==event.currentTarget)return;if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();stepChapter(event.key==='ArrowRight'?1:-1)}}}>
+    <div className="experience-navigation" data-reveal="record"><div className="experience-tabs" role="tablist" aria-label={c.eyebrow}>{c.chapters.map((item,i)=><button key={i} type="button" role="tab" id={`chapter-${i}`} aria-controls="experience-panel" aria-selected={active===i} tabIndex={active===i?0:-1} ref={el=>{buttons.current[i]=el}} onClick={()=>{setInteraction(n=>n+1);void selectChapter(i)}} onKeyDown={e=>{let next=i;if(e.key==='ArrowRight')next=(i+1)%4;else if(e.key==='ArrowLeft')next=(i+3)%4;else if(e.key==='Home')next=0;else if(e.key==='End')next=3;else return;e.preventDefault();void selectChapter(next);buttons.current[next]?.focus()}}>{item.name}<i aria-hidden="true"/></button>)}</div><button type="button" className="experience-cycle" aria-pressed={cycleHeld} disabled={!m.running} onClick={()=>setCycleHeld(v=>!v)} aria-label={locale==='ru'?(cycleHeld?'Продолжить смену сцен':'Приостановить смену сцен'):(cycleHeld?'Resume scene cycle':'Pause scene cycle')}>{cycleHeld?'▶':'Ⅱ'}</button></div>
+    <div className="experience-stage" ref={root} onPointerDownCapture={()=>setInteraction(n=>n+1)} onPointerUpCapture={()=>setInteraction(n=>n+1)} onKeyDownCapture={()=>setInteraction(n=>n+1)} data-cycling={cycling?'true':'false'} id="experience-panel" aria-busy={requested!==active} role="tabpanel" aria-labelledby={`chapter-${active}`} tabIndex={0} data-ambient={m.running&&inView?'on':'off'}>
+      <div className="experience-art" {...swipe} role="group" aria-label={locale==='ru'?'Переключение сцен продукта':'Product scene controls'} aria-describedby="artwork-swipe-hint" tabIndex={0} onKeyDown={event=>{if(event.target!==event.currentTarget)return;if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();stepChapter(event.key==='ArrowRight'?1:-1)}}}>
         <div className="art-orbit" aria-hidden="true"/><ChapterArtwork name={ART.objects[active]} running={m.running&&inView}/>
         <div className="artwork-step-controls"><button type="button" className="artwork-previous" disabled={requested===0} aria-label={locale==='ru'?'Предыдущий объект':'Previous object'} onClick={()=>stepChapter(-1)}>‹</button><span id="artwork-swipe-hint">{locale==='ru'?'Листайте объекты свайпом':'Swipe to explore'}</span><button type="button" className="artwork-next" disabled={requested===ART.objects.length-1} aria-label={locale==='ru'?'Следующий объект':'Next object'} onClick={()=>stepChapter(1)}>›</button></div>
       </div>
-      <div className="experience-story chapter-enter" key={active}>
-        <KineticHeading as="h3" lines={[{text:chapter.title,accent:true}]}/><p>{chapter.copy}</p>
-        {active===2&&<div className="instrument instrument--policy"><div className="policy-readout"><span>{c.test}</span><b>0.50 <small>SOL</small></b></div><label className="policy-range" htmlFor="capital-limit"><span>{c.limit}</span><output htmlFor="capital-limit">{limit.toFixed(2)} SOL</output><input id="capital-limit" type="range" min="0.1" max="1" step="0.05" value={limit} onChange={e=>setLimit(Number(e.target.value))}/><small>0.10 SOL</small><small>1.00 SOL</small></label><div className={`policy-result ${allowed?'allowed':'blocked'}`} role="status" aria-live="polite"><strong><i/>{allowed?c.allowed:c.blocked}</strong><p>{allowed?c.allowedNote:c.blockedNote}</p></div></div>}
-        <Link to="/project" className="text-link">{active===2?c.policyLink:c.detail}<Arrow/></Link>
+      <div className="experience-stories">
+        {c.chapters.map((chapter,i)=><div className={'chapter-panel '+(active===i?'experience-story chapter-enter':'')} key={i} inert={active!==i} aria-hidden={active!==i} data-active={active===i?'true':'false'}>
+          <KineticHeading as="h3" lines={[{text:chapter.title,accent:true}]}/><p data-reveal data-delay="100">{chapter.copy}</p>
+          {i===2&&<div className="instrument instrument--policy"><div className="policy-readout"><span>{c.test}</span><b>0.50 <small>SOL</small></b></div><label className="policy-range" htmlFor="capital-limit"><span>{c.limit}</span><output htmlFor="capital-limit">{limit.toFixed(2)} SOL</output><input id="capital-limit" type="range" min="0.1" max="1" step="0.05" value={limit} onChange={e=>{setLimit(Number(e.target.value));setInteraction(n=>n+1)}}/><small>0.10 SOL</small><small>1.00 SOL</small></label><div className={'policy-result '+(allowed?'allowed':'blocked')} role="status" aria-live={active===2?'polite':'off'}><strong><i/>{allowed?c.allowed:c.blocked}</strong><p>{allowed?c.allowedNote:c.blockedNote}</p></div></div>}
+          <Link to="/project" className="text-link" data-reveal data-delay="180">{i===2?c.policyLink:c.detail}<Arrow/></Link>
+        </div>)}
       </div>
     </div>
-    <p className="experience-disclosure">{locale==='ru'?'Иллюстрация продукта. Без подключения кошелька и реальных сделок.':'Product illustration. No wallet connection or real trades.'}</p>
+    <p className="experience-disclosure" data-reveal>{locale==='ru'?'Иллюстрация продукта. Без подключения кошелька и реальных сделок.':'Product illustration. No wallet connection or real trades.'}</p>
     {failed&&<p role="status">{locale==='ru'?'Изображение не загрузилось. Предыдущая сцена сохранена; попробуйте ещё раз.':'The image could not load. Your previous scene is preserved; please try again.'}</p>}
   </section>
 }
@@ -115,7 +136,7 @@ export function PremiumLanding(){const c=useCopy(),{locale}=useI18n();const proo
   <HomeControlStory/>
   <HomePipelineStory/>
   <RadarTeaser/>
-  <section className="status-section wrap section-space" id="status" data-scene="status" aria-labelledby="status-title"><div className="status-copy"><p className="eyebrow" data-reveal="label">{c.status.eyebrow}</p><KineticHeading id="status-title" lines={[{text:c.status.title},{text:c.status.accent,accent:true}]}/><p data-reveal>{c.status.intro}</p><Link to="/progress" className="text-link">{c.status.link}<Arrow/></Link></div><div className="status-card"><h3 data-reveal>{c.status.now}</h3><dl><div data-reveal data-delay="70"><dt>{c.status.network}</dt><dd>Solana Devnet</dd></div><div data-reveal data-delay="140"><dt>{c.status.mainnet}</dt><dd className="locked-label">{c.status.locked}</dd></div></dl><div className="status-current" data-reveal data-delay="180"><p className="eyebrow">{proofTarget.label}</p><strong>{proofTarget.title}</strong><p>{proofTarget.copy}</p></div><p className="status-source" data-reveal data-delay="210">{c.status.source} <DateLabel/></p><p className="fine-print">{c.status.note}</p></div></section>
+  <section className="status-section wrap section-space" id="status" data-scene="status" aria-labelledby="status-title"><div className="status-copy"><p className="eyebrow" data-reveal="label">{c.status.eyebrow}</p><KineticHeading id="status-title" lines={[{text:c.status.title},{text:c.status.accent,accent:true}]}/><p data-reveal>{c.status.intro}</p><Link to="/progress" className="text-link" data-reveal data-delay="160">{c.status.link}<Arrow/></Link></div><div className="status-card"><h3 data-reveal>{c.status.now}</h3><dl><div data-reveal data-delay="70"><dt>{c.status.network}</dt><dd>Solana Devnet</dd></div><div data-reveal data-delay="140"><dt>{c.status.mainnet}</dt><dd className="locked-label">{c.status.locked}</dd></div></dl><div className="status-current" data-reveal data-delay="180"><p className="eyebrow">{proofTarget.label}</p><strong>{proofTarget.title}</strong><p>{proofTarget.copy}</p></div><p className="status-source" data-reveal data-delay="210">{c.status.source} <DateLabel/></p><p className="fine-print">{c.status.note}</p></div></section>
   <HomeProductMap/>
   <section className="community wrap section-space" id="community" data-scene="community" aria-labelledby="community-title"><div><p className="eyebrow" data-reveal="label">{c.cta.eyebrow}</p><KineticHeading id="community-title" lines={[{text:c.cta.title,accent:true}]}/><p data-reveal>{c.cta.copy}</p><div className="community-actions" data-reveal data-delay="140"><External href={CHANNELS.discord} className="button button-primary">{c.cta.community}<Arrow diagonal/></External><External href={CHANNELS.github} className="text-link">{c.cta.builder}<Arrow diagonal/></External></div><External href={CHANNELS.email} className="partner-link">{c.cta.partners} ↗</External></div></section>
   </Layout>}
