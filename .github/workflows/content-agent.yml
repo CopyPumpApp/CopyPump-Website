@@ -60,13 +60,60 @@ jobs:
         run: node scripts/write-agent-status.mjs
       - name: Data-only diff guards
         run: |
-          CHANGED_FILES="$(git diff --name-only)" node scripts/content-only-guard.mjs
+          CHANGED_FILES="$( { git diff --name-only; git ls-files --others --exclude-standard; } | sort -u )" node scripts/content-only-guard.mjs
           node scripts/radar-data-guard.mjs
       - name: Verify autonomous diff is exactly allowlisted
         shell: bash
         run: |
           set -euo pipefail
-          UNEXPECTED="$(git diff --name-only | grep -Ev '^(src/content/project-status\.generated\.ts|public/public-status\.json|public/agent-status\.json|public/radar/index\.json|public/radar/observations/[a-z0-9-]+\.json|public/radar/evidence/auto-transaction-[a-z0-9-]+\.json)$' || true)"
+          UNEXPECTED="$( { git diff --name-only; git ls-files --others --exclude-standard; } | sort -u | grep -Ev '^(src/content/project-status\.generated\.ts|public/public-status\.json|public/agent-status\.json|public/radar/index\.json|public/radar/observations/[a-z0-9-]+\.json|public/radar/evidence/auto-transaction-[a-z0-9-]+\.json)
+          if [ -n "$UNEXPECTED" ]; then echo "Unexpected autonomous website diff:"; echo "$UNEXPECTED"; exit 1; fi
+      - name: Install locked dependencies
+        run: npm ci --audit=false
+      - name: Full website verification
+        run: npm run check
+      - name: Commit verified data only
+        id: commit
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No public-safe data update."
+            exit 0
+          fi
+          git config user.name "CopyPump Content Agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/content/project-status.generated.ts public/public-status.json public/agent-status.json public/radar/index.json public/radar/observations public/radar/evidence/auto-transaction-*.json 2>/dev/null || git add src/content/project-status.generated.ts public/public-status.json public/agent-status.json public/radar/index.json public/radar/observations
+          git commit -m "content: autonomous project and Radar data refresh"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Require Cloudflare credentials for data-only deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "CLOUDFLARE_API_TOKEN is missing"; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "CLOUDFLARE_ACCOUNT_ID is missing"; exit 1; }
+      - name: Deploy verified data-only update
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+      - name: Verify public data-agent endpoint
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          for i in 1 2 3 4 5; do
+            if curl --fail --silent --show-error --location --max-time 20 https://copypump-website.copypumphq.workers.dev/agent-status.json >/dev/null; then
+              echo "DATA_AGENT_PRODUCTION_OK"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Data-agent production endpoint did not pass post-deploy verification."
+          exit 1
+ || true)"
           if [ -n "$UNEXPECTED" ]; then echo "Unexpected autonomous website diff:"; echo "$UNEXPECTED"; exit 1; fi
       - name: Install locked dependencies
         run: npm ci --audit=false

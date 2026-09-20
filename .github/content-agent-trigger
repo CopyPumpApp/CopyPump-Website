@@ -1,4 +1,4 @@
 manual-run: 2026-09-21
-request: discover and publish one new evidence-backed Radar observation if eligible
+request: retry new evidence-backed Radar observation after untracked-file guard fix
 cadence: max-one-per-24h
 core-ui: frozen
