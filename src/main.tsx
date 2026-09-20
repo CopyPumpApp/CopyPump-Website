@@ -9,5 +9,5 @@ export const SITE_RELEASE = pkg.version
 
 // Locale is determined only by the URL. The root is always English.
 document.documentElement.dataset.build = SITE_RELEASE
-console.info(`[CopyPump] ${SITE_RELEASE} premium stabilization runtime loaded`)
+console.info(`[CopyPump] ${SITE_RELEASE} public website runtime loaded`)
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><ErrorBoundary><App/></ErrorBoundary></React.StrictMode>)
