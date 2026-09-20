@@ -1,6 +1,6 @@
-/** Each subject has one editorial home. Do not duplicate long explanations across routes. */
+import { PROJECT_STATUS_UPDATE } from '../content/project-status.generated'\n\n/** Each subject has one editorial home. Do not duplicate long explanations across routes. */
 export const STATUS = {
-  sourceDate: '2026-09-14',
+  sourceDate: PROJECT_STATUS_UPDATE.sourceDate,
   source: 'https://github.com/CopyPumpApp/CopyPump/blob/main/docs/PROJECT_STATUS.md',
   stage: 'Technical alpha',
   network: 'Solana Devnet',
@@ -49,7 +49,7 @@ const en = {
     {name:'Devnet lifecycle',state:'In verification',tone:'active',copy:'End-to-end execution evidence remains the principal proof target.'},
     {name:'Failure paths & recovery',state:'Hardening',tone:'active',copy:'Revoked permissions, repeated requests, emergency stops and unresolved outcomes.'},
     {name:'Mainnet trading',state:'Locked',tone:'locked',copy:'No public access until the required verification gates have been met.'},
-  ], noteTitle:'Latest engineering note', note:'The September 14 review identifies queue contention in the Price Alerts Save path. The slice remains IN PROGRESS / NOT PASS. This is diagnostic progress, not a completed product milestone.', roadmapLabel:'WHAT COMES NEXT', roadmapTitle:'Milestones, not promises.', roadmap:[
+  ], noteTitle:'Latest engineering note', note:PROJECT_STATUS_UPDATE.noteEn, roadmapLabel:'WHAT COMES NEXT', roadmapTitle:'Milestones, not promises.', roadmap:[
     {title:'Close the current hardening work',copy:'Reduce the identified state-queue pressure and re-run the acceptance checks.'},
     {title:'Publish reviewable evidence',copy:'Release Devnet transaction and reconciliation evidence after review, together with safe, selected tests.'},
     {title:'Evaluate limited production readiness',copy:'Only after the evidence and safety gates pass. No launch date or Mainnet-readiness claim is implied.'},
@@ -87,7 +87,7 @@ const ru: typeof en = {
     {name:'Цикл в Devnet',state:'Проверяется',tone:'active',copy:'Подтверждения сквозного исполнения остаются главной целью проверки.'},
     {name:'Сбои и восстановление',state:'Дорабатывается',tone:'active',copy:'Отозванные разрешения, повторные запросы, экстренная остановка и неподтверждённые результаты.'},
     {name:'Торговля в Mainnet',state:'Закрыта',tone:'locked',copy:'Публичного доступа нет до прохождения обязательных проверок.'},
-  ],noteTitle:'Последнее инженерное примечание',note:'Проверка от 14 сентября выявила конкуренцию за очередь состояния при сохранении Price Alerts. Срез остаётся IN PROGRESS / NOT PASS. Это прогресс диагностики, а не завершённый этап продукта.',roadmapLabel:'ЧТО ДАЛЬШЕ',roadmapTitle:'Цели вместо обещаний.',roadmap:[
+  ],noteTitle:'Последнее инженерное примечание',note:PROJECT_STATUS_UPDATE.noteRu,roadmapLabel:'ЧТО ДАЛЬШЕ',roadmapTitle:'Цели вместо обещаний.',roadmap:[
     {title:'Завершить текущую доработку',copy:'Снизить обнаруженную нагрузку на очередь состояния и повторить приёмочные проверки.'},
     {title:'Опубликовать проверяемые подтверждения',copy:'После проверки раскрыть транзакции Devnet, результаты сверки и безопасную часть тестов.'},
     {title:'Оценить ограниченный рабочий запуск',copy:'Только после выполнения требований к доказательствам и безопасности. Это не обещание даты запуска или готовности Mainnet.'},
