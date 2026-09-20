@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-09-20T23:43:00.559Z",
+  "mode": "AUTONOMOUS_DATA_ONLY",
+  "project": {
+    "state": "pending",
+    "checkedAt": "2026-09-20T23:43:00.559Z",
+    "source": "Garbuz7/CopyPump-Eternal/docs/PUBLIC_MILESTONES.json",
+    "changed": false
+  },
+  "radar": {
+    "state": "pending",
+    "checkedAt": "2026-09-20T23:43:00.559Z",
+    "source": "Solana getSignatureStatuses",
+    "checkedObservations": 0,
+    "verifiedObservations": 0,
+    "mismatches": [],
+    "changed": false
+  },
+  "guard": {
+    "coreUiFrozen": true,
+    "autonomousWriteScope": [
+      "src/content/project-status.generated.ts",
+      "public/public-status.json",
+      "public/agent-status.json",
+      "public/radar/index.json",
+      "public/radar/observations/*.json:lastCheckedAt-only"
+    ]
+  }
+}

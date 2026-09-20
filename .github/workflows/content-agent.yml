@@ -1,5 +1,4 @@
 name: Website Content Agent
-
 on:
   workflow_dispatch: {}
   push:
@@ -7,14 +6,11 @@ on:
     paths: ['.github/content-agent-trigger']
   schedule:
     - cron: '37 0,6,12,18 * * *'
-
 permissions:
   contents: write
-
 concurrency:
   group: website-content-agent
   cancel-in-progress: false
-
 jobs:
   sync-public-status:
     runs-on: ubuntu-latest
@@ -24,68 +20,61 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
-
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
-
       - name: Fetch verified public milestone feed
         env:
           PROJECT_TOKEN: ${{ secrets.COPY_PUMP_PROJECT_TOKEN }}
+        shell: bash
         run: |
+          set -u
           mkdir -p .content-agent
-          if [ -z "$PROJECT_TOKEN" ]; then
-            echo "No COPY_PUMP_PROJECT_TOKEN in website repo; fail closed without changing content."
-            exit 0
+          NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          SOURCE="Garbuz7/CopyPump-Eternal/docs/PUBLIC_MILESTONES.json"
+          if [ -z "${PROJECT_TOKEN:-}" ]; then
+            printf '{"state":"unavailable","checkedAt":"%s","source":"%s","detail":"COPY_PUMP_PROJECT_TOKEN missing"}\n' "$NOW" "$SOURCE" > .content-agent/project-status.json
+            echo "::warning::Project status source unavailable: token missing."
+          else
+            HTTP_CODE="$(curl --silent --show-error --write-out '%{http_code}' --output .content-agent/source.json -H "Authorization: Bearer $PROJECT_TOKEN" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/Garbuz7/CopyPump-Eternal/contents/docs/PUBLIC_MILESTONES.json?ref=main" || true)"
+            if [ "$HTTP_CODE" = "200" ]; then
+              if node scripts/sync-public-project-status.mjs .content-agent/source.json; then
+                printf '{"state":"ok","checkedAt":"%s","source":"%s"}\n' "$NOW" "$SOURCE" > .content-agent/project-status.json
+              else
+                printf '{"state":"attention","checkedAt":"%s","source":"%s","detail":"source validation failed"}\n' "$NOW" "$SOURCE" > .content-agent/project-status.json
+                echo "::warning::Milestone feed failed validation; existing public content was preserved."
+              fi
+            else
+              rm -f .content-agent/source.json
+              printf '{"state":"unavailable","checkedAt":"%s","source":"%s","detail":"GitHub HTTP %s"}\n' "$NOW" "$SOURCE" "$HTTP_CODE" > .content-agent/project-status.json
+              echo "::warning::Project source unavailable: GitHub HTTP $HTTP_CODE. Existing public content was preserved."
+            fi
           fi
-          curl --fail --silent --show-error \
-            -H "Authorization: Bearer $PROJECT_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/Garbuz7/CopyPump-Eternal/contents/docs/PUBLIC_MILESTONES.json?ref=main" \
-            > .content-agent/source.json
-          node scripts/sync-public-project-status.mjs .content-agent/source.json
-
-      - name: Content-only diff guard
+      - name: Recheck published Radar evidence
+        run: node scripts/refresh-radar.mjs
+      - name: Write public agent heartbeat
+        run: node scripts/write-agent-status.mjs
+      - name: Data-only diff guards
         run: |
           CHANGED_FILES="$(git diff --name-only)" node scripts/content-only-guard.mjs
-
+          node scripts/radar-data-guard.mjs
       - name: Verify autonomous diff is exactly allowlisted
+        shell: bash
         run: |
-          git diff --exit-code -- \
-            src/premium/premium.css \
-            src/premium/header-canopy.css \
-            src/premium/Site.tsx \
-            src/premium/SceneBackdrop.tsx \
-            src/premium/ChapterArtwork.tsx \
-            src/premium/HeaderSceneCanopy.tsx \
-            src/premium/useAnimatedMenu.ts \
-            src/premium/usePageEntrance.ts \
-            src/premium/useArtworkSwipe.ts \
-            src/styles/index.css
-          UNEXPECTED="$(git diff --name-only | grep -Ev '^(src/content/project-status\.generated\.ts|public/public-status\.json)$' || true)"
-          if [ -n "$UNEXPECTED" ]; then
-            echo "Unexpected autonomous website diff:"
-            echo "$UNEXPECTED"
-            exit 1
-          fi
-
+          set -euo pipefail
+          UNEXPECTED="$(git diff --name-only | grep -Ev '^(src/content/project-status\.generated\.ts|public/public-status\.json|public/agent-status\.json|public/radar/index\.json|public/radar/observations/[a-z0-9-]+\.json)$' || true)"
+          if [ -n "$UNEXPECTED" ]; then echo "Unexpected autonomous website diff:"; echo "$UNEXPECTED"; exit 1; fi
       - name: Install locked dependencies
         run: npm ci --audit=false
-
       - name: Full website verification
         run: npm run check
-
-      - name: Commit verified content only
+      - name: Commit verified data only
         run: |
-          if git diff --quiet; then
-            echo "No public-safe content update."
-            exit 0
-          fi
+          if git diff --quiet; then echo "No public-safe data update."; exit 0; fi
           git config user.name "CopyPump Content Agent"
           git config user.email "actions@users.noreply.github.com"
-          git add src/content/project-status.generated.ts public/public-status.json
-          git commit -m "content: sync verified public project status"
+          git add src/content/project-status.generated.ts public/public-status.json public/agent-status.json public/radar/index.json public/radar/observations
+          git commit -m "content: autonomous project and Radar data refresh"
           git push

@@ -7,6 +7,8 @@ import {hasUpdate,useRadar} from './store'
 import {parseObservation,validId,type Observation,type ObservationSummary} from './schema'
 import {radarCopy} from './copy'
 import './radar.css'
+import './agent-status.css'
+import {AgentHeartbeat} from './AgentHeartbeat'
 const announceReady=()=>{window.dispatchEvent(new Event('copypump:content-ready'))}
 function Stamp({value}:{value:string}){const {locale}=useI18n();return <time dateTime={value}>{new Intl.DateTimeFormat(locale==='ru'?'ru-RU':'en-GB',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(new Date(value))} UTC</time>}
 function Save({id}:{id:string}){const {locale}=useI18n(),s=useRadar(),c=radarCopy[locale],saved=s.local.saved.includes(id);return <button type="button" className="radar-save" aria-pressed={saved} onClick={()=>s.toggleSave(id)}><svg aria-hidden="true" width="17" height="20" viewBox="0 0 20 24" fill={saved?'currentColor':'none'}><path d="M4 3h12v18l-6-4-6 4V3Z" stroke="currentColor" strokeWidth="1.4"/></svg>{saved?c.remove:c.save}</button>}
@@ -24,7 +26,7 @@ export default function RadarPage({id}:{id?:string}){
   const shown=filter==='saved'?saved:filter==='updates'?updates:filter==='archive'?[...items].reverse():items
   const updatedSaved=updates.filter(x=>s.local.saved.includes(x.id)).length
   return <div className="app-shell premium-v50 radar-page" data-release="50.0-radar"><Seo title="CopyPump Radar" description={c.intro} path="/radar"/><main id="main-content" tabIndex={-1}>
-    <header className="document-hero wrap" data-scene="document"><p className="eyebrow">{c.eyebrow}</p><KineticHeading as="h1" lines={[{text:c.title},{text:c.accent,accent:true}]}/><p>{c.intro}</p><p className="radar-edition">{c.edition}{s.index&&<> · {s.index.edition} · {s.index.publishedAt.slice(0,10)}</>}</p></header>
+    <header className="document-hero wrap" data-scene="document"><p className="eyebrow">{c.eyebrow}</p><KineticHeading as="h1" lines={[{text:c.title},{text:c.accent,accent:true}]}/><p>{c.intro}</p><p className="radar-edition">{c.edition}{s.index&&<> · {s.index.edition} · {s.index.publishedAt.slice(0,10)}</>}</p><AgentHeartbeat/></header>
     <section className="radar-library wrap" aria-label={c.all}><div className="radar-toolbar"><div className="radar-filters" role="group" aria-label={c.name}>{(['all','saved','updates','archive'] as const).map(f=><button key={f} type="button" aria-pressed={filter===f} onClick={()=>setFilter(f)}>{c[f]}{f==='saved'&&saved.length>0&&<span>{saved.length}</span>}{f==='updates'&&updates.length>0&&<span>{updates.length}</span>}</button>)}</div><button type="button" className="text-link" disabled={s.loading} onClick={s.reload}>{c.retry} ↻</button></div>
       <LocalNotice/>{updatedSaved>0&&<p className="radar-notice">{updatedSaved} {updatedSaved===1?c.updateSaved:c.updatedSaved}.</p>}
       {s.error&&<p role="status" className="radar-notice">{c.error} {s.index&&c.last}</p>}
