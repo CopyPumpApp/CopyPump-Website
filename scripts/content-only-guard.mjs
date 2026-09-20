@@ -28,6 +28,25 @@ if (violations.length) {
   process.exit(1)
 }
 
+const frozenFiles = [
+  'src/premium/premium.css',
+  'src/premium/header-canopy.css',
+  'src/premium/Site.tsx',
+  'src/premium/SceneBackdrop.tsx',
+  'src/premium/ChapterArtwork.tsx',
+  'src/premium/HeaderSceneCanopy.tsx',
+  'src/premium/useAnimatedMenu.ts',
+  'src/premium/usePageEntrance.ts',
+  'src/premium/useArtworkSwipe.ts',
+  'src/styles/index.css',
+]
+for (const file of frozenFiles) {
+  if (changed.includes(file)) {
+    console.error('CONTENT_ONLY_GUARD_VISUAL_FREEZE_VIOLATION', file)
+    process.exit(1)
+  }
+}
+
 const generated = await fs.readFile('src/content/project-status.generated.ts', 'utf8')
 for (const required of ['mainnetLocked: true', 'realDevnetTradingAccepted: false', 'sourceDate:', 'noteEn:', 'noteRu:', 'progressTitleEn:', 'progressCopyEn:', 'communityEn:', 'communityRu:', 'roadmapEn:', 'roadmapRu:']) {
   if (!generated.includes(required)) {
