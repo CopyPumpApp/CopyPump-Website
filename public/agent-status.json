@@ -1,21 +1,31 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-20T23:43:00.559Z",
+  "updatedAt": "2026-09-20T23:43:17.687Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
-    "state": "pending",
-    "checkedAt": "2026-09-20T23:43:00.559Z",
+    "state": "unavailable",
+    "checkedAt": "2026-09-20T23:43:16Z",
     "source": "Garbuz7/CopyPump-Eternal/docs/PUBLIC_MILESTONES.json",
+    "detail": "GitHub HTTP 404",
     "changed": false
   },
   "radar": {
-    "state": "pending",
-    "checkedAt": "2026-09-20T23:43:00.559Z",
+    "schemaVersion": 1,
+    "checkedAt": "2026-09-20T23:43:16.886Z",
     "source": "Solana getSignatureStatuses",
-    "checkedObservations": 0,
-    "verifiedObservations": 0,
+    "state": "ok",
+    "checkedObservations": 3,
+    "verifiedObservations": 3,
     "mismatches": [],
-    "changed": false
+    "providers": [
+      {
+        "cluster": "mainnet-beta",
+        "endpoint": "https://api.mainnet-beta.solana.com",
+        "ok": true,
+        "count": 3
+      }
+    ],
+    "changed": true
   },
   "guard": {
     "coreUiFrozen": true,

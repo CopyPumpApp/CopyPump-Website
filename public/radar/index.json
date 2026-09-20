@@ -9,7 +9,7 @@
       "publishedAt": "2026-09-17T02:27:05Z",
       "updatedAt": "2026-09-17T02:27:05Z",
       "observedAt": "2026-09-17T02:21:46Z",
-      "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+      "lastCheckedAt": "2026-09-20T23:43:16.886Z",
       "cluster": "mainnet-beta",
       "title": {
         "en": "5.384 SOL moved. That is not the net result.",
@@ -31,7 +31,7 @@
       "publishedAt": "2026-09-17T02:27:05Z",
       "updatedAt": "2026-09-17T02:27:05Z",
       "observedAt": "2026-09-17T02:21:46Z",
-      "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+      "lastCheckedAt": "2026-09-20T23:43:16.886Z",
       "cluster": "mainnet-beta",
       "title": {
         "en": "Finalized does not mean successful.",
@@ -53,7 +53,7 @@
       "publishedAt": "2026-09-17T02:27:05Z",
       "updatedAt": "2026-09-17T02:27:05Z",
       "observedAt": "2026-09-17T02:21:46Z",
-      "lastCheckedAt": "2026-09-17T02:22:24.099861+00:00",
+      "lastCheckedAt": "2026-09-20T23:43:16.886Z",
       "cluster": "mainnet-beta",
       "title": {
         "en": "A success flag is not a trade receipt.",
