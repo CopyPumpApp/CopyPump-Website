@@ -1,5 +1,6 @@
-.radar-agent-status{margin-top:22px;display:grid;gap:10px;max-width:880px;padding:14px 16px;border:1px solid color-mix(in srgb,currentColor 18%,transparent);border-radius:16px;background:color-mix(in srgb,#07131f 78%,transparent);backdrop-filter:blur(14px)}
-.radar-agent-status__head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.radar-agent-status__head i{width:8px;height:8px;border-radius:50%;background:#63e6be;box-shadow:0 0 0 4px color-mix(in srgb,#63e6be 14%,transparent)}.radar-agent-status__head span{opacity:.62;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
-.radar-agent-status[data-agent-state="attention"] .radar-agent-status__head i,.radar-agent-status[data-agent-state="unavailable"] .radar-agent-status__head i{background:#f6c177;box-shadow:0 0 0 4px color-mix(in srgb,#f6c177 14%,transparent)}
-.radar-agent-status dl{display:flex;gap:18px;flex-wrap:wrap;margin:0}.radar-agent-status dl div{display:grid;gap:2px}.radar-agent-status dt{font-size:.72rem;opacity:.55;text-transform:uppercase;letter-spacing:.08em}.radar-agent-status dd{margin:0;font-size:.9rem}.radar-agent-status>p{margin:0;opacity:.58;font-size:.78rem}
-@media(max-width:640px){.radar-agent-status{padding:12px}.radar-agent-status dl{display:grid;grid-template-columns:1fr 1fr}.radar-agent-status dl div:last-child{grid-column:1/-1}}
+.radar-agent-status{margin-top:7px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;max-width:900px;font:10px/1.8 ui-monospace,monospace;letter-spacing:.06em;color:var(--quiet)}
+.radar-agent-status i{width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 3px color-mix(in srgb,var(--mint) 12%,transparent);flex:0 0 auto}
+.radar-agent-status b{font-weight:400;opacity:.45}
+.radar-agent-status .is-warning{color:var(--amber)}
+.radar-agent-status[data-agent-state="attention"] i,.radar-agent-status[data-agent-state="unavailable"] i{background:var(--amber);box-shadow:0 0 0 3px color-mix(in srgb,var(--amber) 12%,transparent)}
+@media(max-width:760px){.radar-agent-status{font-size:9px;gap:5px;margin-top:5px}}

@@ -11,8 +11,8 @@ type Status={
   guard:{coreUiFrozen:boolean}
 }
 const copy={
-  en:{title:'Data agent',scope:'Updates + Radar only',project:'Project updates',radar:'Radar verification',last:'Last autonomous check',guard:'Core site UI and primary content are locked from autonomous edits.',ok:'OK',attention:'Needs review',unavailable:'Unavailable',pending:'Pending'},
-  ru:{title:'Агент данных',scope:'Только обновления + Radar',project:'Обновления проекта',radar:'Проверка Radar',last:'Последняя автопроверка',guard:'Основной UI и базовый контент сайта закрыты для автономных изменений.',ok:'OK',attention:'Нужна проверка',unavailable:'Недоступно',pending:'Ожидание'},
+  en:{agent:'DATA AGENT',radar:'RADAR',project:'PROJECT',dataOnly:'DATA-ONLY',ok:'OK',attention:'REVIEW',unavailable:'UNAVAILABLE',pending:'PENDING'},
+  ru:{agent:'АГЕНТ ДАННЫХ',radar:'RADAR',project:'ПРОЕКТ',dataOnly:'ТОЛЬКО ДАННЫЕ',ok:'OK',attention:'ПРОВЕРИТЬ',unavailable:'НЕДОСТУПЕН',pending:'ОЖИДАНИЕ'},
 } as const
 
 export function AgentHeartbeat(){
@@ -28,14 +28,13 @@ export function AgentHeartbeat(){
   },[])
   if(!status)return null
   const label=(state:State)=>state==='ok'?c.ok:state==='attention'?c.attention:state==='pending'?c.pending:c.unavailable
-  const stamp=new Intl.DateTimeFormat(locale==='ru'?'ru-RU':'en-GB',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(new Date(status.updatedAt))
-  return <aside className="radar-agent-status" data-agent-state={status.radar.state} aria-label={c.title}>
-    <div className="radar-agent-status__head"><i aria-hidden="true"/><strong>{c.title}</strong><span>{c.scope}</span></div>
-    <dl>
-      <div><dt>{c.project}</dt><dd>{label(status.project.state)}</dd></div>
-      <div><dt>{c.radar}</dt><dd>{label(status.radar.state)}</dd></div>
-      <div><dt>{c.last}</dt><dd>{stamp} UTC</dd></div>
-    </dl>
-    {status.guard.coreUiFrozen&&<p>{c.guard}</p>}
-  </aside>
+  const stamp=new Intl.DateTimeFormat(locale==='ru'?'ru-RU':'en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'UTC'}).format(new Date(status.updatedAt))
+  return <p className="radar-agent-status" data-agent-state={status.radar.state} title={status.guard.coreUiFrozen?(locale==='ru'?'Основной интерфейс закрыт для автономных изменений.':'Core UI is locked from autonomous edits.'):undefined}>
+    <i aria-hidden="true"/>
+    <span>{c.agent}</span>
+    <b>·</b><span>{c.radar} {label(status.radar.state)}</span>
+    <b>·</b><span className={status.project.state==='ok'?'':'is-warning'}>{c.project} {label(status.project.state)}</span>
+    <b>·</b><span>{c.dataOnly}</span>
+    <b>·</b><time dateTime={status.updatedAt}>{stamp} UTC</time>
+  </p>
 }

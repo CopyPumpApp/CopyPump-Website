@@ -1,12 +1,23 @@
 import {test,expect} from '@playwright/test'
-test('Radar shows a public data-agent heartbeat and frozen-core notice',async({page})=>{
+
+test('Radar exposes a compact data-only agent line in the existing editorial style',async({page})=>{
   await page.goto('/radar')
-  await expect(page.locator('.radar-agent-status')).toContainText('Data agent')
-  await expect(page.locator('.radar-agent-status')).toContainText('Updates + Radar only')
-  await expect(page.locator('.radar-agent-status')).toContainText('Core site UI')
+  const status=page.locator('.radar-agent-status')
+  await expect(status).toContainText('DATA AGENT')
+  await expect(status).toContainText('RADAR')
+  await expect(status).toContainText('DATA-ONLY')
+  await expect(status).not.toHaveCSS('background-color','rgb(7, 19, 31)')
 })
-test('Russian Radar shows the same autonomous boundary',async({page})=>{
+
+test('Russian Radar exposes the same compact autonomous boundary',async({page})=>{
   await page.goto('/ru/radar')
-  await expect(page.locator('.radar-agent-status')).toContainText('Агент данных')
-  await expect(page.locator('.radar-agent-status')).toContainText('Только обновления + Radar')
+  const status=page.locator('.radar-agent-status')
+  await expect(status).toContainText('АГЕНТ ДАННЫХ')
+  await expect(status).toContainText('ТОЛЬКО ДАННЫЕ')
+})
+
+test('home surfaces the latest verified engineering update',async({page})=>{
+  await page.goto('/ru')
+  await expect(page.locator('.status-current .eyebrow')).toContainText('ПОСЛЕДНЕЕ ПОДТВЕРЖДЁННОЕ ОБНОВЛЕНИЕ')
+  await expect(page.locator('.status-current')).toContainText('Контур хранения прошёл ещё один этап')
 })
