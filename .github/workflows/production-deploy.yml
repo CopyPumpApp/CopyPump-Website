@@ -9,6 +9,7 @@ on:
       - 'public/agent-status.json'
       - 'public/radar/index.json'
       - 'public/radar/observations/**'
+      - 'public/radar/evidence/auto-transaction-*.json'
   workflow_dispatch: {}
 permissions:
   contents: read

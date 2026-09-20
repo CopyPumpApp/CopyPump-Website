@@ -18,7 +18,7 @@ test('locale changes keep the Home menu open, including the new Radar destinatio
  await page.goto('/');await page.locator('.menu-button').click();await expect(page.locator('.mobile-nav')).toHaveAttribute('data-phase','open')
  await page.locator('.mobile-nav .locale-switch button').filter({hasText:'RU'}).click();await expect(page).toHaveURL(/\/ru$/)
  await expect(page.locator('.mobile-nav')).toHaveAttribute('data-phase','open');await expect(page.locator('.mobile-nav nav a')).toHaveCount(7)
- await page.locator('.mobile-nav nav a[href="/ru/radar"]').click();await expect(page.locator('.mobile-nav')).toHaveCount(0);await expect(page.locator('.radar-row')).toHaveCount(3)
+ await page.locator('.mobile-nav nav a[href="/ru/radar"]').click();await expect(page.locator('.mobile-nav')).toHaveCount(0);await expect.poll(()=>page.locator('.radar-row').count()).toBeGreaterThanOrEqual(3)
 })
 test('unknown observation has a clear not-found state even with SPA fallback HTML',async({page})=>{
  await page.route('**/radar/observations/unknown-case.json',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><div id="root"></div>'}));await page.goto('/radar/unknown-case')

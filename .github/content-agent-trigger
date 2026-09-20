@@ -1,3 +1,4 @@
 manual-run: 2026-09-21
-request: revalidate published Radar evidence and refresh safe data
+request: discover and publish one new evidence-backed Radar observation if eligible
+cadence: max-one-per-24h
 core-ui: frozen

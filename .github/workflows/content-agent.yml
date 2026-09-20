@@ -54,6 +54,8 @@ jobs:
           fi
       - name: Recheck published Radar evidence
         run: node scripts/refresh-radar.mjs
+      - name: Discover one new evidence-backed Radar observation
+        run: node scripts/discover-radar.mjs
       - name: Write public agent heartbeat
         run: node scripts/write-agent-status.mjs
       - name: Data-only diff guards
@@ -64,7 +66,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          UNEXPECTED="$(git diff --name-only | grep -Ev '^(src/content/project-status\.generated\.ts|public/public-status\.json|public/agent-status\.json|public/radar/index\.json|public/radar/observations/[a-z0-9-]+\.json)$' || true)"
+          UNEXPECTED="$(git diff --name-only | grep -Ev '^(src/content/project-status\.generated\.ts|public/public-status\.json|public/agent-status\.json|public/radar/index\.json|public/radar/observations/[a-z0-9-]+\.json|public/radar/evidence/auto-transaction-[a-z0-9-]+\.json)$' || true)"
           if [ -n "$UNEXPECTED" ]; then echo "Unexpected autonomous website diff:"; echo "$UNEXPECTED"; exit 1; fi
       - name: Install locked dependencies
         run: npm ci --audit=false
@@ -81,7 +83,7 @@ jobs:
           fi
           git config user.name "CopyPump Content Agent"
           git config user.email "actions@users.noreply.github.com"
-          git add src/content/project-status.generated.ts public/public-status.json public/agent-status.json public/radar/index.json public/radar/observations
+          git add src/content/project-status.generated.ts public/public-status.json public/agent-status.json public/radar/index.json public/radar/observations public/radar/evidence/auto-transaction-*.json 2>/dev/null || git add src/content/project-status.generated.ts public/public-status.json public/agent-status.json public/radar/index.json public/radar/observations
           git commit -m "content: autonomous project and Radar data refresh"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"

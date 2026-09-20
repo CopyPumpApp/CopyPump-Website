@@ -32,8 +32,8 @@ test('storage denial keeps reading usable and clearly labels session-only saves'
  await page.locator('.radar-row h2 a').first().click();await expect(page.locator('.radar-narrative')).toBeVisible()
 })
 test('a refresh failure retains the last loaded edition and does not claim no activity',async({page})=>{
- await page.goto('/radar');await expect(page.locator('.radar-row')).toHaveCount(3)
- await page.route('**/radar/index.json',r=>r.fulfill({status:503,body:'Unavailable'}));await page.getByRole('button',{name:'Refresh edition'}).click();await expect(page.locator('.radar-notice')).toContainText('not evidence of no new activity');await expect(page.locator('.radar-row')).toHaveCount(3)
+ await page.goto('/radar');const count=await page.locator('.radar-row').count();expect(count).toBeGreaterThanOrEqual(3)
+ await page.route('**/radar/index.json',r=>r.fulfill({status:503,body:'Unavailable'}));await page.getByRole('button',{name:'Refresh edition'}).click();await expect(page.locator('.radar-notice')).toContainText('not evidence of no new activity');await expect(page.locator('.radar-row')).toHaveCount(count)
 })
 test('invalid JSON, absent record and missing evidence remain explicit',async({page})=>{
  await page.route('**/radar/index.json',r=>r.fulfill({contentType:'application/json',body:'{"schemaVersion":1,"items":[{"id":"bad"}]}'}));await page.goto('/radar');await expect(page.locator('.radar-notice')).toBeVisible();await expect(page.locator('.radar-row')).toHaveCount(0)
@@ -45,7 +45,7 @@ test('Home requests the index only; no RPC, transaction calls or detail payload'
  expect(requests.some(x=>x.includes('/radar/observations/'))).toBeFalsy();expect(requests.some(x=>/api\.mainnet|api\.devnet|getTransaction|walletconnect/.test(x))).toBeFalsy()
 })
 test('cross-tab storage state updates without a server',async({page,context})=>{
- await page.goto('/radar');await expect(page.locator('.radar-row')).toHaveCount(3);const other=await context.newPage();await other.goto('/radar');await other.locator('.radar-row').first().locator('.radar-save').click();await expect(page.locator('.radar-row').first().locator('.radar-save')).toHaveAttribute('aria-pressed','true');await other.close()
+ await page.goto('/radar');await expect.poll(()=>page.locator('.radar-row').count()).toBeGreaterThanOrEqual(3);const other=await context.newPage();await other.goto('/radar');await other.locator('.radar-row').first().locator('.radar-save').click();await expect(page.locator('.radar-row').first().locator('.radar-save')).toHaveAttribute('aria-pressed','true');await other.close()
 })
 test('v50 screenshots: Radar, source-backed article, saved state and existing shared scene',async({page},info)=>{
  const dir=`test-results/visual-qa/${info.project.name}`
