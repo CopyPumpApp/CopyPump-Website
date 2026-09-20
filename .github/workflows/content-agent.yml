@@ -50,6 +50,35 @@ jobs:
         run: |
           CHANGED_FILES="$(git diff --name-only)" node scripts/content-only-guard.mjs
 
+      - name: Verify autonomous diff is exactly allowlisted
+        run: |
+          git diff --exit-code -- src/premium/premium.css src/premium/header-canopy.css src/premium/Site.tsx src/premium/SceneBackdrop.tsx src/premium/ChapterArtwork.tsx src/premium/HeaderSceneCanopy.tsx src/premium/useAnimatedMenu.ts src/premium/usePageEntrance.ts src/premium/useArtworkSwipe.ts src/styles/index.css
+          UNEXPECTED="$(git diff --name-only | grep -Ev '^(src/content/project-status\.generated\.ts|public/public-status\.json)
+
+      - name: Install locked dependencies
+        run: npm ci --audit=false
+
+      - name: Full website verification
+        run: npm run check
+
+      - name: Commit verified content only
+        run: |
+          if git diff --quiet; then
+            echo "No public-safe content update."
+            exit 0
+          fi
+          git config user.name "CopyPump Content Agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/content/project-status.generated.ts public/public-status.json
+          git commit -m "content: sync verified public project status"
+          git push
+ || true)"
+          if [ -n "$UNEXPECTED" ]; then
+            echo "Unexpected autonomous website diff:"
+            echo "$UNEXPECTED"
+            exit 1
+          fi
+
       - name: Install locked dependencies
         run: npm ci --audit=false
 
