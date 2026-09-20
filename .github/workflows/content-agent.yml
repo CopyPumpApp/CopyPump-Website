@@ -28,23 +28,22 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Require project source token
-        env:
-          PROJECT_TOKEN: ${{ secrets.COPY_PUMP_PROJECT_TOKEN }}
-        run: |
-          test -n "$PROJECT_TOKEN" || { echo "COPY_PUMP_PROJECT_TOKEN is required"; exit 1; }
-
       - name: Fetch verified public milestone feed
         env:
           PROJECT_TOKEN: ${{ secrets.COPY_PUMP_PROJECT_TOKEN }}
         run: |
           mkdir -p .content-agent
-          curl --fail --silent --show-error \
-            -H "Authorization: Bearer $PROJECT_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/Garbuz7/CopyPump-Eternal/contents/docs/PUBLIC_MILESTONES.json?ref=main" \
-            > .content-agent/source.json
+          if [ -n "$PROJECT_TOKEN" ]; then
+            curl --fail --silent --show-error \
+              -H "Authorization: Bearer $PROJECT_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/Garbuz7/CopyPump-Eternal/contents/docs/PUBLIC_MILESTONES.json?ref=main" \
+              > .content-agent/source.json
+          else
+            echo "No COPY_PUMP_PROJECT_TOKEN in website repo; fail closed without changing content."
+            exit 0
+          fi
           node scripts/sync-public-project-status.mjs .content-agent/source.json
 
       - name: Content-only diff guard
