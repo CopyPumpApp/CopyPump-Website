@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test'
-for(const path of ['/','/project','/progress','/ru','/ru/project','/ru/progress','/privacy','/contact','/404']){
+for(const path of ['/','/project','/progress','/en','/en/project','/en/progress','/ru','/ru/project','/ru/progress','/privacy','/contact','/404']){
  test(`${path}: page renders, no console errors or horizontal overflow`,async({page})=>{
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message))
   await page.goto(path);await expect(page.locator('main')).toBeVisible();await expect(page.locator('h1')).toHaveCount(1)

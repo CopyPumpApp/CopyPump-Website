@@ -7,7 +7,7 @@ import { NotFoundPage } from './pages/NotFoundPage'
 import { I18nProvider, localeFromPath } from './i18n'
 import { Experience } from './components/Experience'
 const LEGAL_ROUTES=new Set(['/privacy','/terms','/security','/contact'])
-function readLocation(){const raw=location.pathname.replace(/^\/ru(?=\/|$)/,'').replace(/\/+$/,'')||'/';return{locale:localeFromPath(location.pathname),path:['/','/project','/progress','/radar'].includes(raw)||/^\/radar\/[a-z0-9][a-z0-9-]{0,79}$/.test(raw)||LEGAL_ROUTES.has(raw)?raw:'/404'}}
+function readLocation(){const raw=location.pathname.replace(/^\/(?:ru|en)(?=\/|$)/,'').replace(/\/+$/,'')||'/';return{locale:localeFromPath(location.pathname),path:['/','/project','/progress','/radar'].includes(raw)||/^\/radar\/[a-z0-9][a-z0-9-]{0,79}$/.test(raw)||LEGAL_ROUTES.has(raw)?raw:'/404'}}
 export default function App(){
   const[loc,setLoc]=useState(readLocation)
   useEffect(()=>{const onPop=()=>setLoc(readLocation());addEventListener('popstate',onPop);return()=>removeEventListener('popstate',onPop)},[])

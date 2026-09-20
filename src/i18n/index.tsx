@@ -8,8 +8,8 @@ export type Dictionary = typeof en
 const dictionaries: Record<Locale, Dictionary> = { en, ru }
 
 function stripLocalePrefix(pathname: string) {
-  if (pathname === '/ru') return '/'
-  if (pathname.startsWith('/ru/')) return pathname.slice(3) || '/'
+  if (pathname === '/ru' || pathname === '/en') return '/'
+  if (pathname.startsWith('/ru/') || pathname.startsWith('/en/')) return pathname.slice(3) || '/'
   return pathname || '/'
 }
 
