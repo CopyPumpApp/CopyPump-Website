@@ -20,8 +20,6 @@ The agent performs read-only `getSignatureStatuses` checks against the appropria
 
 ## How to verify that it is working
 
-The Radar page displays a Data agent card. It shows the last autonomous check and the state of Project updates and Radar verification.
-
-The same machine-readable state is available at `/agent-status.json`. GitHub Actions also records each run under **Website Content Agent**. Successful data-only commits use the author **CopyPump Content Agent** and the message `content: autonomous project and Radar data refresh`.
+The public Radar interface does not expose operator-only agent telemetry. The machine-readable state is available at `/agent-status.json`, and GitHub Actions records each run under **Website Content Agent**. Successful data-only commits use the author **CopyPump Content Agent** and the message `content: autonomous project and Radar data refresh`.
 
 Content-agent commits automatically pass the full website verification and then trigger the guarded Cloudflare production deployment. Ordinary UI commits do not receive this autonomous production path.

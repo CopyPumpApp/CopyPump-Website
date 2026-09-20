@@ -1,19 +1,13 @@
 import {test,expect} from '@playwright/test'
 
-test('Radar exposes a compact data-only agent line in the existing editorial style',async({page})=>{
+test('Radar does not expose operator-only agent telemetry in the public interface',async({page})=>{
   await page.goto('/radar')
-  const status=page.locator('.radar-agent-status')
-  await expect(status).toContainText('DATA AGENT')
-  await expect(status).toContainText('RADAR')
-  await expect(status).toContainText('DATA-ONLY')
-  await expect(status).not.toHaveCSS('background-color','rgb(7, 19, 31)')
-})
-
-test('Russian Radar exposes the same compact autonomous boundary',async({page})=>{
-  await page.goto('/ru/radar')
-  const status=page.locator('.radar-agent-status')
-  await expect(status).toContainText('АГЕНТ ДАННЫХ')
-  await expect(status).toContainText('ТОЛЬКО ДАННЫЕ')
+  await expect(page.locator('.radar-agent-status')).toHaveCount(0)
+  const status=await page.request.get('/agent-status.json')
+  expect(status.ok()).toBeTruthy()
+  const data=await status.json()
+  expect(data.mode).toBe('AUTONOMOUS_DATA_ONLY')
+  expect(data.guard.coreUiFrozen).toBe(true)
 })
 
 test('home surfaces the latest verified engineering update',async({page})=>{
