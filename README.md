@@ -9,7 +9,7 @@ npm ci
 npm run dev
 ```
 
-`npm run preview` serves the production Vite build locally. This website repository has no application backend; backend/runtime work belongs in the product repository.
+`npm run preview` serves the production Vite build locally. This repository contains the public website only; backend/runtime work belongs in the product repository.
 
 ## Validation
 
@@ -17,9 +17,30 @@ Before merging public-site changes, run:
 
 ```bash
 npm run check
+npm run test:e2e
 ```
 
-The check runs TypeScript validation, the public-surface regression audit, and a production Vite build. GitHub Actions runs the same validation for pull requests and `main`.
+GitHub Actions runs the same production validation and browser regression suite for pull requests and `main`.
+
+## Repository layout
+
+```text
+src/
+  components/   Shared runtime and accessibility components
+  i18n/         English/Russian copy and locale routing
+  pages/        Legal and 404 routes
+  premium/      Active production website UI
+  radar/        Public Radar UI, schema and local-state handling
+  styles/       Production CSS entrypoint
+public/
+  media/        Active production artwork
+  radar/        Published public Radar data and evidence
+scripts/        Build audits and Radar maintenance utilities
+tests/e2e/      Current browser regression suite
+docs/           Current architecture, QA and editorial guidance
+```
+
+The `public/media/v48` and `public/media/v51` directory names are retained because those files are still active production URLs. They are not archive folders.
 
 ## Change policy
 
@@ -28,7 +49,7 @@ The check runs TypeScript validation, the public-surface regression audit, and a
 - Do not publish private project data, credentials, internal diagnostics, unreviewed claims, or unsupported launch/readiness claims.
 - Public product claims must match the current verified project state.
 - UI changes must preserve keyboard access, visible focus, mobile touch targets, and `prefers-reduced-motion` behavior.
-- New images should be sized for their rendered use, compressed before commit, and should not create multi-megabyte initial page payloads without a documented reason.
+- New images should be sized for their rendered use and compressed before commit.
 
 ## Deployment
 
