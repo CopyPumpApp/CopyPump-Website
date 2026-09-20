@@ -1,7 +1,7 @@
 name: Website Content Agent
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
   schedule:
     - cron: '37 0,6,12,18 * * *'
 
