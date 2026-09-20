@@ -1,0 +1,3 @@
+approved-by-owner: 2026-09-21
+rollback: preserve prior Cloudflare deployment and Git history
+target: copypump-website.copypumphq.workers.dev
