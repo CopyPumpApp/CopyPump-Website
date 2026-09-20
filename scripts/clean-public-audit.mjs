@@ -21,7 +21,7 @@ must(read('src/styles/index.css').trim() === "@import '../premium/premium.css';"
 for (const phrase of ['Technical alpha', 'Solana Devnet', "mainnet: 'locked'", 'PROJECT_STATUS.md', 'WS95eXrGB']) {
   must(copy.includes(phrase), `Public fact/source missing: ${phrase}`)
 }
-must(/sourceDate:\s*'20\\d{2}-\\d{2}-\\d{2}'/.test(generatedStatus), 'Generated public status must contain a dated sourceDate.')
+must(/sourceDate:\\s*'20\\d{2}-\\d{2}-\\d{2}'/.test(generatedStatus), 'Generated public status must contain a dated sourceDate.')
 must(generatedStatus.includes('mainnetLocked: true'), 'Generated public status must preserve the Mainnet lock.')
 must(generatedStatus.includes('realDevnetTradingAccepted: false'), 'Generated public status must not imply accepted real Devnet trading.')
 for (const term of ['CopyCube', 'RUN_FUP_TRUMP', 'Mizuzi', 'DNBQtqw6R']) {
