@@ -1,4 +1,4 @@
 manual-run: 2026-09-21
-request: retry new evidence-backed Radar observation after untracked-file guard fix
+request: clean workflow retry for evidence-backed Radar discovery
 cadence: max-one-per-24h
 core-ui: frozen
