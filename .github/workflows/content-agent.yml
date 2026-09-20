@@ -1,0 +1,70 @@
+name: Website Content Agent
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 6,18 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: website-content-agent
+  cancel-in-progress: false
+
+jobs:
+  sync-public-status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Require project source token
+        env:
+          PROJECT_TOKEN: ${{ secrets.COPY_PUMP_PROJECT_TOKEN }}
+        run: |
+          test -n "$PROJECT_TOKEN" || { echo "COPY_PUMP_PROJECT_TOKEN is required"; exit 1; }
+
+      - name: Fetch verified public milestone feed
+        env:
+          PROJECT_TOKEN: ${{ secrets.COPY_PUMP_PROJECT_TOKEN }}
+        run: |
+          mkdir -p .content-agent
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer $PROJECT_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/Garbuz7/CopyPump-Eternal/contents/docs/PUBLIC_MILESTONES.json?ref=main" \
+            > .content-agent/source.json
+          node scripts/sync-public-project-status.mjs .content-agent/source.json
+
+      - name: Content-only diff guard
+        run: |
+          CHANGED_FILES="$(git diff --name-only)" node scripts/content-only-guard.mjs
+
+      - name: Install locked dependencies
+        run: npm ci --audit=false
+
+      - name: Full website verification
+        run: npm run check
+
+      - name: Commit verified content only
+        run: |
+          if git diff --quiet; then
+            echo "No public-safe content update."
+            exit 0
+          fi
+          git config user.name "CopyPump Content Agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/content/project-status.generated.ts public/public-status.json
+          git commit -m "content: sync verified public project status"
+          git push
