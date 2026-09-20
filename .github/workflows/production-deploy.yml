@@ -1,0 +1,60 @@
+name: Website Production Deploy
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/production-deploy-trigger']
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact production commit
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci --audit=false
+
+      - name: Verify production candidate
+        run: npm run check
+
+      - name: Require Cloudflare credentials
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo "CLOUDFLARE_API_TOKEN is missing"; exit 1; }
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo "CLOUDFLARE_ACCOUNT_ID is missing"; exit 1; }
+
+      - name: Deploy CopyPump Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+
+      - name: Verify public production endpoint
+        run: |
+          for i in 1 2 3 4 5; do
+            if curl --fail --silent --show-error --location --max-time 20 https://copypump-website.copypumphq.workers.dev/ru >/dev/null; then
+              echo "PRODUCTION_ENDPOINT_OK"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Production endpoint did not pass post-deploy verification."
+          exit 1
