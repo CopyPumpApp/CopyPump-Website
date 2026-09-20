@@ -1,3 +1,3 @@
 manual-bootstrap: 2026-09-21
-purpose: activate data-only project/Radar agent with public heartbeat
+purpose: verify data-only agent commits and deploys its own safe updates
 core-ui: frozen
