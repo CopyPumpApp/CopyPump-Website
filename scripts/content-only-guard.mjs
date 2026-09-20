@@ -29,9 +29,16 @@ if (violations.length) {
 }
 
 const generated = await fs.readFile('src/content/project-status.generated.ts', 'utf8')
-for (const required of ['mainnetLocked: true', 'realDevnetTradingAccepted: false', 'sourceDate:', 'noteEn:', 'noteRu:']) {
+for (const required of ['mainnetLocked: true', 'realDevnetTradingAccepted: false', 'sourceDate:', 'noteEn:', 'noteRu:', 'progressTitleEn:', 'progressCopyEn:', 'communityEn:', 'communityRu:', 'roadmapEn:', 'roadmapRu:']) {
   if (!generated.includes(required)) {
     console.error('CONTENT_ONLY_GUARD_MISSING_REQUIRED_SAFETY_FIELD', required)
+    process.exit(1)
+  }
+}
+
+for (const forbidden of [/guaranteed? profit/i, /mainnet (?:is )?(?:live|open|ready)/i, /real devnet trading (?:is )?(?:accepted|live|ready)/i, /join (?:our )?(?:beta|waitlist)/i]) {
+  if (forbidden.test(generated)) {
+    console.error('CONTENT_ONLY_GUARD_UNSAFE_CLAIM', String(forbidden))
     process.exit(1)
   }
 }
