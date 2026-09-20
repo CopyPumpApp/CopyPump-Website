@@ -1,4 +1,4 @@
 manual-run: 2026-09-21
-request: clean workflow retry for evidence-backed Radar discovery
+request: retry evidence-backed Radar discovery after ephemeral-file exclusion
 cadence: max-one-per-24h
 core-ui: frozen

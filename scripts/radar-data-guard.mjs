@@ -3,7 +3,7 @@ import crypto from 'node:crypto'
 import {execFileSync} from 'node:child_process'
 import assert from 'node:assert/strict'
 
-const changed=[...new Set([execFileSync('git',['diff','--name-only'],{encoding:'utf8'}),execFileSync('git',['ls-files','--others','--exclude-standard'],{encoding:'utf8'})].join('\n').split(/\r?\n/).map(x=>x.trim()).filter(Boolean))]
+const changed=[...new Set([execFileSync('git',['diff','--name-only'],{encoding:'utf8'}),execFileSync('git',['ls-files','--others','--exclude-standard'],{encoding:'utf8'})].join('\n').split(/\r?\n/).map(x=>x.trim()).filter(x=>x&&!x.startsWith('.content-agent/')))]
 const show=path=>{try{return execFileSync('git',['show','HEAD:'+path],{encoding:'utf8'})}catch{return null}}
 const json=path=>JSON.parse(execFileSync('git',['show','HEAD:'+path],{encoding:'utf8'}))
 const strip=value=>{const copy=structuredClone(value);delete copy.lastCheckedAt;return copy}

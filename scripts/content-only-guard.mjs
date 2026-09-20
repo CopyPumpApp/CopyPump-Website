@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 const exactAllowed=new Set(['src/content/project-status.generated.ts','public/public-status.json','public/agent-status.json','public/radar/index.json'])
 const observation=/^public\/radar\/observations\/[a-z0-9-]+\.json$/
 const autoEvidence=/^public\/radar\/evidence\/auto-transaction-[a-z0-9-]+\.json$/
-const changed=(process.env.CHANGED_FILES||'').split('\n').map(x=>x.trim()).filter(Boolean)
+const changed=(process.env.CHANGED_FILES||'').split('\n').map(x=>x.trim()).filter(x=>x&&!x.startsWith('.content-agent/'))
 const violations=changed.filter(file=>!exactAllowed.has(file)&&!observation.test(file)&&!autoEvidence.test(file))
 if(violations.length){console.error('CONTENT_ONLY_GUARD_BLOCKED');for(const file of violations)console.error(file);process.exit(1)}
 const frozen=[/^src\/premium\//,/^src\/styles\//,/^src\/components\//,/^src\/pages\//,/^src\/i18n\//,/^src\/radar\/.*\.(css|tsx|ts)$/,/^public\/media\//,/^public\/fonts\//,/^src\/imports\//,/^public\/radar\/evidence\/(?!auto-transaction-)/]

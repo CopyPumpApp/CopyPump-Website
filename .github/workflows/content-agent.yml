@@ -72,14 +72,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          CHANGED_FILES="$( { git diff --name-only; git ls-files --others --exclude-standard; } | sort -u )" node scripts/content-only-guard.mjs
+          CHANGED_FILES="$( { git diff --name-only; git ls-files --others --exclude-standard; } | grep -v '^\.content-agent/' | sort -u )" node scripts/content-only-guard.mjs
           node scripts/radar-data-guard.mjs
 
       - name: Verify autonomous diff is exactly allowlisted
         shell: bash
         run: |
           set -euo pipefail
-          CHANGED="$( { git diff --name-only; git ls-files --others --exclude-standard; } | sort -u )"
+          CHANGED="$( { git diff --name-only; git ls-files --others --exclude-standard; } | grep -v '^\.content-agent/' | sort -u )"
           UNEXPECTED="$(printf '%s\n' "$CHANGED" | grep -Ev '^(src/content/project-status\.generated\.ts|public/public-status\.json|public/agent-status\.json|public/radar/index\.json|public/radar/observations/[a-z0-9-]+\.json|public/radar/evidence/auto-transaction-[a-z0-9-]+\.json)$' || true)"
           if [ -n "$UNEXPECTED" ]; then
             echo "Unexpected autonomous website diff:"
@@ -98,7 +98,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          CHANGED="$( { git diff --name-only; git ls-files --others --exclude-standard; } | sort -u )"
+          CHANGED="$( { git diff --name-only; git ls-files --others --exclude-standard; } | grep -v '^\.content-agent/' | sort -u )"
           if [ -z "$CHANGED" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No public-safe data update."
