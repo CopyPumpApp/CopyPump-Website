@@ -58,7 +58,7 @@ const en = {
   ], source:'Read the source record', update:'This page is a dated public snapshot, not a live system-health feed.'},
   footer: {line:'Autonomous execution. Deliberate control.', privacy:'Privacy', terms:'Terms', security:'Security', contact:'Contact', disclaimer:'Technical alpha. No public Mainnet trading. No guaranteed returns.'},
 }
-const ru: typeof en = {
+const ru = {
   nav:{product:'Продукт',progress:'Прогресс',community:'Сообщество',home:'Главная',security:'Безопасность',contact:'Контакты',menu:'Открыть меню',close:'Закрыть меню',label:'Навигация',explore:'Откройте CopyPump',resources:'На связи',motion:'Анимации',pause:'Остановить фоновые анимации',play:'Включить фоновые анимации',reduced:'Устройство использует режим уменьшения движения',skip:'К содержимому'},
   hero:{eyebrow:'АВТОМАТИЗАЦИЯ СО СМЫСЛОМ · SOLANA',line1:'Умные деньги.',line2:'Ваши правила.',intro:'CopyPump сам обнаруживает успешные кошельки. Вы задаёте стратегию и лимиты — система работает в этих рамках.',primary:'Посмотреть, как это работает',secondary:'На каком мы этапе',label:'ТЕХНИЧЕСКАЯ АЛЬФА',stamp:'Контроль остаётся у вас.',bottom:'Без передачи средств платформе. С исполнением в рамках лимитов.',imageLabel:'ВИДЕНИЕ COPYPUMP',hint:'Что стоит между сигналом и сделкой'},
   experience:{eyebrow:'ЗНАКОМСТВО С ПРОДУКТОМ',title:'Сигнал — ещё не сделка.',accent:'Сначала ваши правила.',intro:'Четыре части задуманного процесса. Это интерактивная иллюстрация продукта, а не работающий торговый терминал.',artLabel:'ОБЪЕКТ ПРОЦЕССА',example:'УСЛОВНЫЕ ДАННЫЕ · БЕЗ ТРАНЗАКЦИЙ',detail:'Подробнее о модели контроля',chapters:[
