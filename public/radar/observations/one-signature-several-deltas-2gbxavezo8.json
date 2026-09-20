@@ -1,0 +1,95 @@
+{
+  "id": "one-signature-several-deltas-2gbxavezo8",
+  "version": 1,
+  "category": {
+    "en": "RECONCILIATION / 04",
+    "ru": "СВЕРКА / 04"
+  },
+  "title": {
+    "en": "One signature is not one outcome.",
+    "ru": "Одна подпись — не один итог."
+  },
+  "summary": {
+    "en": "This finalized successful transaction changes 6 token-balance entries across 2 mints and pays a 125,000-lamport fee. The success flag is only the headline.",
+    "ru": "Эта финализированная успешная транзакция меняет 6 записей токен-балансов по 2 mint-адресам и списывает комиссию 125 000 лампорт. Статус success — только заголовок."
+  },
+  "facts": [
+    {
+      "en": "At slot 448886560, the transaction is finalized with a successful execution result and a fee of 125,000 lamports.",
+      "ru": "В слоте 448886560 транзакция финализирована с успешным результатом исполнения и комиссией 125 000 лампорт."
+    },
+    {
+      "en": "Comparing reported pre/post token balances finds 6 changed token-balance entries across 2 mints.",
+      "ru": "Сравнение указанных токен-балансов до и после находит 6 изменённых записей по 2 mint-адресам."
+    }
+  ],
+  "interpretation": {
+    "en": "A transaction-level success flag is one field, not a complete receipt. Reconciliation needs the fee and the actual balance deltas before describing what changed.",
+    "ru": "Статус success на уровне транзакции — лишь одно поле, а не полный отчёт. Для сверки нужны комиссия и реальные изменения балансов."
+  },
+  "unknowns": [
+    {
+      "en": "We do not identify the account owners, infer their strategy, cost basis or profitability.",
+      "ru": "Мы не устанавливаем владельцев аккаунтов и не выводим их стратегию, себестоимость или прибыльность."
+    },
+    {
+      "en": "Reported token-balance deltas do not describe every possible account-data or program-state change inside the transaction.",
+      "ru": "Изменения токен-балансов не описывают все возможные изменения данных аккаунтов или состояния программ внутри транзакции."
+    }
+  ],
+  "publishedAt": "2026-09-20T23:58:19.072Z",
+  "updatedAt": "2026-09-20T23:58:19.072Z",
+  "observedAt": "2026-09-20T23:58:10.000Z",
+  "lastCheckedAt": "2026-09-20T23:58:19.072Z",
+  "cluster": "mainnet-beta",
+  "signature": "2GBxaVEZo8b8ph2i22rrxCKW2QJGvf6jLfXGJAD8kyKpV8uPVD717zga48vUc9NKec6hkMGS8W8u4otKxikuTxQX",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "transaction",
+      "label": {
+        "en": "Archived RPC transaction response",
+        "ru": "Сохранённый ответ RPC: транзакция"
+      },
+      "url": "/radar/evidence/auto-transaction-2gbxavezo8.json",
+      "checkedAt": "2026-09-20T23:58:19.072Z",
+      "sha256": "3538943e8850ff3c1d7b3afd3e8c274a4d12ce6af3faeac0ac7625a1b2acf96f"
+    },
+    {
+      "id": "explorer",
+      "label": {
+        "en": "Open transaction in Solana Explorer",
+        "ru": "Транзакция в Solana Explorer"
+      },
+      "url": "https://explorer.solana.com/tx/2GBxaVEZo8b8ph2i22rrxCKW2QJGvf6jLfXGJAD8kyKpV8uPVD717zga48vUc9NKec6hkMGS8W8u4otKxikuTxQX?cluster=mainnet-beta",
+      "checkedAt": "2026-09-20T23:58:19.072Z"
+    },
+    {
+      "id": "docs",
+      "label": {
+        "en": "Solana RPC response fields",
+        "ru": "Поля ответа Solana RPC"
+      },
+      "url": "https://solana.com/docs/rpc/json-structures",
+      "checkedAt": "2026-09-20T23:58:19.072Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-20T23:58:19.072Z",
+      "kind": "initial",
+      "title": {
+        "en": "Live evidence review",
+        "ru": "Проверка свежего публичного источника"
+      },
+      "text": {
+        "en": "Initial read-only review of the finalized transaction response. The note is limited to fields directly present in the archived RPC evidence.",
+        "ru": "Первичная read-only проверка ответа о финализированной транзакции. Вывод ограничен полями, которые непосредственно присутствуют в сохранённом RPC-ответе."
+      },
+      "sourceIds": [
+        "transaction"
+      ]
+    }
+  ]
+}

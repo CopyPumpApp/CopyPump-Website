@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-20T23:51:36.398Z",
+  "updatedAt": "2026-09-20T23:58:19.480Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "unavailable",
-    "checkedAt": "2026-09-20T23:51:35Z",
+    "checkedAt": "2026-09-20T23:58:18Z",
     "source": "Garbuz7/CopyPump-Eternal/docs/PUBLIC_MILESTONES.json",
     "detail": "GitHub HTTP 404",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-20T23:51:35.852Z",
+    "checkedAt": "2026-09-20T23:58:18.451Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 3,
@@ -25,6 +25,16 @@
         "count": 3
       }
     ],
+    "discovery": {
+      "schemaVersion": 1,
+      "checkedAt": "2026-09-20T23:58:19.072Z",
+      "source": "Solana public RPC",
+      "state": "ok",
+      "published": true,
+      "id": "one-signature-several-deltas-2gbxavezo8",
+      "signature": "2GBxaVEZo8b8ph2i22rrxCKW2QJGvf6jLfXGJAD8kyKpV8uPVD717zga48vUc9NKec6hkMGS8W8u4otKxikuTxQX",
+      "evidence": "/radar/evidence/auto-transaction-2gbxavezo8.json"
+    },
     "changed": true
   },
   "guard": {
@@ -34,7 +44,8 @@
       "public/public-status.json",
       "public/agent-status.json",
       "public/radar/index.json",
-      "public/radar/observations/*.json:lastCheckedAt-only"
+      "public/radar/observations/*.json",
+      "public/radar/evidence/auto-transaction-*.json"
     ]
   }
 }
