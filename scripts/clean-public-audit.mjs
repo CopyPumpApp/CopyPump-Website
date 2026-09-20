@@ -5,6 +5,7 @@ const app = read('src/App.tsx')
 const site = read('src/premium/Site.tsx')
 const home = read('src/premium/HomePublicationContent.tsx')
 const copy = read('src/premium/content.ts')
+const generatedStatus = read('src/content/project-status.generated.ts')
 const css = read('src/premium/premium.css')
 const seo = read('src/components/Seo.tsx')
 const robots = read('public/robots.txt')
@@ -17,9 +18,12 @@ must(app.includes('PremiumLanding') && app.includes('PremiumProject') && app.inc
 must(!app.includes("from './pages/LandingPage'") && !app.includes("from './pages/ProjectPage'"), 'Legacy duplicate marketing sections must not return to the active graph.')
 must(read('src/styles/index.css').trim() === "@import '../premium/premium.css';", 'Only one presentation system may be imported.')
 
-for (const phrase of ['Technical alpha', 'Solana Devnet', "mainnet: 'locked'", '2026-09-14', 'PROJECT_STATUS.md', 'WS95eXrGB']) {
+for (const phrase of ['Technical alpha', 'Solana Devnet', "mainnet: 'locked'", 'PROJECT_STATUS.md', 'WS95eXrGB']) {
   must(copy.includes(phrase), `Public fact/source missing: ${phrase}`)
 }
+must(/sourceDate:\s*'20\\d{2}-\\d{2}-\\d{2}'/.test(generatedStatus), 'Generated public status must contain a dated sourceDate.')
+must(generatedStatus.includes('mainnetLocked: true'), 'Generated public status must preserve the Mainnet lock.')
+must(generatedStatus.includes('realDevnetTradingAccepted: false'), 'Generated public status must not imply accepted real Devnet trading.')
 for (const term of ['CopyCube', 'RUN_FUP_TRUMP', 'Mizuzi', 'DNBQtqw6R']) {
   must(!`${site}\n${copy}`.includes(term), `Removed content returned: ${term}`)
 }
