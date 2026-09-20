@@ -1,4 +1,6 @@
-import { PROJECT_STATUS_UPDATE } from '../content/project-status.generated'\n\n/** Each subject has one editorial home. Do not duplicate long explanations across routes. */
+import { PROJECT_STATUS_UPDATE } from '../content/project-status.generated'
+
+/** Each subject has one editorial home. Do not duplicate long explanations across routes. */
 export const STATUS = {
   sourceDate: PROJECT_STATUS_UPDATE.sourceDate,
   source: 'https://github.com/CopyPumpApp/CopyPump/blob/main/docs/PROJECT_STATUS.md',
