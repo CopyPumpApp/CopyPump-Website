@@ -58,4 +58,4 @@ Machine-readable state is available at `/agent-status.json`. GitHub Actions reco
 
 Content-agent commits pass the full website verification and then use the guarded Cloudflare production deployment path. Ordinary UI commits do not receive this autonomous production path.
 
-Required secret for web discovery: `KIMI_API_KEY`. If it is missing, the discovery step fails closed, reports `KIMI_API_KEY_MISSING` in the agent status and does not fabricate a story.
+Required secret for web discovery: `KIMI_API_KEY` (preferred) or `MOONSHOT_API_KEY`. If neither is available, the discovery step fails closed, reports `KIMI_API_KEY_MISSING` in the agent status and does not fabricate a story.
