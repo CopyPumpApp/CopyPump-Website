@@ -8,7 +8,7 @@ test('material revisions are not consumed while the page end is offscreen',async
  await page.locator('.radar-read-sentinel').scrollIntoViewIfNeeded();await expect.poll(()=>page.evaluate(({id,key})=>JSON.parse(localStorage.getItem(key)!).read[id],{id,key})).toBe(current)
 })
 test('mismatched edition warns and cannot mark a different revision read',async({page})=>{
- const newer=structuredClone(index);newer.items.find((x:any)=>x.id===id).version=3
+ const newer=structuredClone(index);const changed=newer.items.find((x:any)=>x.id===id);changed.version=changed.version+1
  await page.route('**/radar/index.json',route=>route.fulfill({json:newer}));await page.goto('/radar/'+id)
  await expect(page.locator('.radar-notice')).toContainText('edition changed');await page.locator('.radar-read-sentinel').scrollIntoViewIfNeeded();await page.waitForTimeout(1700)
  await expect(page.locator('.radar-read-sentinel button')).toBeDisabled()
@@ -22,7 +22,7 @@ test('locale changes keep the Home menu open, including the new Radar destinatio
 })
 test('unknown observation has a clear not-found state even with SPA fallback HTML',async({page})=>{
  await page.route('**/radar/observations/unknown-case.json',r=>r.fulfill({contentType:'text/html',body:'<!doctype html><div id="root"></div>'}));await page.goto('/radar/unknown-case')
- await expect(page.locator('h1')).toHaveText('Observation not found');await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content',/noindex/)
+ await expect(page.locator('h1')).toHaveText('Breakdown not found');await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content',/noindex/)
 })
 test('privacy explains browser-only saves and deletion',async({page})=>{
  await page.goto('/privacy');await expect(page.locator('main')).toContainText('Saved Radar observations');await expect(page.locator('main')).toContainText('not sent to a CopyPump server')
