@@ -1,39 +1,38 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-20T23:58:19.480Z",
+  "updatedAt": "2026-09-21T00:05:27.236Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "unavailable",
-    "checkedAt": "2026-09-20T23:58:18Z",
+    "checkedAt": "2026-09-21T00:05:26Z",
     "source": "Garbuz7/CopyPump-Eternal/docs/PUBLIC_MILESTONES.json",
     "detail": "GitHub HTTP 404",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-20T23:58:18.451Z",
+    "checkedAt": "2026-09-21T00:05:26.444Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
-    "checkedObservations": 3,
-    "verifiedObservations": 3,
+    "checkedObservations": 4,
+    "verifiedObservations": 4,
     "mismatches": [],
     "providers": [
       {
         "cluster": "mainnet-beta",
         "endpoint": "https://api.mainnet-beta.solana.com",
         "ok": true,
-        "count": 3
+        "count": 4
       }
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-20T23:58:19.072Z",
+      "checkedAt": "2026-09-21T00:05:27.193Z",
       "source": "Solana public RPC",
-      "state": "ok",
-      "published": true,
-      "id": "one-signature-several-deltas-2gbxavezo8",
-      "signature": "2GBxaVEZo8b8ph2i22rrxCKW2QJGvf6jLfXGJAD8kyKpV8uPVD717zga48vUc9NKec6hkMGS8W8u4otKxikuTxQX",
-      "evidence": "/radar/evidence/auto-transaction-2gbxavezo8.json"
+      "state": "held",
+      "reason": "CADENCE_6H",
+      "published": false,
+      "publishedLast24h": 1
     },
     "changed": true
   },
