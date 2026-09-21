@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-21T00:05:27.236Z",
+  "updatedAt": "2026-09-21T00:16:06.746Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "unavailable",
-    "checkedAt": "2026-09-21T00:05:26Z",
+    "checkedAt": "2026-09-21T00:16:04Z",
     "source": "Garbuz7/CopyPump-Eternal/docs/PUBLIC_MILESTONES.json",
     "detail": "GitHub HTTP 404",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-21T00:05:26.444Z",
+    "checkedAt": "2026-09-21T00:16:05.026Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
@@ -27,8 +27,9 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-21T00:05:27.193Z",
+      "checkedAt": "2026-09-21T00:16:06.700Z",
       "source": "Solana public RPC",
+      "importanceThreshold": 6,
       "state": "held",
       "reason": "CADENCE_6H",
       "published": false,
