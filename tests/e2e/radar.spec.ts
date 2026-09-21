@@ -33,7 +33,7 @@ test('storage denial keeps reading usable and clearly labels session-only saves'
 })
 test('a refresh failure retains the last loaded edition and does not claim no activity',async({page})=>{
  await page.goto('/radar');await expect.poll(()=>page.locator('.radar-row').count()).toBeGreaterThanOrEqual(3);const count=await page.locator('.radar-row').count()
- await page.route('**/radar/index.json',r=>r.fulfill({status:503,body:'Unavailable'}));await page.getByRole('button',{name:'Refresh edition'}).click();await expect(page.locator('.radar-notice')).toContainText('not evidence of no new activity');await expect(page.locator('.radar-row')).toHaveCount(count)
+ await page.route('**/radar/index.json',r=>r.fulfill({status:503,body:'Unavailable'}));await page.getByRole('button',{name:'Refresh Radar'}).click();await expect(page.locator('.radar-notice')).toContainText('not evidence of no new activity');await expect(page.locator('.radar-row')).toHaveCount(count)
 })
 test('invalid JSON, absent record and missing evidence remain explicit',async({page})=>{
  await page.route('**/radar/index.json',r=>r.fulfill({contentType:'application/json',body:'{"schemaVersion":1,"items":[{"id":"bad"}]}'}));await page.goto('/radar');await expect(page.locator('.radar-notice')).toBeVisible();await expect(page.locator('.radar-row')).toHaveCount(0)
