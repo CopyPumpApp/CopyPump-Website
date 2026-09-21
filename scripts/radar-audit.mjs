@@ -6,19 +6,30 @@ assert.equal(index.schemaVersion,1);assert.ok(index.items.length>=3);assert.ok(s
 const ids=new Set()
 for(const call of provenance.calls){assert.equal(call.ok,true);assert.equal(createHash('sha256').update(readFileSync(root+'evidence/'+call.file)).digest('hex'),call.sha256)}
 const loc=x=>assert.ok(x&&typeof x.en==='string'&&x.en.trim()&&typeof x.ru==='string'&&x.ru.trim())
+const httpsHost=value=>{try{const url=new URL(value);return url.protocol==='https:'?url.hostname.toLowerCase():''}catch{return''}}
 for(const item of index.items){
  assert.match(item.id,/^[a-z0-9][a-z0-9-]{0,79}$/);assert.ok(!ids.has(item.id));ids.add(item.id)
  const doc=load('observations/'+item.id+'.json')
  for(const field of Object.keys(item))assert.deepEqual(doc[field],item[field],item.id+': '+field)
  for(const field of ['title','summary','category'])loc(doc[field]);doc.facts.forEach(loc);doc.unknowns.forEach(loc);loc(doc.interpretation)
  for(const field of ['publishedAt','updatedAt','observedAt','lastCheckedAt'])assert.ok(Number.isFinite(Date.parse(doc[field]))&&Date.parse(doc[field])<=Date.now()+60000)
- assert.ok(['mainnet-beta','devnet'].includes(doc.cluster));assert.match(doc.signature,/^[1-9A-HJ-NP-Za-km-z]{80,90}$/)
  assert.equal(doc.version,Math.max(...doc.revisions.map(r=>r.version)));assert.equal(doc.followUps,doc.revisions.filter(r=>r.kind!=='initial').length)
  let prior=0;for(const r of doc.revisions){assert.ok(r.version>prior);prior=r.version;loc(r.title);loc(r.text);for(const id of r.sourceIds)assert.ok(doc.sources.some(s=>s.id===id))}
+ for(const src of doc.sources){assert.ok(/^https:\/\//.test(src.url)||/^\/radar\/evidence\/[a-z0-9-]+\.json$/.test(src.url));if(src.sha256&&src.url.startsWith('/radar/evidence/'))assert.equal(createHash('sha256').update(readFileSync('public'+src.url)).digest('hex'),src.sha256)}
+
+ if(doc.sourceKind==='web'){
+  loc(doc.sourceLabel);assert.equal(doc.cluster,undefined);assert.equal(doc.signature,undefined)
+  assert.ok(doc.summary.en.includes('Why it matters for CopyPump:'));assert.ok(doc.summary.ru.includes('Почему это важно для CopyPump:'))
+  const hosts=doc.sources.map(src=>httpsHost(src.url)).filter(Boolean)
+  assert.equal(hosts.length,doc.sources.length);assert.ok(hosts.length>=2);assert.ok(new Set(hosts).size>=2)
+  continue
+ }
+
+ assert.ok(doc.sourceKind===undefined||doc.sourceKind==='onchain')
+ assert.ok(['mainnet-beta','devnet'].includes(doc.cluster));assert.match(doc.signature,/^[1-9A-HJ-NP-Za-km-z]{80,90}$/)
  const source=doc.sources.find(s=>s.id==='transaction'),file=source.url.split('/').pop(),raw=load('evidence/'+file).result
  assert.equal(raw.transaction.signatures[0],doc.signature);assert.equal(new Date(raw.blockTime*1000).toISOString(),new Date(doc.observedAt).toISOString())
  assert.equal(createHash('sha256').update(readFileSync(root+'evidence/'+file)).digest('hex'),source.sha256)
- for(const src of doc.sources){assert.ok(/^https:\/\//.test(src.url)||/^\/radar\/evidence\/[a-z0-9-]+\.json$/.test(src.url));if(src.sha256&&src.url.startsWith('/radar/evidence/'))assert.equal(createHash('sha256').update(readFileSync('public'+src.url)).digest('hex'),src.sha256)}
  const i=provenance.selected.findIndex(s=>s.signature===doc.signature)
  if(i>=0){const status=load('evidence/follow-up-statuses.json').result.value[i];assert.equal(status.confirmationStatus,'finalized');assert.deepEqual(status.err,raw.meta.err)}
 }
@@ -30,4 +41,4 @@ assert.equal(success.meta.err,null);assert.equal(success.meta.fee,5002);assert.e
 assert.equal(gross.meta.err,null);assert.equal(gross.meta.fee,5601);assert.equal(gross.meta.postBalances[0]-gross.meta.preBalances[0],-55897338)
 assert.ok(gross.transaction.message.instructions.some(x=>x.parsed?.type==='transfer'&&x.parsed.info.lamports===5384061455))
 assert.equal(BigInt(gross.meta.postTokenBalances.find(x=>x.accountIndex===3).uiTokenAmount.amount)-BigInt(gross.meta.preTokenBalances.find(x=>x.accountIndex===3).uiTokenAmount.amount),243974449436n)
-console.log('Radar: bilingual records, versions, source hashes and every numeric seed claim verified.')
+console.log('Radar: bilingual on-chain/web records, versions and source integrity verified.')

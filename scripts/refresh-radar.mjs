@@ -10,9 +10,12 @@ const same=(a,b)=>JSON.stringify(a??null)===JSON.stringify(b??null)
 try{
   const index=JSON.parse(await fs.readFile(root+'/index.json','utf8'))
   const observations=[]
+  let webObservations=0
   for(const item of index.items||[]){
     const path=root+'/observations/'+item.id+'.json'
-    observations.push({path,doc:JSON.parse(await fs.readFile(path,'utf8'))})
+    const doc=JSON.parse(await fs.readFile(path,'utf8'))
+    if(doc.sourceKind==='web'){webObservations++;continue}
+    observations.push({path,doc})
   }
   const groups=new Map()
   for(const entry of observations){
@@ -38,16 +41,17 @@ try{
     }
   }
   if(mismatches.length){
-    await writeStatus({state:'attention',checkedObservations:observations.length,verifiedObservations:observations.length-mismatches.length,mismatches,providers})
+    await writeStatus({state:'attention',checkedObservations:observations.length,webObservations,verifiedObservations:observations.length-mismatches.length,mismatches,providers})
     console.warn('RADAR_AGENT_ATTENTION mismatches='+mismatches.length)
   }else{
-    for(const entry of observations){entry.doc.lastCheckedAt=checkedAt;await fs.writeFile(entry.path,JSON.stringify(entry.doc,null,2)+'\n')}
-    for(const item of index.items)item.lastCheckedAt=checkedAt
+    const onchainIds=new Set()
+    for(const entry of observations){entry.doc.lastCheckedAt=checkedAt;onchainIds.add(entry.doc.id);await fs.writeFile(entry.path,JSON.stringify(entry.doc,null,2)+'\n')}
+    for(const item of index.items)if(onchainIds.has(item.id))item.lastCheckedAt=checkedAt
     await fs.writeFile(root+'/index.json',JSON.stringify(index,null,2)+'\n')
-    await writeStatus({state:'ok',checkedObservations:observations.length,verifiedObservations:observations.length,mismatches:[],providers})
-    console.log('RADAR_AGENT_OK observations='+observations.length)
+    await writeStatus({state:'ok',checkedObservations:observations.length,webObservations,verifiedObservations:observations.length,mismatches:[],providers})
+    console.log('RADAR_AGENT_OK onchain='+observations.length+' web='+webObservations)
   }
 }catch(error){
-  await writeStatus({state:'unavailable',checkedObservations:0,verifiedObservations:0,mismatches:[],detail:String(error?.message||error).slice(0,180)})
+  await writeStatus({state:'unavailable',checkedObservations:0,webObservations:0,verifiedObservations:0,mismatches:[],detail:String(error?.message||error).slice(0,180)})
   console.warn('RADAR_AGENT_UNAVAILABLE',String(error?.message||error))
 }

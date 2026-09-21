@@ -4,7 +4,7 @@ const read=async(path,fallback)=>{try{return JSON.parse(await fs.readFile(path,'
 const now=new Date().toISOString()
 const project=await read('.content-agent/project-status.json',{state:'unavailable',checkedAt:now,source:'Garbuz7/CopyPump-Eternal/docs/PUBLIC_MILESTONES.json',detail:'project step did not report'})
 const radar=await read('.content-agent/radar-status.json',{state:'unavailable',checkedAt:now,source:'Solana getSignatureStatuses',detail:'radar step did not report'})
-const discovery=await read('.content-agent/radar-discovery.json',{state:'pending',checkedAt:now,source:'Solana public RPC',published:false})
+const discovery=await read('.content-agent/radar-discovery.json',{state:'pending',checkedAt:now,source:'Kimi Web Search Pro + Web Fetch',published:false})
 let changed=[];try{changed=execFileSync('git',['diff','--name-only'],{encoding:'utf8'}).split(/\r?\n/).filter(Boolean)}catch{}
 const status={schemaVersion:1,updatedAt:now,mode:'AUTONOMOUS_DATA_ONLY',
  project:{...project,changed:changed.includes('src/content/project-status.generated.ts')||changed.includes('public/public-status.json')},
