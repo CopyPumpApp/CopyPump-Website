@@ -1,20 +1,21 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-21T00:16:06.746Z",
+  "updatedAt": "2026-09-21T01:05:40.665Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "unavailable",
-    "checkedAt": "2026-09-21T00:16:04Z",
+    "checkedAt": "2026-09-21T01:05:39Z",
     "source": "Garbuz7/CopyPump-Eternal/docs/PUBLIC_MILESTONES.json",
     "detail": "GitHub HTTP 404",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-21T00:16:05.026Z",
+    "checkedAt": "2026-09-21T01:05:39.545Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
+    "webObservations": 0,
     "verifiedObservations": 4,
     "mismatches": [],
     "providers": [
@@ -27,13 +28,12 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-21T00:16:06.700Z",
-      "source": "Solana public RPC",
-      "importanceThreshold": 6,
-      "state": "held",
-      "reason": "CADENCE_6H",
-      "published": false,
-      "publishedLast24h": 1
+      "checkedAt": "2026-09-21T01:05:40.629Z",
+      "source": "Kimi Web Search Pro + Web Fetch",
+      "importanceThreshold": 72,
+      "state": "unavailable",
+      "reason": "KIMI_API_KEY_MISSING",
+      "published": false
     },
     "changed": true
   },
