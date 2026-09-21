@@ -1,4 +1,4 @@
 approved-by-owner: 2026-09-21
-change: rewrite Radar into plain-language user explanations
-facts: unchanged
+change: simplify Radar cards and enable four daily news windows
+schedule: 00:37,06:37,12:37,18:37 UTC
 target: copypump-website.copypumphq.workers.dev

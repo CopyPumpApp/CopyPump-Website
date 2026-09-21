@@ -26,7 +26,7 @@ Content-agent commits automatically pass the full website verification and then 
 
 ## Autonomous discovery
 
-The scheduled agent may publish at most one new Radar observation per rolling 24 hours. It samples recent finalized public Solana Token Program signatures, skips signatures already represented in Radar, and requires a successful transaction with an actual reported token-balance delta.
+The scheduled agent runs four evenly spaced publication windows per UTC day and may publish at most one new Radar observation per run, with a daily cap of four and a minimum interval of roughly six hours. It samples recent finalized public Solana Token Program signatures, skips signatures already represented in Radar, and requires a successful transaction with an actual reported token-balance delta.
 
 A new item is generated only from deterministic fields in the archived RPC response: finality/execution result, slot, fee, token-balance deltas and parsed system-transfer legs when present. The raw transaction response is stored under `public/radar/evidence/auto-transaction-*.json` with SHA-256 linkage from the observation.
 

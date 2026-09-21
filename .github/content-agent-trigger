@@ -1,4 +1,5 @@
 manual-run: 2026-09-21
-request: retry evidence-backed Radar discovery after ephemeral-file exclusion
-cadence: max-one-per-24h
+request: validate 4x-daily Radar cadence and plain-language format
+daily-cap: 4
+min-interval-hours: 5.5
 core-ui: frozen

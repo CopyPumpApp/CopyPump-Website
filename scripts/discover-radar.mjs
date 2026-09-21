@@ -40,10 +40,18 @@ const localized=(en,ru)=>({en,ru})
 
 try{
   const index=JSON.parse(await fs.readFile(ROOT+'/index.json','utf8'))
-  const mostRecent=Math.max(0,...index.items.map(x=>Date.parse(x.publishedAt)||0))
-  if(mostRecent&&Date.now()-mostRecent<24*3600_000){
-    await writeStatus({state:'held',reason:'CADENCE_24H',published:false})
-    console.log('RADAR_DISCOVERY_HELD cadence=24h')
+  const publishedTimes=index.items.map(x=>Date.parse(x.publishedAt)||0).filter(Boolean)
+  const mostRecent=Math.max(0,...publishedTimes)
+  const publishedLast24h=publishedTimes.filter(t=>Date.now()-t<24*3600_000).length
+  if(publishedLast24h>=4){
+    await writeStatus({state:'held',reason:'DAILY_CAP_4',published:false,publishedLast24h})
+    console.log('RADAR_DISCOVERY_HELD daily-cap=4')
+    process.exit(0)
+  }
+  const minIntervalMs=5.5*3600_000
+  if(mostRecent&&Date.now()-mostRecent<minIntervalMs){
+    await writeStatus({state:'held',reason:'CADENCE_6H',published:false,publishedLast24h})
+    console.log('RADAR_DISCOVERY_HELD cadence=6h')
     process.exit(0)
   }
 

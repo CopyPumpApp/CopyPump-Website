@@ -54,3 +54,12 @@ test('v50 screenshots: Radar, source-backed article, saved state and existing sh
  await page.goto('/ru');await page.locator('#radar-preview').scrollIntoViewIfNeeded();await page.waitForTimeout(1300);await page.screenshot({path:`${dir}/v50-home-radar.png`})
  await page.locator('.menu-button').click();await expect(page.locator('.mobile-nav')).toHaveAttribute('data-phase','open');await page.screenshot({path:`${dir}/v50-menu.png`})
 })
+
+test('Radar cards lead with a plain-language short summary and why it matters',async({page})=>{
+ await page.goto('/ru/radar')
+ const first=page.locator('.radar-row').first()
+ await expect(first.locator('.radar-summary__label')).toHaveText('Коротко')
+ await expect(first.locator('.radar-summary__why')).toContainText('Почему важно:')
+ await page.goto('/radar')
+ await expect(page.locator('.radar-row').first().locator('.radar-summary__label')).toHaveText('In short')
+})

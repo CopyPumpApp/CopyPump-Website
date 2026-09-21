@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths: ['.github/content-agent-trigger']
   schedule:
+    # Four evenly spaced Radar/update windows per UTC day.
     - cron: '37 0,6,12,18 * * *'
 
 permissions:
