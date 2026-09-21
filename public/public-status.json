@@ -6,18 +6,83 @@
   "headline": "Your wallet. Your rules.",
   "summary": "CopyPump is a non-custodial Solana automation project focused on bounded authority, deterministic risk controls and traceable execution. Mainnet remains intentionally blocked while the technical alpha is validated.",
   "gates": [
-    {"id":"website","label":"Website","detail":"Public product, architecture and evidence surface","status":"PUBLIC","tone":"good"},
-    {"id":"policy-risk","label":"Policy + risk","detail":"Deterministic capital, slippage, exposure and permission controls","status":"HARDENING","tone":"warn"},
-    {"id":"audit-evidence","label":"Audit evidence","detail":"Decision, execution, reconciliation and accounting trace","status":"HARDENING","tone":"warn"},
-    {"id":"devnet-lifecycle","label":"Devnet lifecycle","detail":"BUY → partial sell → full sell with failure-path validation","status":"VALIDATING","tone":"warn"},
-    {"id":"mainnet-access","label":"Mainnet access","detail":"Blocked until required validation gates pass","status":"LOCKED","tone":"locked"}
+    {
+      "id": "website",
+      "label": "Website",
+      "detail": "Public product, architecture and evidence surface",
+      "status": "PUBLIC",
+      "tone": "good"
+    },
+    {
+      "id": "policy-risk",
+      "label": "Policy + risk",
+      "detail": "Deterministic capital, slippage, exposure and permission controls",
+      "status": "HARDENING",
+      "tone": "warn"
+    },
+    {
+      "id": "audit-evidence",
+      "label": "Audit evidence",
+      "detail": "Decision, execution, reconciliation and accounting trace",
+      "status": "HARDENING",
+      "tone": "warn"
+    },
+    {
+      "id": "devnet-lifecycle",
+      "label": "Devnet lifecycle",
+      "detail": "BUY → partial sell → full sell with failure-path validation",
+      "status": "VALIDATING",
+      "tone": "warn"
+    },
+    {
+      "id": "mainnet-access",
+      "label": "Mainnet access",
+      "detail": "Blocked until required validation gates pass",
+      "status": "LOCKED",
+      "tone": "locked"
+    }
   ],
   "roadmap": [
-    {"label":"NOW","title":"Full Devnet lifecycle","copy":"BUY → POSITION → PARTIAL SELL → FULL SELL. Confirm transactions, reconcile state, account for fees and review the execution record.","phase":"01","state":"active"},
-    {"label":"HARDENING","title":"Safety under failure","copy":"Repeated requests, revoked permissions, emergency stops and recovery. Close the required engineering safety gates.","phase":"02","state":"next"},
-    {"label":"PUBLISH","title":"Reviewable technical evidence","copy":"Publish evidence, selected tests and source after security, privacy and licensing review.","phase":"03","state":"future"},
-    {"label":"AFTER THE GATES","title":"Limited production preparation","copy":"Evaluate readiness for tightly constrained Mainnet operation. This is a conditional next step, not an access or launch-date promise.","phase":"04","state":"future"}
+    {
+      "label": "NEXT",
+      "title": "Close the remaining Devnet execution-safety gates",
+      "copy": "Storage hardening moved forward. Real Devnet trading acceptance still depends on the remaining durable execution, recovery and verification gates.",
+      "phase": "01",
+      "state": "active"
+    },
+    {
+      "label": "PROVE",
+      "title": "Publish reviewable Devnet evidence",
+      "copy": "Release transaction, reconciliation and accounting evidence only after the relevant acceptance checks pass.",
+      "phase": "02",
+      "state": "future"
+    },
+    {
+      "label": "AFTER THE GATES",
+      "title": "Evaluate limited production readiness",
+      "copy": "Mainnet remains locked. Production preparation is conditional on separate evidence and approval.",
+      "phase": "03",
+      "state": "future"
+    }
   ],
-  "sourceUpdatedAt": "2026-09-14",
-  "sourceUrl": "https://github.com/CopyPumpApp/CopyPump/blob/main/docs/PROJECT_STATUS.md"
+  "sourceUpdatedAt": "2026-09-20",
+  "sourceUrl": "https://github.com/CopyPumpApp/CopyPump/blob/main/docs/PROJECT_STATUS.md",
+  "latestMilestone": {
+    "id": "stage-4ab-public-engineering-update-2026-09-20",
+    "title": "Stage 4A/4B scoped storage engineering progress published",
+    "summary": "CopyPump Stage 4A and 4B passed their scoped closed-gate synthetic storage engineering acceptance. Price Alerts, bounded active receipts and verified indexed archival reached those engineering checkpoints. Real storage activation and real Devnet trading remain unaccepted, and LIVE_MAINNET stays locked.",
+    "status": "VERIFIED_ENGINEERING_PROGRESS",
+    "realDevnetTradingAccepted": false,
+    "mainnetLocked": true
+  },
+  "community": {
+    "mode": "BUILD_IN_PUBLIC",
+    "callToAction": "Follow the build, inspect the public record, and join the discussion if you care about bounded authority, execution safety or testing the assumptions behind CopyPump.",
+    "audience": [
+      "testers",
+      "builders",
+      "researchers",
+      "crypto enthusiasts"
+    ]
+  }
 }
