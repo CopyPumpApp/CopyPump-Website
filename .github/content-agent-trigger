@@ -1,6 +1,7 @@
 manual-run: 2026-09-21
-request: validate fresh-important-only Radar selection
+request: activate Kimi Search Pro + Web Fetch Radar
 review-windows: 4/day
-importance-threshold: 6
-freshness-window-hours: 6.5
+importance-threshold: 72
+web-intelligence: enabled
+historical-onchain-verification: preserved
 core-ui: frozen
