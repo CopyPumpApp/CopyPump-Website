@@ -182,7 +182,7 @@ try {
 
   const collected = []
   const regions = new Set()
-  for (const query of queries) {
+  await Promise.all(queries.map(async query => {
     try {
       const response = await searchPro(API_KEY, {
         text_query: query,
@@ -214,7 +214,7 @@ try {
     } catch (error) {
       console.warn('RADAR_WEB_SEARCH_QUERY_FAILED', compactText(error?.message || error, 220))
     }
-  }
+  }))
 
   const unique = []
   const byUrl = new Map()
@@ -232,7 +232,7 @@ try {
   }
 
   const shortlist = unique.slice(0, 12)
-  for (const candidate of shortlist.slice(0, FETCH_LIMIT)) {
+  await Promise.all(shortlist.slice(0, FETCH_LIMIT).map(async candidate => {
     try {
       const fetched = await fetchWebPage(API_KEY, candidate.url)
       regions.add(fetched.apiRegion)
@@ -241,7 +241,7 @@ try {
     } catch (error) {
       candidate.fetchError = compactText(error?.message || error, 180)
     }
-  }
+  }))
 
   const evidence = shortlist.map((candidate, index) => ({
     index: index + 1,
