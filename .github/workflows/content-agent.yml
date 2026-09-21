@@ -66,6 +66,7 @@ jobs:
       - name: Discover one fresh verified Radar story
         env:
           KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
           KIMI_MODEL: kimi-k2.6
           KIMI_MAX_ATTEMPTS: '2'
           KIMI_REQUEST_TIMEOUT_MS: '45000'
