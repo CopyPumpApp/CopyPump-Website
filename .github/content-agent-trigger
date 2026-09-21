@@ -1,7 +1,8 @@
-manual-run: 2026-09-21
-request: activate Kimi Search Pro + Web Fetch Radar
+manual-run: 2026-09-21T20:24Z
+request: sync public milestone feed and deploy verified website data
+source: CopyPumpApp/CopyPump/docs/PUBLIC_MILESTONES.json
 review-windows: 4/day
 importance-threshold: 72
-web-intelligence: enabled
+web-intelligence: enabled-when-key-present
 historical-onchain-verification: preserved
 core-ui: frozen
