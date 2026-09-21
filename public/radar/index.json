@@ -6,11 +6,6 @@
     {
       "id": "web-zetachain-plan-move-zeta-to-solana-20260921",
       "version": 1,
-      "sourceKind": "web",
-      "sourceLabel": {
-        "en": "WEB / VERIFIED SOURCES",
-        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
-      },
       "publishedAt": "2026-09-21T22:43:00.000Z",
       "updatedAt": "2026-09-21T22:43:00.000Z",
       "observedAt": "2026-09-20T00:00:00.000Z",
@@ -27,7 +22,12 @@
         "en": "ECOSYSTEM / 05",
         "ru": "ЭКОСИСТЕМА / 05"
       },
-      "followUps": 0
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      }
     },
     {
       "id": "one-signature-several-deltas-2gbxavezo8",
@@ -36,7 +36,6 @@
       "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-20T23:58:10.000Z",
       "lastCheckedAt": "2026-09-21T22:10:39.475Z",
-      "cluster": "mainnet-beta",
       "title": {
         "en": "6 token balances changed in one Solana transaction.",
         "ru": "В одной Solana-транзакции изменились 6 токен-балансов."
@@ -49,7 +48,8 @@
         "en": "TRANSACTION CHECK / 04",
         "ru": "РАЗБОР ТРАНЗАКЦИИ / 04"
       },
-      "followUps": 1
+      "followUps": 1,
+      "cluster": "mainnet-beta"
     },
     {
       "id": "gross-transfer-net-change",
@@ -58,7 +58,6 @@
       "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-17T02:21:46Z",
       "lastCheckedAt": "2026-09-21T22:10:39.475Z",
-      "cluster": "mainnet-beta",
       "title": {
         "en": "A 5.384 SOL transfer was not a 5.384 SOL loss.",
         "ru": "Перевод 5,384 SOL не означал потерю 5,384 SOL."
@@ -71,7 +70,8 @@
         "en": "TRANSACTION CHECK / 03",
         "ru": "РАЗБОР ТРАНЗАКЦИИ / 03"
       },
-      "followUps": 2
+      "followUps": 2,
+      "cluster": "mainnet-beta"
     },
     {
       "id": "finalized-but-failed",
@@ -80,7 +80,6 @@
       "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-17T02:21:46Z",
       "lastCheckedAt": "2026-09-21T22:10:39.475Z",
-      "cluster": "mainnet-beta",
       "title": {
         "en": "The transaction was finalized — but it still failed.",
         "ru": "Транзакция финализировалась — но всё равно завершилась ошибкой."
@@ -93,7 +92,8 @@
         "en": "FAILED EXECUTION / 01",
         "ru": "ОШИБКА ИСПОЛНЕНИЯ / 01"
       },
-      "followUps": 1
+      "followUps": 1,
+      "cluster": "mainnet-beta"
     },
     {
       "id": "success-without-token-movement",
@@ -102,20 +102,20 @@
       "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-17T02:21:46Z",
       "lastCheckedAt": "2026-09-21T22:10:39.475Z",
-      "cluster": "mainnet-beta",
       "title": {
         "en": "The transaction said success, but the token balances did not move.",
         "ru": "Транзакция получила success, но токен-балансы не изменились."
       },
       "summary": {
         "en": "The call completed without an execution error, yet all ten matching token balances stayed unchanged. Why it matters for CopyPump: success should be confirmed by the expected outcome, not by the status field alone.",
-        "ru": "Вызов завершился без ошибки, но все десять сопоставленных токен-балансы остались прежними. Почему это важно для CopyPump: success нужно подтверждать ожидаемым результатом, а не одним полем статуса."
+        "ru": "Вызов завершился без ошибки, но все десять сопоставленных токен-балансов остались прежними. Почему это важно для CopyPump: success нужно подтверждать ожидаемым результатом, а не одним полем статуса."
       },
       "category": {
         "en": "RESULT CHECK / 02",
         "ru": "ПРОВЕРКА РЕЗУЛЬТАТА / 02"
       },
-      "followUps": 1
+      "followUps": 1,
+      "cluster": "mainnet-beta"
     }
   ]
 }
