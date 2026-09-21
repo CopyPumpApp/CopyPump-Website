@@ -1,17 +1,17 @@
 {
   "id": "success-without-token-movement",
-  "version": 1,
+  "version": 2,
   "category": {
-    "en": "POSTCONDITIONS / 02",
-    "ru": "РЕЗУЛЬТАТ / 02"
+    "en": "RESULT CHECK / 02",
+    "ru": "ПРОВЕРКА РЕЗУЛЬТАТА / 02"
   },
   "title": {
-    "en": "A success flag is not a trade receipt.",
-    "ru": "Статус success — ещё не отчёт о сделке."
+    "en": "The transaction said success, but the token balances did not move.",
+    "ru": "Транзакция получила success, но токен-балансы не изменились."
   },
   "summary": {
-    "en": "This successful call references 41 accounts. Its ten reported token balances do not change. A program outcome is not the same as a verified swap.",
-    "ru": "Успешный вызов ссылается на 41 аккаунт. Десять указанных токен-балансов не меняются. Успех программы — не подтверждение обмена."
+    "en": "The call completed without an execution error, yet all ten matching token balances stayed unchanged. Why it matters for CopyPump: success should be confirmed by the expected outcome, not by the status field alone.",
+    "ru": "Вызов завершился без ошибки, но все десять сопоставленных токен-балансов остались прежними. Почему это важно для CopyPump: success нужно подтверждать ожидаемым результатом, а не одним полем статуса."
   },
   "facts": [
     {
@@ -28,8 +28,8 @@
     }
   ],
   "interpretation": {
-    "en": "The record establishes that execution returned without an error. It does not establish that a purchase happened. Check the intended postconditions and the actual balance changes rather than treating every successful transaction as a trade.",
-    "ru": "Запись подтверждает исполнение без ошибки, но не доказывает покупку. Проверяйте ожидаемый результат и реальные изменения балансов, а не считайте любую успешную транзакцию сделкой."
+    "en": "For CopyPump, execution is only meaningful when the expected postconditions are visible in the resulting state. A successful program call is not automatically a completed trade.",
+    "ru": "Для CopyPump исполнение имеет смысл только тогда, когда ожидаемый результат виден в итоговом состоянии. Успешный вызов программы ещё не означает завершённую сделку."
   },
   "unknowns": [
     {
@@ -42,12 +42,12 @@
     }
   ],
   "publishedAt": "2026-09-17T02:27:05Z",
-  "updatedAt": "2026-09-17T02:27:05Z",
+  "updatedAt": "2026-09-21T00:02:02.641Z",
   "observedAt": "2026-09-17T02:21:46Z",
   "lastCheckedAt": "2026-09-20T23:58:18.451Z",
   "cluster": "mainnet-beta",
   "signature": "3WJhGfJKo9dYgvF6TDefzxRuLC92QoxJkmEAjjkJL3okBJpRhfiTkgRXGwmvrnLmoxSzz246z48F4Uk7zyd7xLFy",
-  "followUps": 0,
+  "followUps": 1,
   "sources": [
     {
       "id": "transaction",
@@ -113,6 +113,22 @@
       "sourceIds": [
         "transaction",
         "status"
+      ]
+    },
+    {
+      "version": 2,
+      "at": "2026-09-21T00:02:02.641Z",
+      "kind": "addendum",
+      "title": {
+        "en": "Plain-language explanation",
+        "ru": "Понятное объяснение"
+      },
+      "text": {
+        "en": "The presentation was rewritten in plain language so the user can see what happened and why it matters for CopyPump. The underlying evidence and factual conclusion did not change.",
+        "ru": "Подача переписана простым языком, чтобы сразу было понятно, что произошло и почему это важно для CopyPump. Исходные доказательства и фактический вывод не изменились."
+      },
+      "sourceIds": [
+        "transaction"
       ]
     }
   ]

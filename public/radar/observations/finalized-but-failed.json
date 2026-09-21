@@ -1,17 +1,17 @@
 {
   "id": "finalized-but-failed",
-  "version": 1,
+  "version": 2,
   "category": {
-    "en": "EXECUTION / 01",
-    "ru": "ИСПОЛНЕНИЕ / 01"
+    "en": "FAILED EXECUTION / 01",
+    "ru": "ОШИБКА ИСПОЛНЕНИЯ / 01"
   },
   "title": {
-    "en": "Finalized does not mean successful.",
-    "ru": "Финализировано — не значит успешно."
+    "en": "The transaction was finalized — but it still failed.",
+    "ru": "Транзакция финализировалась — но всё равно завершилась ошибкой."
   },
   "summary": {
-    "en": "A finalized transaction carries an execution error—and a 5,001-lamport fee. Two different questions, one public record.",
-    "ru": "У финализированной транзакции есть ошибка исполнения и комиссия 5 001 лампорт. Два разных вопроса — одна публичная запись."
+    "en": "Solana finalized the transaction, but execution returned an error and the 5,001-lamport fee was still charged. Why it matters for CopyPump: finality and successful execution must be checked separately.",
+    "ru": "Solana финализировала транзакцию, но исполнение завершилось ошибкой, а комиссия 5 001 лампорт всё равно списалась. Почему это важно для CopyPump: финальность и успешное исполнение нужно проверять отдельно."
   },
   "facts": [
     {
@@ -28,8 +28,8 @@
     }
   ],
   "interpretation": {
-    "en": "Finality and execution outcome are separate fields. This record supports a failed execution with a charged fee—not a completed buy. Reading a signature or finality label alone would miss that distinction.",
-    "ru": "Финальность и результат исполнения — разные поля. Эта запись подтверждает ошибку исполнения и списанную комиссию, а не завершённую покупку. Одной подписи или метки финальности недостаточно."
+    "en": "For CopyPump, a finalized signature cannot be treated as proof that an intended trade completed. The execution result and fee must be checked independently.",
+    "ru": "Для CopyPump финализированная подпись не доказывает, что задуманная сделка состоялась. Результат исполнения и комиссию нужно проверять отдельно."
   },
   "unknowns": [
     {
@@ -42,12 +42,12 @@
     }
   ],
   "publishedAt": "2026-09-17T02:27:05Z",
-  "updatedAt": "2026-09-17T02:27:05Z",
+  "updatedAt": "2026-09-21T00:02:02.641Z",
   "observedAt": "2026-09-17T02:21:46Z",
   "lastCheckedAt": "2026-09-20T23:58:18.451Z",
   "cluster": "mainnet-beta",
   "signature": "4ojcdVhrz7vMHHSKcVSgkXZ3oft3oANdnVXj6K8nwmwxgXz8SrKxPCeNihXqJ28Z9JPSfyi47jHR4ap24o4cjZ9W",
-  "followUps": 0,
+  "followUps": 1,
   "sources": [
     {
       "id": "transaction",
@@ -113,6 +113,22 @@
       "sourceIds": [
         "transaction",
         "status"
+      ]
+    },
+    {
+      "version": 2,
+      "at": "2026-09-21T00:02:02.641Z",
+      "kind": "addendum",
+      "title": {
+        "en": "Plain-language explanation",
+        "ru": "Понятное объяснение"
+      },
+      "text": {
+        "en": "The presentation was rewritten in plain language so the user can see what happened and why it matters for CopyPump. The underlying evidence and factual conclusion did not change.",
+        "ru": "Подача переписана простым языком, чтобы сразу было понятно, что произошло и почему это важно для CopyPump. Исходные доказательства и фактический вывод не изменились."
+      },
+      "sourceIds": [
+        "transaction"
       ]
     }
   ]

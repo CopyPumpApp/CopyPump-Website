@@ -1,17 +1,17 @@
 {
   "id": "gross-transfer-net-change",
-  "version": 2,
+  "version": 3,
   "category": {
-    "en": "RECONCILIATION / 03",
-    "ru": "СВЕРКА / 03"
+    "en": "TRANSACTION CHECK / 03",
+    "ru": "РАЗБОР ТРАНЗАКЦИИ / 03"
   },
   "title": {
-    "en": "5.384 SOL moved. That is not the net result.",
-    "ru": "Переведено 5,384 SOL. Но это не итог."
+    "en": "A 5.384 SOL transfer was not a 5.384 SOL loss.",
+    "ru": "Перевод 5,384 SOL не означал потерю 5,384 SOL."
   },
   "summary": {
-    "en": "One transaction contains wrapping, transfers and account closures. Following a single transfer hides the rest of the operation.",
-    "ru": "В одной транзакции — оборачивание SOL, переводы и закрытия аккаунта. Один перевод не описывает результат всей операции."
+    "en": "The same transaction wrapped SOL, moved funds in both directions and closed accounts. Why it matters for CopyPump: one large transfer cannot be treated as the final result — the whole transaction must be reconciled.",
+    "ru": "В той же транзакции SOL оборачивался, средства двигались в обе стороны, а аккаунты закрывались. Почему это важно для CopyPump: один крупный перевод нельзя считать итогом — нужно сверять всю транзакцию."
   },
   "facts": [
     {
@@ -28,8 +28,8 @@
     }
   ],
   "interpretation": {
-    "en": "A gross transfer is one step, not portfolio PnL. Account creation, wrapped SOL, returned funds, token balances and fees need to be considered together before describing an outcome.",
-    "ru": "Валовой перевод — лишь один шаг, не PnL портфеля. Создание аккаунта, обёрнутый SOL, возврат средств, токен-балансы и комиссия требуют совместного рассмотрения."
+    "en": "For CopyPump, PnL and execution results must come from the reconciled end state, not from one eye-catching transfer inside a multi-step transaction.",
+    "ru": "Для CopyPump итог сделки и PnL должны определяться по сверенным конечным балансам, а не по одному заметному переводу внутри многошаговой транзакции."
   },
   "unknowns": [
     {
@@ -42,12 +42,12 @@
     }
   ],
   "publishedAt": "2026-09-17T02:27:05Z",
-  "updatedAt": "2026-09-17T02:27:05Z",
+  "updatedAt": "2026-09-21T00:02:02.641Z",
   "observedAt": "2026-09-17T02:21:46Z",
   "lastCheckedAt": "2026-09-20T23:58:18.451Z",
   "cluster": "mainnet-beta",
   "signature": "3GrmBLU1asWEg8yvnCaowhSqLD2KpSfVcgtMorcQfyEvmhnrcFnmrs3kD2XJWFxUaeYny2UXySaLiR7qRhkJfK88",
-  "followUps": 1,
+  "followUps": 2,
   "sources": [
     {
       "id": "transaction",
@@ -130,6 +130,22 @@
       "sourceIds": [
         "transaction",
         "status"
+      ]
+    },
+    {
+      "version": 3,
+      "at": "2026-09-21T00:02:02.641Z",
+      "kind": "addendum",
+      "title": {
+        "en": "Plain-language explanation",
+        "ru": "Понятное объяснение"
+      },
+      "text": {
+        "en": "The presentation was rewritten in plain language so the user can see what happened and why it matters for CopyPump. The underlying evidence and factual conclusion did not change.",
+        "ru": "Подача переписана простым языком, чтобы сразу было понятно, что произошло и почему это важно для CopyPump. Исходные доказательства и фактический вывод не изменились."
+      },
+      "sourceIds": [
+        "transaction"
       ]
     }
   ]

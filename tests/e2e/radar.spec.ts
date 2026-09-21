@@ -14,12 +14,12 @@ test('saved observations persist without marking all cases read',async({page})=>
  await page.locator('.radar-save').click();await expect(page.locator('.radar-row')).toHaveCount(0)
 })
 test('an actual newer revision is signalled; opening Home or index does not consume it',async({page})=>{
- await page.addInitScript(({key,id})=>localStorage.setItem(key,JSON.stringify({saved:[id],read:{[id]:1}})),{key,id})
+ const current=index.items.find((x:any)=>x.id===id).version;await page.addInitScript(({key,id,current})=>localStorage.setItem(key,JSON.stringify({saved:[id],read:{[id]:current-1}})),{key,id,current})
  await page.goto('/');await expect(page.locator('.radar-count').first()).toHaveText('1')
  await page.goto('/radar');await expect(page.locator('.radar-update')).toHaveCount(1)
  await page.getByRole('button',{name:'Updated since reading'}).click();await expect(page.locator('.radar-row')).toHaveCount(1)
- await page.locator('.radar-row h2 a').click();await expect(page.locator('.radar-narrative')).toBeVisible();expect(await page.evaluate(({key,id})=>JSON.parse(localStorage.getItem(key)!).read[id],{key,id})).toBe(1)
- await page.locator('.radar-read-sentinel').scrollIntoViewIfNeeded();await expect.poll(()=>page.evaluate(({key,id})=>JSON.parse(localStorage.getItem(key)!).read[id],{key,id})).toBe(2)
+ await page.locator('.radar-row h2 a').click();await expect(page.locator('.radar-narrative')).toBeVisible();expect(await page.evaluate(({key,id})=>JSON.parse(localStorage.getItem(key)!).read[id],{key,id})).toBe(current-1)
+ await page.locator('.radar-read-sentinel').scrollIntoViewIfNeeded();await expect.poll(()=>page.evaluate(({key,id})=>JSON.parse(localStorage.getItem(key)!).read[id],{key,id})).toBe(current)
 })
 test('changing only source-check time does not fabricate an update',async({page})=>{
  const next=structuredClone(index);next.items.forEach((x:any)=>x.lastCheckedAt='2026-09-17T03:00:00Z')

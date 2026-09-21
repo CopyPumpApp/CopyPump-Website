@@ -5,91 +5,91 @@
   "items": [
     {
       "id": "one-signature-several-deltas-2gbxavezo8",
-      "version": 1,
+      "version": 2,
       "publishedAt": "2026-09-20T23:58:19.072Z",
-      "updatedAt": "2026-09-20T23:58:19.072Z",
+      "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-20T23:58:10.000Z",
       "lastCheckedAt": "2026-09-20T23:58:19.072Z",
       "cluster": "mainnet-beta",
       "title": {
-        "en": "One signature is not one outcome.",
-        "ru": "Одна подпись — не один итог."
+        "en": "6 token balances changed in one Solana transaction.",
+        "ru": "В одной Solana-транзакции изменились 6 токен-балансов."
       },
       "summary": {
-        "en": "This finalized successful transaction changes 6 token-balance entries across 2 mints and pays a 125,000-lamport fee. The success flag is only the headline.",
-        "ru": "Эта финализированная успешная транзакция меняет 6 записей токен-балансов по 2 mint-адресам и списывает комиссию 125 000 лампорт. Статус success — только заголовок."
+        "en": "The transaction finished successfully and paid a 125,000-lamport fee. Why it matters for CopyPump: a success flag is not enough — automation should verify the actual balance changes and fee before recording the result.",
+        "ru": "Транзакция завершилась успешно и списала комиссию 125 000 лампорт. Почему это важно для CopyPump: одного статуса success недостаточно — автоматизация должна проверить реальные изменения балансов и комиссию."
       },
       "category": {
-        "en": "RECONCILIATION / 04",
-        "ru": "СВЕРКА / 04"
-      },
-      "followUps": 0
-    },
-    {
-      "id": "gross-transfer-net-change",
-      "version": 2,
-      "publishedAt": "2026-09-17T02:27:05Z",
-      "updatedAt": "2026-09-17T02:27:05Z",
-      "observedAt": "2026-09-17T02:21:46Z",
-      "lastCheckedAt": "2026-09-20T23:58:18.451Z",
-      "cluster": "mainnet-beta",
-      "title": {
-        "en": "5.384 SOL moved. That is not the net result.",
-        "ru": "Переведено 5,384 SOL. Но это не итог."
-      },
-      "summary": {
-        "en": "One transaction contains wrapping, transfers and account closures. Following a single transfer hides the rest of the operation.",
-        "ru": "В одной транзакции — оборачивание SOL, переводы и закрытия аккаунта. Один перевод не описывает результат всей операции."
-      },
-      "category": {
-        "en": "RECONCILIATION / 03",
-        "ru": "СВЕРКА / 03"
+        "en": "TRANSACTION CHECK / 04",
+        "ru": "РАЗБОР ТРАНЗАКЦИИ / 04"
       },
       "followUps": 1
     },
     {
-      "id": "finalized-but-failed",
-      "version": 1,
+      "id": "gross-transfer-net-change",
+      "version": 3,
       "publishedAt": "2026-09-17T02:27:05Z",
-      "updatedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-17T02:21:46Z",
       "lastCheckedAt": "2026-09-20T23:58:18.451Z",
       "cluster": "mainnet-beta",
       "title": {
-        "en": "Finalized does not mean successful.",
-        "ru": "Финализировано — не значит успешно."
+        "en": "A 5.384 SOL transfer was not a 5.384 SOL loss.",
+        "ru": "Перевод 5,384 SOL не означал потерю 5,384 SOL."
       },
       "summary": {
-        "en": "A finalized transaction carries an execution error—and a 5,001-lamport fee. Two different questions, one public record.",
-        "ru": "У финализированной транзакции есть ошибка исполнения и комиссия 5 001 лампорт. Два разных вопроса — одна публичная запись."
+        "en": "The same transaction wrapped SOL, moved funds in both directions and closed accounts. Why it matters for CopyPump: one large transfer cannot be treated as the final result — the whole transaction must be reconciled.",
+        "ru": "В той же транзакции SOL оборачивался, средства двигались в обе стороны, а аккаунты закрывались. Почему это важно для CopyPump: один крупный перевод нельзя считать итогом — нужно сверять всю транзакцию."
       },
       "category": {
-        "en": "EXECUTION / 01",
-        "ru": "ИСПОЛНЕНИЕ / 01"
+        "en": "TRANSACTION CHECK / 03",
+        "ru": "РАЗБОР ТРАНЗАКЦИИ / 03"
       },
-      "followUps": 0
+      "followUps": 2
+    },
+    {
+      "id": "finalized-but-failed",
+      "version": 2,
+      "publishedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-21T00:02:02.641Z",
+      "observedAt": "2026-09-17T02:21:46Z",
+      "lastCheckedAt": "2026-09-20T23:58:18.451Z",
+      "cluster": "mainnet-beta",
+      "title": {
+        "en": "The transaction was finalized — but it still failed.",
+        "ru": "Транзакция финализировалась — но всё равно завершилась ошибкой."
+      },
+      "summary": {
+        "en": "Solana finalized the transaction, but execution returned an error and the 5,001-lamport fee was still charged. Why it matters for CopyPump: finality and successful execution must be checked separately.",
+        "ru": "Solana финализировала транзакцию, но исполнение завершилось ошибкой, а комиссия 5 001 лампорт всё равно списалась. Почему это важно для CopyPump: финальность и успешное исполнение нужно проверять отдельно."
+      },
+      "category": {
+        "en": "FAILED EXECUTION / 01",
+        "ru": "ОШИБКА ИСПОЛНЕНИЯ / 01"
+      },
+      "followUps": 1
     },
     {
       "id": "success-without-token-movement",
-      "version": 1,
+      "version": 2,
       "publishedAt": "2026-09-17T02:27:05Z",
-      "updatedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-17T02:21:46Z",
       "lastCheckedAt": "2026-09-20T23:58:18.451Z",
       "cluster": "mainnet-beta",
       "title": {
-        "en": "A success flag is not a trade receipt.",
-        "ru": "Статус success — ещё не отчёт о сделке."
+        "en": "The transaction said success, but the token balances did not move.",
+        "ru": "Транзакция получила success, но токен-балансы не изменились."
       },
       "summary": {
-        "en": "This successful call references 41 accounts. Its ten reported token balances do not change. A program outcome is not the same as a verified swap.",
-        "ru": "Успешный вызов ссылается на 41 аккаунт. Десять указанных токен-балансов не меняются. Успех программы — не подтверждение обмена."
+        "en": "The call completed without an execution error, yet all ten matching token balances stayed unchanged. Why it matters for CopyPump: success should be confirmed by the expected outcome, not by the status field alone.",
+        "ru": "Вызов завершился без ошибки, но все десять сопоставленных токен-балансов остались прежними. Почему это важно для CopyPump: success нужно подтверждать ожидаемым результатом, а не одним полем статуса."
       },
       "category": {
-        "en": "POSTCONDITIONS / 02",
-        "ru": "РЕЗУЛЬТАТ / 02"
+        "en": "RESULT CHECK / 02",
+        "ru": "ПРОВЕРКА РЕЗУЛЬТАТА / 02"
       },
-      "followUps": 0
+      "followUps": 1
     }
   ]
 }

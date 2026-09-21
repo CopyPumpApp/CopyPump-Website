@@ -1,3 +1,4 @@
 approved-by-owner: 2026-09-21
-change: remove operator telemetry from public Radar UI
+change: rewrite Radar into plain-language user explanations
+facts: unchanged
 target: copypump-website.copypumphq.workers.dev

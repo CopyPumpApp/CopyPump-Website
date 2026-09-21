@@ -1,17 +1,17 @@
 {
   "id": "one-signature-several-deltas-2gbxavezo8",
-  "version": 1,
+  "version": 2,
   "category": {
-    "en": "RECONCILIATION / 04",
-    "ru": "СВЕРКА / 04"
+    "en": "TRANSACTION CHECK / 04",
+    "ru": "РАЗБОР ТРАНЗАКЦИИ / 04"
   },
   "title": {
-    "en": "One signature is not one outcome.",
-    "ru": "Одна подпись — не один итог."
+    "en": "6 token balances changed in one Solana transaction.",
+    "ru": "В одной Solana-транзакции изменились 6 токен-балансов."
   },
   "summary": {
-    "en": "This finalized successful transaction changes 6 token-balance entries across 2 mints and pays a 125,000-lamport fee. The success flag is only the headline.",
-    "ru": "Эта финализированная успешная транзакция меняет 6 записей токен-балансов по 2 mint-адресам и списывает комиссию 125 000 лампорт. Статус success — только заголовок."
+    "en": "The transaction finished successfully and paid a 125,000-lamport fee. Why it matters for CopyPump: a success flag is not enough — automation should verify the actual balance changes and fee before recording the result.",
+    "ru": "Транзакция завершилась успешно и списала комиссию 125 000 лампорт. Почему это важно для CopyPump: одного статуса success недостаточно — автоматизация должна проверить реальные изменения балансов и комиссию."
   },
   "facts": [
     {
@@ -24,8 +24,8 @@
     }
   ],
   "interpretation": {
-    "en": "A transaction-level success flag is one field, not a complete receipt. Reconciliation needs the fee and the actual balance deltas before describing what changed.",
-    "ru": "Статус success на уровне транзакции — лишь одно поле, а не полный отчёт. Для сверки нужны комиссия и реальные изменения балансов."
+    "en": "For CopyPump, the lesson is simple: do not record an execution as complete from a status flag alone. Reconcile the balance changes and fee first.",
+    "ru": "Для CopyPump вывод простой: нельзя считать исполнение завершённым только по статусу. Сначала нужно сверить реальные изменения балансов и комиссию."
   },
   "unknowns": [
     {
@@ -38,12 +38,12 @@
     }
   ],
   "publishedAt": "2026-09-20T23:58:19.072Z",
-  "updatedAt": "2026-09-20T23:58:19.072Z",
+  "updatedAt": "2026-09-21T00:02:02.641Z",
   "observedAt": "2026-09-20T23:58:10.000Z",
   "lastCheckedAt": "2026-09-20T23:58:19.072Z",
   "cluster": "mainnet-beta",
   "signature": "2GBxaVEZo8b8ph2i22rrxCKW2QJGvf6jLfXGJAD8kyKpV8uPVD717zga48vUc9NKec6hkMGS8W8u4otKxikuTxQX",
-  "followUps": 0,
+  "followUps": 1,
   "sources": [
     {
       "id": "transaction",
@@ -86,6 +86,22 @@
       "text": {
         "en": "Initial read-only review of the finalized transaction response. The note is limited to fields directly present in the archived RPC evidence.",
         "ru": "Первичная read-only проверка ответа о финализированной транзакции. Вывод ограничен полями, которые непосредственно присутствуют в сохранённом RPC-ответе."
+      },
+      "sourceIds": [
+        "transaction"
+      ]
+    },
+    {
+      "version": 2,
+      "at": "2026-09-21T00:02:02.641Z",
+      "kind": "addendum",
+      "title": {
+        "en": "Plain-language explanation",
+        "ru": "Понятное объяснение"
+      },
+      "text": {
+        "en": "The presentation was rewritten in plain language so the user can see what happened and why it matters for CopyPump. The underlying evidence and factual conclusion did not change.",
+        "ru": "Подача переписана простым языком, чтобы сразу было понятно, что произошло и почему это важно для CopyPump. Исходные доказательства и фактический вывод не изменились."
       },
       "sourceIds": [
         "transaction"

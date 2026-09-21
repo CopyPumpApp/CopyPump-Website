@@ -2,10 +2,10 @@ import {test,expect} from '@playwright/test'
 import fs from 'node:fs'
 const id='gross-transfer-net-change',key='copypump.radar.v1',index=JSON.parse(fs.readFileSync('public/radar/index.json','utf8'))
 test('material revisions are not consumed while the page end is offscreen',async({page})=>{
- await page.addInitScript(({id,key})=>localStorage.setItem(key,JSON.stringify({saved:[id],read:{[id]:1}})),{id,key})
+ const current=index.items.find((x:any)=>x.id===id).version;await page.addInitScript(({id,key,current})=>localStorage.setItem(key,JSON.stringify({saved:[id],read:{[id]:current-1}})),{id,key,current})
  await page.goto('/radar/'+id);await expect(page.locator('.radar-narrative')).toBeVisible();await page.waitForTimeout(1700)
- expect(await page.evaluate(({id,key})=>JSON.parse(localStorage.getItem(key)!).read[id],{id,key})).toBe(1)
- await page.locator('.radar-read-sentinel').scrollIntoViewIfNeeded();await expect.poll(()=>page.evaluate(({id,key})=>JSON.parse(localStorage.getItem(key)!).read[id],{id,key})).toBe(2)
+ expect(await page.evaluate(({id,key})=>JSON.parse(localStorage.getItem(key)!).read[id],{id,key})).toBe(current-1)
+ await page.locator('.radar-read-sentinel').scrollIntoViewIfNeeded();await expect.poll(()=>page.evaluate(({id,key})=>JSON.parse(localStorage.getItem(key)!).read[id],{id,key})).toBe(current)
 })
 test('mismatched edition warns and cannot mark a different revision read',async({page})=>{
  const newer=structuredClone(index);newer.items.find((x:any)=>x.id===id).version=3

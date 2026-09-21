@@ -83,10 +83,10 @@ try{
   const observedAt=new Date(result.blockTime*1000).toISOString()
   const fee=Number(result.meta.fee||0)
   const ordinal=String(index.items.length+1).padStart(2,'0')
-  const title=localized('One signature is not one outcome.','Одна подпись — не один итог.')
+  const title=localized(`A Solana transaction changed ${delta.changed} token-balance entr${delta.changed===1?'y':'ies'}.`,`В одной Solana-транзакции изменились ${delta.changed} записей токен-балансов.`)
   const summary=localized(
-    `This finalized successful transaction changes ${delta.changed} token-balance entr${delta.changed===1?'y':'ies'} across ${delta.mints} mint${delta.mints===1?'':'s'} and pays a ${fee.toLocaleString('en-US')}-lamport fee. The success flag is only the headline.`,
-    `Эта финализированная успешная транзакция меняет ${delta.changed} записей токен-балансов по ${delta.mints} mint-адресам и списывает комиссию ${fee.toLocaleString('ru-RU')} лампорт. Статус success — только заголовок.`
+    `The transaction finished successfully, changed ${delta.changed} token-balance entr${delta.changed===1?'y':'ies'} across ${delta.mints} mint${delta.mints===1?'':'s'} and paid a ${fee.toLocaleString('en-US')}-lamport fee. Why it matters for CopyPump: automation should verify the real balance changes and fee before recording the result.`,
+    `Транзакция завершилась успешно, изменила ${delta.changed} записей токен-балансов по ${delta.mints} mint-адресам и списала комиссию ${fee.toLocaleString('ru-RU')} лампорт. Почему это важно для CopyPump: автоматизация должна проверить реальные изменения балансов и комиссию перед фиксацией результата.`
   )
   const facts=[
     localized(
@@ -105,11 +105,11 @@ try{
 
   const observation={
     id,version:1,
-    category:localized(`RECONCILIATION / ${ordinal}`,`СВЕРКА / ${ordinal}`),
+    category:localized(`TRANSACTION CHECK / ${ordinal}`,`РАЗБОР ТРАНЗАКЦИИ / ${ordinal}`),
     title,summary,facts,
     interpretation:localized(
-      'A transaction-level success flag is one field, not a complete receipt. Reconciliation needs the fee and the actual balance deltas before describing what changed.',
-      'Статус success на уровне транзакции — лишь одно поле, а не полный отчёт. Для сверки нужны комиссия и реальные изменения балансов.'
+      'For CopyPump, the lesson is simple: a status flag is not a complete execution result. Reconcile the actual balance changes and fee before recording what happened.',
+      'Для CopyPump вывод простой: одного статуса недостаточно. Сначала нужно сверить реальные изменения балансов и комиссию, и только потом фиксировать результат.'
     ),
     unknowns:[
       localized('We do not identify the account owners, infer their strategy, cost basis or profitability.','Мы не устанавливаем владельцев аккаунтов и не выводим их стратегию, себестоимость или прибыльность.'),
