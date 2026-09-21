@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-21T20:25:04.771Z",
+  "updatedAt": "2026-09-21T22:10:40.405Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
-    "checkedAt": "2026-09-21T20:25:03Z",
+    "checkedAt": "2026-09-21T22:10:39Z",
     "source": "CopyPumpApp/CopyPump/docs/PUBLIC_MILESTONES.json",
-    "changed": true
+    "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-21T20:25:03.987Z",
+    "checkedAt": "2026-09-21T22:10:39.475Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
@@ -27,7 +27,7 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-21T20:25:04.722Z",
+      "checkedAt": "2026-09-21T22:10:40.361Z",
       "source": "Kimi Web Search Pro + Web Fetch",
       "importanceThreshold": 72,
       "state": "unavailable",
