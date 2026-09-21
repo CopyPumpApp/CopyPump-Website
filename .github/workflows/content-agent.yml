@@ -56,14 +56,13 @@ jobs:
       - name: Recheck published Radar evidence
         run: node scripts/refresh-radar.mjs
 
-      - name: Discover one fresh verified Radar story
-        env:
-          KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
-          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
-          KIMI_MODEL: kimi-k2.6
-          KIMI_MAX_ATTEMPTS: '2'
-          KIMI_REQUEST_TIMEOUT_MS: '45000'
-        run: node scripts/discover-web-radar.mjs
+      - name: Mark web Radar delegated to RSS + Kimi bridge
+        shell: bash
+        run: |
+          mkdir -p .content-agent
+          NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          printf '{"schemaVersion":1,"checkedAt":"%s","source":"Public RSS + Kimi editorial bridge","importanceThreshold":72,"state":"pending","reason":"EXTERNAL_RSS_KIMI_BRIDGE","published":false}\n' "$NOW" > .content-agent/radar-discovery.json
+          echo "RADAR_WEB_DELEGATED_TO_RSS_KIMI_BRIDGE"
 
       - name: Write public agent heartbeat
         run: node scripts/write-agent-status.mjs
