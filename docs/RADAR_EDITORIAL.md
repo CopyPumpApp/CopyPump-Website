@@ -1,23 +1,51 @@
 # Radar editorial publication contract
 
-Radar v50 is an editorial pilot, not a live monitor or an automated daily feed. The browser cannot produce new material by refreshing old timestamps. This repository has no Radar cron schedule, external provider subscription or autonomous publishing action.
+Radar combines immutable historical on-chain case studies with a scheduled, source-grounded web-news layer. The website browser itself never generates content: publication happens only in the guarded **Website Content Agent** workflow.
 
-## Add or continue an observation
+## Scheduled web publication
 
-1. Collect a bounded, read-only public source. Preserve the full response, request parameters, cluster, collection date and SHA-256. Use a new evidence filename for each distinct response; do not overwrite evidence cited in an earlier revision. Never collect private keys, signatures to submit, or private user data.
-2. Create or update a JSON record under public/radar/observations. Keep the stable id and permanent URL. Supply EN/RU facts, interpretation, unknowns, explicit dates and sources. Link source IDs in the revision history. A statement about a fee, balance or success flag must agree with the cited raw response. State when an explorer is only an independent-inspection link.
-3. For a substantive change or correction, increment version, append an immutable revision, set updatedAt to the real editorial revision time and update followUps. Explain what changed and why. Do not silently rewrite old conclusions. A routine recheck without new substance changes only lastCheckedAt; it must not trigger a material-update badge.
-4. Run `node scripts/build-radar-index.mjs <edition> <explicit-ISO-publication-time>`, then `npm run check` and the browser tests. The builder updates summaries from detail records and preserves timestamps unless explicitly supplied. The raw-data audit preserves exact tests for the initial examples while allowing separately sourced later observations.
-5. Update public/sitemap.xml for new observation URLs in both languages. Review claims, citations and presentation in a preview PR. Merge only after the required acceptance. A collection script alone does not approve a publication.
+The agent runs four review windows per UTC day. Each window may publish at most one fresh story, with a daily cap of four and a roughly six-hour minimum interval.
 
-Do not run prepare-radar-edition01.py to publish subsequent editions: it reproduces the initial snapshot for auditing and deliberately uses the frozen first-edition dates. Use the index builder and new reviewed source files instead.
+The scheduled path uses Kimi Web Search Pro for discovery and relevant page chunks, Web Fetch for page-body verification, then Kimi only as an evidence editor. A story is allowed through only when it clears the importance threshold and cites at least two independent HTTPS source hosts from the collected evidence.
+
+Publication is intentionally not guaranteed. A slot is skipped when the available material is stale, duplicate, weakly sourced, promotional, rumor-based or not materially relevant to Solana/CopyPump.
+
+Fetched third-party page bodies are transient inputs and are not copied into the public repository. The published record contains short original summaries, facts/limits and source links.
+
+## Web-record requirements
+
+A new autonomous web record under `public/radar/observations` must:
+
+1. use `sourceKind: "web"` and a localized source label;
+2. omit Solana cluster and transaction signature fields;
+3. provide EN/RU title, short summary, facts, interpretation and limits;
+4. include the explicit “Why it matters for CopyPump” / “Почему это важно для CopyPump” explanation;
+5. cite at least two different HTTPS source hostnames;
+6. use only claims supported by the selected evidence;
+7. avoid price predictions, trading recommendations, profit promises, inferred intent and unsupported attribution;
+8. add one immutable initial revision that references the sources used.
+
+The autonomous guard permits at most one new observation per run and rejects modifications to the substantive fields of already-published records.
+
+## Historical on-chain observations
+
+The original transaction case studies remain evidence-backed records. Their archived RPC responses and SHA-256 links are retained, and the scheduled agent continues read-only `getSignatureStatuses` verification.
+
+A routine on-chain recheck may advance only `lastCheckedAt`. A mismatch does not rewrite the analysis; it creates an attention state.
+
+For a manually reviewed substantive correction to an old observation, increment the version, append an immutable revision, set `updatedAt` to the real editorial revision time and explain what changed. Do not silently rewrite an earlier conclusion.
 
 ## Trust boundaries
 
-- A public account is not an identified person. Do not invent ownership, motivation, wallet quality, cost basis or return estimates.
-- These third-party Mainnet reads are not CopyPump trading activity or proof of product Mainnet readiness.
-- Do not confuse an RPC failure with no network activity. Keep the last verified edition with its timestamp and a visible error state.
-- Preserve corrections and the limits of each interpretation. No daily publishing promise, fake scarcity, countdown, reward or trading recommendation.
-- Local saves/read markers are not synchronized across devices. The privacy page discloses their storage and deletion behavior.
+- A search result or model output is not a fact by itself; claims must remain traceable to cited public sources.
+- A public account is not an identified person. Do not invent ownership, motivation, cost basis or profitability.
+- Third-party Mainnet observations and ecosystem news are not CopyPump trading activity or proof of product Mainnet readiness.
+- Do not confuse a provider/RPC failure with absence of activity or news. Preserve the last verified edition and expose an error state.
+- No fake scarcity, countdown, reward, price target or trading recommendation.
+- Local saved/read markers remain browser-only and are covered by the privacy page.
 
-Success of the editorial pilot is not established by shipping this interface. Useful future material and return visits still need to be observed; no analytics service is installed in this change.
+## Manual editorial additions
+
+For a manually reviewed record, keep a stable ID and permanent URL, provide explicit dates and sources, link source IDs in revision history, run the repository verification suite and review the result in a PR before merging.
+
+Do not run `prepare-radar-edition01.py` to publish later editions; it exists only to reproduce the frozen first-edition audit snapshot.
