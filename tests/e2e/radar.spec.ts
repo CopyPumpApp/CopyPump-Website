@@ -32,12 +32,12 @@ test('storage denial keeps reading usable and clearly labels session-only saves'
  await page.locator('.radar-row h2 a').first().click();await expect(page.locator('.radar-narrative')).toBeVisible()
 })
 test('a refresh failure retains the last loaded edition and does not claim no activity',async({page})=>{
- await page.goto('/radar');const count=await page.locator('.radar-row').count();expect(count).toBeGreaterThanOrEqual(3)
+ await page.goto('/radar');await expect.poll(()=>page.locator('.radar-row').count()).toBeGreaterThanOrEqual(3);const count=await page.locator('.radar-row').count()
  await page.route('**/radar/index.json',r=>r.fulfill({status:503,body:'Unavailable'}));await page.getByRole('button',{name:'Refresh edition'}).click();await expect(page.locator('.radar-notice')).toContainText('not evidence of no new activity');await expect(page.locator('.radar-row')).toHaveCount(count)
 })
 test('invalid JSON, absent record and missing evidence remain explicit',async({page})=>{
  await page.route('**/radar/index.json',r=>r.fulfill({contentType:'application/json',body:'{"schemaVersion":1,"items":[{"id":"bad"}]}'}));await page.goto('/radar');await expect(page.locator('.radar-notice')).toBeVisible();await expect(page.locator('.radar-row')).toHaveCount(0)
- await page.unroute('**/radar/index.json');await page.route('**/radar/observations/not-found.json',r=>r.fulfill({status:404}));await page.goto('/radar/not-found');await expect(page.locator('h1')).toHaveText('Observation not found')
+ await page.unroute('**/radar/index.json');await page.route('**/radar/observations/not-found.json',r=>r.fulfill({status:404}));await page.goto('/radar/not-found');await expect(page.locator('h1')).toHaveText('Breakdown not found')
  await page.route('**/radar/observations/'+id+'.json',r=>r.fulfill({status:503}));await page.goto('/radar/'+id);await expect(page.locator('.radar-fallback')).toContainText('could not be loaded')
 })
 test('Home requests the index only; no RPC, transaction calls or detail payload',async({page})=>{
