@@ -13,7 +13,8 @@
     "check:clean": "node scripts/clean-public-audit.mjs",
     "check:ui": "node scripts/ui-regression-audit.mjs",
     "test:e2e": "playwright test",
-    "check": "npm run typecheck && npm run check:clean && npm run check:ui && npm run build"
+    "check": "npm run typecheck && npm run check:clean && npm run check:ui && npm run check:agent && npm run build",
+    "check:agent": "node --check scripts/kimi-web.mjs && node --check scripts/discover-web-radar.mjs && node --check scripts/refresh-radar.mjs && node --check scripts/radar-data-guard.mjs"
   },
   "dependencies": {
     "react": "^19.0.0",
