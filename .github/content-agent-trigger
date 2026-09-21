@@ -1,5 +1,6 @@
 manual-run: 2026-09-21
-request: validate 4x-daily Radar cadence and plain-language format
-daily-cap: 4
-min-interval-hours: 5.5
+request: validate fresh-important-only Radar selection
+review-windows: 4/day
+importance-threshold: 6
+freshness-window-hours: 6.5
 core-ui: frozen

@@ -26,8 +26,8 @@ Content-agent commits automatically pass the full website verification and then 
 
 ## Autonomous discovery
 
-The scheduled agent runs four evenly spaced publication windows per UTC day and may publish at most one new Radar observation per run, with a daily cap of four and a minimum interval of roughly six hours. It samples recent finalized public Solana Token Program signatures, skips signatures already represented in Radar, and requires a successful transaction with an actual reported token-balance delta.
+The scheduled agent runs four evenly spaced review windows per UTC day. Each window may publish at most one new Radar observation, with a daily cap of four and a minimum interval of roughly six hours. Publication is not mandatory: the agent scans only fresh activity (roughly the current six-hour window), scores structural significance, and skips the slot unless an event clears the importance threshold. Signals include execution failure, multiple token-balance deltas, multiple mints, notable SOL transfer legs, elevated fees, high account counts and complex instruction sets.
 
-A new item is generated only from deterministic fields in the archived RPC response: finality/execution result, slot, fee, token-balance deltas and parsed system-transfer legs when present. The raw transaction response is stored under `public/radar/evidence/auto-transaction-*.json` with SHA-256 linkage from the observation.
+A new item is generated only from deterministic fields in the archived RPC response: finality/execution result, slot, fee, token-balance deltas, account/instruction complexity and parsed system-transfer legs when present. The raw transaction response is stored under `public/radar/evidence/auto-transaction-*.json` with SHA-256 linkage from the observation.
 
 The agent does not infer wallet identity, intent, cost basis, profitability or a trading recommendation. Existing editorial observations remain immutable except for `lastCheckedAt`. At most one new evidence file and one new observation may be added per run, and the semantic guard validates both against the archived RPC payload before commit.

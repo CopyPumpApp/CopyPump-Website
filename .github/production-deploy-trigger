@@ -1,4 +1,5 @@
 approved-by-owner: 2026-09-21
-change: simplify Radar cards and enable four daily news windows
-schedule: 00:37,06:37,12:37,18:37 UTC
+change: fresh-important-only Radar discovery
+review-windows: 4/day
+publication: only when importance threshold passes
 target: copypump-website.copypumphq.workers.dev

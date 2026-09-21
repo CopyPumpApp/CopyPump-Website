@@ -63,3 +63,9 @@ test('Radar cards lead with a plain-language short summary and why it matters',a
  await page.goto('/radar')
  await expect(page.locator('.radar-row').first().locator('.radar-summary__label')).toHaveText('In short')
 })
+
+test('Radar explains that discovery prioritizes fresh significant events',async({page})=>{
+ await page.goto('/ru/radar')
+ await expect(page.locator('.document-hero')).toContainText('Четыре раза в день')
+ await expect(page.locator('.document-hero')).toContainText('порог значимости')
+})
