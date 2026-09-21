@@ -1,8 +1,34 @@
 {
   "schemaVersion": 1,
-  "edition": "02",
-  "publishedAt": "2026-09-20T23:58:19.072Z",
+  "edition": "03",
+  "publishedAt": "2026-09-21T22:43:00.000Z",
   "items": [
+    {
+      "id": "web-zetachain-plan-move-zeta-to-solana-20260921",
+      "version": 1,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      },
+      "publishedAt": "2026-09-21T22:43:00.000Z",
+      "updatedAt": "2026-09-21T22:43:00.000Z",
+      "observedAt": "2026-09-20T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-21T22:43:00.000Z",
+      "title": {
+        "en": "ZetaChain holders approved a plan to wind down its L1 and move ZETA to Solana.",
+        "ru": "Держатели ZetaChain одобрили план закрыть L1 и перенести ZETA в Solana."
+      },
+      "summary": {
+        "en": "ZetaChain tokenholders approved a proposal to wind down the project’s Layer 1 and move ZETA to Solana. The migration still requires another vote before it can proceed. Why it matters for CopyPump: moves like this can bring new assets and wallet activity onto Solana, but CopyPump should treat that activity as real only once the migration is live and observable on-chain.",
+        "ru": "Держатели токена ZetaChain одобрили предложение свернуть собственную Layer 1 и перенести ZETA в Solana. До фактической миграции потребуется ещё одно голосование. Почему это важно для CopyPump: такие переходы могут добавить в Solana новые активы и активность кошельков, но учитывать её как реальную стоит только после запуска миграции и появления данных в сети."
+      },
+      "category": {
+        "en": "ECOSYSTEM / 05",
+        "ru": "ЭКОСИСТЕМА / 05"
+      },
+      "followUps": 0
+    },
     {
       "id": "one-signature-several-deltas-2gbxavezo8",
       "version": 2,
@@ -83,7 +109,7 @@
       },
       "summary": {
         "en": "The call completed without an execution error, yet all ten matching token balances stayed unchanged. Why it matters for CopyPump: success should be confirmed by the expected outcome, not by the status field alone.",
-        "ru": "Вызов завершился без ошибки, но все десять сопоставленных токен-балансов остались прежними. Почему это важно для CopyPump: success нужно подтверждать ожидаемым результатом, а не одним полем статуса."
+        "ru": "Вызов завершился без ошибки, но все десять сопоставленных токен-балансы остались прежними. Почему это важно для CopyPump: success нужно подтверждать ожидаемым результатом, а не одним полем статуса."
       },
       "category": {
         "en": "RESULT CHECK / 02",

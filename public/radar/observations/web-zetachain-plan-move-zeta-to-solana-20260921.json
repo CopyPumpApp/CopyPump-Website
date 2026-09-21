@@ -1,0 +1,93 @@
+{
+  "id": "web-zetachain-plan-move-zeta-to-solana-20260921",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "ECOSYSTEM / 05",
+    "ru": "ЭКОСИСТЕМА / 05"
+  },
+  "title": {
+    "en": "ZetaChain holders approved a plan to wind down its L1 and move ZETA to Solana.",
+    "ru": "Держатели ZetaChain одобрили план закрыть L1 и перенести ZETA в Solana."
+  },
+  "summary": {
+    "en": "ZetaChain tokenholders approved a proposal to wind down the project’s Layer 1 and move ZETA to Solana. The migration still requires another vote before it can proceed. Why it matters for CopyPump: moves like this can bring new assets and wallet activity onto Solana, but CopyPump should treat that activity as real only once the migration is live and observable on-chain.",
+    "ru": "Держатели токена ZetaChain одобрили предложение свернуть собственную Layer 1 и перенести ZETA в Solana. До фактической миграции потребуется ещё одно голосование. Почему это важно для CopyPump: такие переходы могут добавить в Solana новые активы и активность кошельков, но учитывать её как реальную стоит только после запуска миграции и появления данных в сети."
+  },
+  "facts": [
+    {
+      "en": "ZetaChain tokenholders approved the proposal to wind down the project’s Layer 1 and move ZETA to Solana.",
+      "ru": "Держатели ZetaChain одобрили предложение свернуть Layer 1 проекта и перенести ZETA в Solana."
+    },
+    {
+      "en": "The proposal passed with 99.4% support, according to reporting from The Block and other coverage of the governance vote.",
+      "ru": "По данным The Block и других материалов о голосовании, предложение получило 99,4% поддержки."
+    },
+    {
+      "en": "The reported plan still requires another vote before the migration can be carried out.",
+      "ru": "По опубликованному плану до фактической миграции потребуется ещё одно голосование."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a meaningful Solana ecosystem migration signal, not evidence that ZETA activity has already moved on-chain. For CopyPump, the relevant point is to watch for the actual SPL asset, liquidity venues and wallet behavior only after the migration becomes live.",
+    "ru": "Это заметный сигнал миграции в экосистему Solana, но не доказательство того, что активность ZETA уже перешла в сеть. Для CopyPump важно отслеживать сам SPL-актив, площадки ликвидности и поведение кошельков только после фактического запуска миграции."
+  },
+  "unknowns": [
+    {
+      "en": "The timing and outcome of the required follow-up vote are not yet established by these reports.",
+      "ru": "Сроки и результат необходимого повторного голосования из этих материалов пока не известны."
+    },
+    {
+      "en": "The final migration timeline, liquidity venues and post-migration trading activity are not yet known.",
+      "ru": "Финальные сроки миграции, площадки ликвидности и торговая активность после перехода пока не известны."
+    }
+  ],
+  "publishedAt": "2026-09-21T22:43:00.000Z",
+  "updatedAt": "2026-09-21T22:43:00.000Z",
+  "observedAt": "2026-09-20T00:00:00.000Z",
+  "lastCheckedAt": "2026-09-21T22:43:00.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "The Block — ZetaChain votes to shut down Layer 1 network and move ZETA to Solana",
+        "ru": "The Block — ZetaChain голосует за закрытие Layer 1 и перенос ZETA в Solana"
+      },
+      "url": "https://www.theblock.co/news/defi/2026-09-20-zetachain-votes-to-shut-down-layer-1-network-and-move-zeta-to-solana-415878",
+      "checkedAt": "2026-09-21T22:43:00.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "CryptoSlate — ZetaChain vote points to Solana migration",
+        "ru": "CryptoSlate — голосование ZetaChain ведёт к миграции в Solana"
+      },
+      "url": "https://cryptoslate.com/this-blockchain-just-voted-to-shut-itself-down-for-a-solana-powered-ai-pivot/",
+      "checkedAt": "2026-09-21T22:43:00.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-21T22:43:00.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against two independent reports before publication. The migration is not presented as complete.",
+        "ru": "Перед публикацией событие сверено по двум независимым источникам. Миграция не представляется как уже завершённая."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2"
+      ]
+    }
+  ]
+}
