@@ -1,0 +1,107 @@
+{
+  "id": "web-moex-solana-perpetual-futures-20260922",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "ECOSYSTEM ACCESS / 09",
+    "ru": "ДОСТУП К ЭКОСИСТЕМЕ / 09"
+  },
+  "title": {
+    "en": "Moscow Exchange starts Solana-index perpetual futures for qualified investors.",
+    "ru": "Московская биржа запускает вечные фьючерсы на индекс Solana для квалифицированных инвесторов."
+  },
+  "summary": {
+    "en": "On September 22, Moscow Exchange scheduled the start of a cash-settled perpetual futures contract linked to its Solana index, alongside similar contracts for Bitcoin, Ether, XRP and Tron. The SOLUSDF contract is quoted in U.S. dollars, settled in Russian rubles and does not deliver SOL; access is limited to qualified investors. Why it matters for CopyPump: this creates another regulated venue for Solana-linked price exposure, but it is an off-chain derivative and does not add Solana liquidity, wallets or on-chain order flow that CopyPump can directly observe.",
+    "ru": "22 сентября Московская биржа запланировала начало торгов расчётным вечным фьючерсом, привязанным к её индексу Solana, вместе с аналогичными контрактами на биткоин, эфир, XRP и Tron. Контракт SOLUSDF котируется в долларах США, рассчитывается в российских рублях и не предполагает поставку SOL; доступ разрешён только квалифицированным инвесторам. Почему это важно для CopyPump: появляется ещё одна регулируемая площадка для ценовой экспозиции к Solana, но это внечейновый дериватив, который сам по себе не добавляет ликвидность, кошельки или поток заявок в Solana, наблюдаемые CopyPump."
+  },
+  "facts": [
+    {
+      "en": "Moscow Exchange says five perpetual futures linked to its Bitcoin, Ether, Solana, XRP and Tron indices are available from September 22, 2026, only to qualified investors.",
+      "ru": "Московская биржа сообщает, что с 22 сентября 2026 года доступны пять вечных фьючерсов на её индексы биткоина, эфира, Solana, XRP и Tron, только для квалифицированных инвесторов."
+    },
+    {
+      "en": "The Solana-linked contract is identified as SOLUSDF; it is quoted in U.S. dollars and financially settled in Russian rubles rather than delivering SOL.",
+      "ru": "Контракт, привязанный к Solana, имеет код SOLUSDF; он котируется в долларах США и рассчитывается в российских рублях без поставки SOL."
+    },
+    {
+      "en": "RBC and Finmarket independently reported the same September 22 start date, access restriction and cash-settled structure.",
+      "ru": "РБК и Финмаркет независимо сообщили ту же дату начала 22 сентября, ограничение доступа и расчётную структуру без поставки криптоактива."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a regulated-access development around a Solana price benchmark, not a Solana protocol upgrade or a new on-chain trading venue. For CopyPump, it may become a useful external market reference, but any relationship to Solana-native liquidity, execution quality or wallet activity must be measured rather than assumed.",
+    "ru": "Это развитие регулируемого доступа к ценовому ориентиру Solana, а не обновление протокола Solana и не новая ончейн-площадка. Для CopyPump такой рынок может стать внешним ценовым ориентиром, но связь с ликвидностью Solana, качеством исполнения или активностью кошельков нужно измерять, а не предполагать."
+  },
+  "unknowns": [
+    {
+      "en": "The reviewed sources do not establish how much trading volume or open interest SOLUSDF will attract after launch.",
+      "ru": "Проверенные источники не показывают, какой объём торгов или открытого интереса SOLUSDF привлечёт после запуска."
+    },
+    {
+      "en": "The sources do not establish whether SOLUSDF prices will lead, lag or materially influence Solana-native spot and perpetual markets.",
+      "ru": "Источники не устанавливают, будет ли цена SOLUSDF опережать, отставать или заметно влиять на спотовые и вечные рынки внутри экосистемы Solana."
+    },
+    {
+      "en": "The contract does not deliver SOL, so its launch alone does not demonstrate new on-chain users, liquidity or wallet activity on Solana.",
+      "ru": "Контракт не предполагает поставку SOL, поэтому его запуск сам по себе не доказывает появление новых ончейн-пользователей, ликвидности или активности кошельков в Solana."
+    }
+  ],
+  "publishedAt": "2026-09-22T12:48:33.000Z",
+  "updatedAt": "2026-09-22T12:48:33.000Z",
+  "observedAt": "2026-09-22T00:00:00.000Z",
+  "lastCheckedAt": "2026-09-22T12:48:33.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Moscow Exchange — perpetual futures on crypto indices",
+        "ru": "Московская биржа — вечные фьючерсы на индексы криптовалют"
+      },
+      "url": "https://www.moex.com/vechnye-fyuchersy-na-moex",
+      "checkedAt": "2026-09-22T12:48:33.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "RBC Investments — MOEX to launch perpetual futures on crypto indices",
+        "ru": "РБК Инвестиции — Мосбиржа запустит вечные фьючерсы на индексы криптовалют"
+      },
+      "url": "https://amp.rbc.ru/rbcnews/quote/16/09/2026/6aaa2da09a7947baf4d119d9",
+      "checkedAt": "2026-09-22T12:48:33.000Z"
+    },
+    {
+      "id": "web-3",
+      "label": {
+        "en": "Finmarket — MOEX starts perpetual futures on five crypto indices",
+        "ru": "Финмаркет — Мосбиржа начинает торги вечными фьючерсами на пять криптоиндексов"
+      },
+      "url": "https://www.finmarket.ru/news/6707617",
+      "checkedAt": "2026-09-22T12:48:33.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-22T12:48:33.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against Moscow Exchange plus independent RBC and Finmarket reporting. The update treats SOLUSDF as a cash-settled regulated derivative and does not infer new Solana on-chain liquidity or adoption.",
+        "ru": "Перед публикацией событие сверено по данным Московской биржи и независимым материалам РБК и Финмаркета. SOLUSDF описывается как регулируемый расчётный дериватив без предположений о новой ончейн-ликвидности или принятии Solana."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2",
+        "web-3"
+      ]
+    }
+  ]
+}
