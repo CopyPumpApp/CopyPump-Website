@@ -1,0 +1,97 @@
+{
+  "id": "web-switchboard-oracle-shutdown-solana-defi-20260919",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "DEFI / 06",
+    "ru": "DEFI / 06"
+  },
+  "title": {
+    "en": "Switchboard is shutting down its oracle network, giving Solana DeFi days to migrate.",
+    "ru": "Switchboard закрывает сеть оракулов, оставляя Solana DeFi несколько дней на миграцию."
+  },
+  "summary": {
+    "en": "Switchboard Technology Labs announced that its oracle implementations are deprecated and remaining support ends on September 25, 2026. Reports identify major Solana applications among the protocols that have used its feeds and now need alternative data sources. Why it matters for CopyPump: automated trading and risk controls depend on fresh, trustworthy prices, so CopyPump should verify each venue’s live oracle source and staleness rules before trusting execution or risk data during the migration window.",
+    "ru": "Switchboard Technology Labs объявила о прекращении работы сети оракулов: реализации объявлены устаревшими, а оставшаяся поддержка завершится 25 сентября 2026 года. В материалах среди пользователей её ценовых фидов названы крупные приложения Solana, которым теперь нужны альтернативные источники данных. Почему это важно для CopyPump: автоматическая торговля и риск-контроль зависят от свежих и надёжных цен, поэтому во время миграции CopyPump должен проверять фактический источник оракула и правила устаревания данных на каждой площадке, прежде чем доверять данным исполнения или риска."
+  },
+  "facts": [
+    {
+      "en": "Switchboard announced on September 19 that all implementations were deprecated immediately and that remaining support would end on September 25, 2026.",
+      "ru": "19 сентября Switchboard объявила, что все реализации немедленно переводятся в статус deprecated, а оставшаяся поддержка завершится 25 сентября 2026 года."
+    },
+    {
+      "en": "Switchboard’s migration guidance points affected protocols toward alternative oracle providers including Pyth Network and RedStone.",
+      "ru": "В рекомендациях по миграции Switchboard предлагает затронутым протоколам перейти на альтернативные оракулы, включая Pyth Network и RedStone."
+    },
+    {
+      "en": "Solana Compass reports that Kamino Finance, Jito, MarginFi and Drift Protocol are among Solana applications that have relied on Switchboard feeds.",
+      "ru": "Solana Compass сообщает, что Kamino Finance, Jito, MarginFi и Drift Protocol входят в число приложений Solana, использовавших фиды Switchboard."
+    }
+  ],
+  "interpretation": {
+    "en": "This is infrastructure risk, not evidence of a Solana network failure. The important signal for CopyPump is that a venue can remain online while a critical price dependency is changing underneath it; source identity, freshness and fallback behavior therefore need to be verified independently.",
+    "ru": "Это инфраструктурный риск, а не свидетельство сбоя сети Solana. Для CopyPump важен сам факт, что площадка может оставаться доступной, пока под ней меняется критически важный источник цен; поэтому идентичность источника, свежесть данных и поведение резервного механизма нужно проверять отдельно."
+  },
+  "unknowns": [
+    {
+      "en": "The sources do not establish which individual markets at the named Solana protocols will still depend on Switchboard feeds when support ends.",
+      "ru": "Источники не устанавливают, какие именно рынки в названных Solana-протоколах всё ещё будут зависеть от фидов Switchboard к моменту окончания поддержки."
+    },
+    {
+      "en": "The public reports do not establish whether every affected feed will stop, freeze at its last value, or remain available without support after September 25.",
+      "ru": "Публичные материалы не устанавливают, остановится ли каждый затронутый фид, замрёт на последнем значении или продолжит работать без поддержки после 25 сентября."
+    },
+    {
+      "en": "Migration completion and fallback behavior must be confirmed protocol by protocol rather than inferred from the shutdown announcement.",
+      "ru": "Завершение миграции и поведение резервных источников необходимо подтверждать отдельно для каждого протокола, а не выводить из самого объявления о закрытии."
+    }
+  ],
+  "publishedAt": "2026-09-22T00:44:15.000Z",
+  "updatedAt": "2026-09-22T00:44:15.000Z",
+  "observedAt": "2026-09-19T00:00:00.000Z",
+  "lastCheckedAt": "2026-09-22T00:44:15.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Crypto Briefing — Switchboard shuts down operations, urges users to migrate by September 25",
+        "ru": "Crypto Briefing — Switchboard прекращает работу и просит пользователей мигрировать до 25 сентября"
+      },
+      "url": "https://cryptobriefing.com/switchboard-oracle-shuts-down-migration/",
+      "checkedAt": "2026-09-22T00:44:15.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "Solana Compass — Switchboard Oracle Protocol Shuts Down, Giving Solana DeFi Six Days to Migrate",
+        "ru": "Solana Compass — Switchboard закрывает оракул, оставляя Solana DeFi шесть дней на миграцию"
+      },
+      "url": "https://solanacompass.com/news/switchboard-oracle-protocol-shuts-down-giving-solana-defi-six-days-to-migrate",
+      "checkedAt": "2026-09-22T00:44:15.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-22T00:44:15.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against two independent reports before publication. This update treats the shutdown as an oracle-dependency migration risk, not as a Solana network outage.",
+        "ru": "Перед публикацией событие сверено по двум независимым источникам. Материал рассматривает закрытие как риск миграции зависимости от оракула, а не как сбой сети Solana."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-21T22:43:00.000Z",
+  "updatedAt": "2026-09-22T00:44:15.000Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
@@ -14,7 +14,7 @@
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
-    "webObservations": 1,
+    "webObservations": 2,
     "verifiedObservations": 4,
     "mismatches": [],
     "providers": [
@@ -27,18 +27,18 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-21T22:43:00.000Z",
+      "checkedAt": "2026-09-22T00:44:15.000Z",
       "source": "ChatGPT Web Radar — verified public sources",
       "importanceThreshold": 72,
       "state": "ok",
       "published": true,
-      "id": "web-zetachain-plan-move-zeta-to-solana-20260921",
-      "importanceScore": 82,
-      "topic": "ECOSYSTEM",
+      "id": "web-switchboard-oracle-shutdown-solana-defi-20260919",
+      "importanceScore": 90,
+      "topic": "DEFI",
       "sourceCount": 2,
       "sourceHosts": [
-        "www.theblock.co",
-        "cryptoslate.com"
+        "cryptobriefing.com",
+        "solanacompass.com"
       ]
     },
     "changed": true
