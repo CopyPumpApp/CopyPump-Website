@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-22T18:46:36.632Z",
+  "updatedAt": "2026-09-22T21:38:36.347Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
-    "checkedAt": "2026-09-22T17:15:17Z",
+    "checkedAt": "2026-09-22T21:38:34Z",
     "source": "CopyPumpApp/CopyPump/docs/PUBLIC_MILESTONES.json",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-22T17:15:18.110Z",
+    "checkedAt": "2026-09-22T21:38:35.078Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
@@ -27,14 +27,14 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-22T18:46:36.632Z",
-      "source": "Current web search / multi-source review",
+      "checkedAt": "2026-09-22T21:38:36Z",
+      "source": "Public RSS + Kimi editorial bridge",
       "importanceThreshold": 72,
-      "state": "ok",
-      "reason": "NO_STORY_ABOVE_THRESHOLD",
+      "state": "pending",
+      "reason": "EXTERNAL_RSS_KIMI_BRIDGE",
       "published": false
     },
-    "changed": false
+    "changed": true
   },
   "guard": {
     "coreUiFrozen": true,
