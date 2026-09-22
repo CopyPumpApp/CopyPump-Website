@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-22T08:14:00.000Z",
+  "updatedAt": "2026-09-22T12:01:16.254Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
-    "checkedAt": "2026-09-22T05:20:32Z",
+    "checkedAt": "2026-09-22T12:01:14Z",
     "source": "CopyPumpApp/CopyPump/docs/PUBLIC_MILESTONES.json",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-22T05:20:33.301Z",
+    "checkedAt": "2026-09-22T12:01:14.875Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
@@ -27,19 +27,12 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-22T08:14:00.000Z",
-      "source": "Web search / Anza GitHub + Solana Compass",
+      "checkedAt": "2026-09-22T12:01:16Z",
+      "source": "Public RSS + Kimi editorial bridge",
       "importanceThreshold": 72,
-      "state": "ok",
-      "reason": "PUBLISHED_VERIFIED_WEB_STORY",
-      "published": true,
-      "id": "web-agave-v43-general-adoption-alpenglow-20260921",
-      "importanceScore": 92,
-      "sourceCount": 2,
-      "sourceHosts": [
-        "github.com",
-        "solanacompass.com"
-      ]
+      "state": "pending",
+      "reason": "EXTERNAL_RSS_KIMI_BRIDGE",
+      "published": false
     },
     "changed": true
   },
