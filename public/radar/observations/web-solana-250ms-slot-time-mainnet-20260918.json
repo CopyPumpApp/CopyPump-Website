@@ -1,0 +1,97 @@
+{
+  "id": "web-solana-250ms-slot-time-mainnet-20260918",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "NETWORK / 07",
+    "ru": "СЕТЬ / 07"
+  },
+  "title": {
+    "en": "Solana cut its target slot time to 250ms, making network state update more often.",
+    "ru": "Solana сократила целевое время слота до 250 мс, ускорив обновление состояния сети."
+  },
+  "summary": {
+    "en": "On September 18, Solana activated a mainnet reduction in target slot time from 300ms to 250ms under SIMD-0525. Blocks are targeted more frequently, but compute and data limits per slot were reduced proportionally, so the change is mainly about latency and fresher state rather than a 17% increase in raw throughput. Why it matters for CopyPump: faster state updates can shorten how long automated trading logic waits on account, price and blockhash changes, while the tighter clock means transaction building, signing, retries and expiry handling should be validated against the new cadence.",
+    "ru": "18 сентября Solana активировала в mainnet сокращение целевого времени слота с 300 до 250 мс в рамках SIMD-0525. Слоты теперь должны появляться чаще, но лимиты вычислений и данных на один слот были пропорционально снижены, поэтому изменение касается прежде всего задержки и более свежего состояния сети, а не роста общей пропускной способности на 17%. Почему это важно для CopyPump: более частые обновления состояния могут сократить ожидание изменений аккаунтов, цен и blockhash для автоматической торговли, но более жёсткие временные окна требуют заново проверить сборку и подписание транзакций, повторные отправки и обработку истечения blockhash."
+  },
+  "facts": [
+    {
+      "en": "The Solana Foundation’s September 18 changelog lists the slot-time reduction to 250ms as a mainnet feature gate.",
+      "ru": "В changelog Solana Foundation от 18 сентября сокращение времени слота до 250 мс указано как активированная mainnet-функция."
+    },
+    {
+      "en": "CoinDesk reported that the target fell from 300ms to 250ms, increasing the target slot cadence by nearly 17%, while per-slot compute and data allowances were reduced proportionally.",
+      "ru": "CoinDesk сообщил, что целевое время слота снизилось с 300 до 250 мс, то есть целевая частота слотов выросла почти на 17%, а допустимые вычисления и объём данных на слот были пропорционально уменьшены."
+    },
+    {
+      "en": "CoinDesk also noted that epochs become shorter and real-time windows tied to blockhash expiry or delayed approvals tighten as slots get faster.",
+      "ru": "CoinDesk также отмечает, что эпохи становятся короче, а реальные временные окна, связанные с истечением blockhash и задержанными подтверждениями, сжимаются по мере ускорения слотов."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a protocol-timing change, not proof of higher raw transaction capacity or a guarantee that individual trades will fail less often. For CopyPump, the useful signal is lower network-state latency together with a need to avoid hard-coded slot durations and to re-test blockhash expiry, retry and submission timing.",
+    "ru": "Это изменение таймингов протокола, а не доказательство роста чистой транзакционной мощности и не гарантия того, что отдельные сделки будут реже завершаться неудачей. Для CopyPump важнее снижение задержки обновления состояния сети и необходимость избегать жёстко заданной длительности слота, а также заново проверить тайминги истечения blockhash, повторных отправок и отправки транзакций."
+  },
+  "unknowns": [
+    {
+      "en": "The sources do not establish how much end-to-end latency improves for every RPC provider, wallet, exchange or trading venue connected to Solana.",
+      "ru": "Источники не устанавливают, насколько именно снизилась сквозная задержка у каждого RPC-провайдера, кошелька, биржи или торговой площадки, работающей с Solana."
+    },
+    {
+      "en": "The final 200ms stage has no confirmed mainnet activation date in the sources reviewed.",
+      "ru": "Для финального этапа с 200 мс в проверенных источниках нет подтверждённой даты активации в mainnet."
+    },
+    {
+      "en": "The sources do not show that all applications have already removed assumptions based on the previous 300ms slot cadence.",
+      "ru": "Источники не показывают, что все приложения уже отказались от предположений, рассчитанных на прежний ритм слотов 300 мс."
+    }
+  ],
+  "publishedAt": "2026-09-22T06:42:35.000Z",
+  "updatedAt": "2026-09-22T06:42:35.000Z",
+  "observedAt": "2026-09-18T00:00:00.000Z",
+  "lastCheckedAt": "2026-09-22T06:42:35.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Solana Foundation — Solana Changelog: September 18, 2026",
+        "ru": "Solana Foundation — Changelog Solana от 18 сентября 2026 года"
+      },
+      "url": "https://solana.com/news/solana-changelog-september-18-2026",
+      "checkedAt": "2026-09-22T06:42:35.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "CoinDesk — Solana speeds up blocks by 17%, but transaction capacity stays the same",
+        "ru": "CoinDesk — Solana ускорила блоки на 17%, но общая транзакционная мощность не выросла"
+      },
+      "url": "https://www.coindesk.com/tech/2026/09/18/solana-speeds-up-blocks-by-17-but-transaction-capacity-stays-the-same",
+      "checkedAt": "2026-09-22T06:42:35.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-22T06:42:35.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against the Solana Foundation changelog and independent CoinDesk reporting before publication. This update describes a latency/timing change and does not present it as a raw-throughput increase.",
+        "ru": "Перед публикацией событие сверено по changelog Solana Foundation и независимому материалу CoinDesk. Обновление описывает изменение задержки и таймингов и не представляет его как рост чистой пропускной способности."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2"
+      ]
+    }
+  ]
+}

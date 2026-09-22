@@ -1,8 +1,34 @@
 {
   "schemaVersion": 1,
-  "edition": "04",
-  "publishedAt": "2026-09-22T00:44:15.000Z",
+  "edition": "05",
+  "publishedAt": "2026-09-22T06:42:35.000Z",
   "items": [
+    {
+      "id": "web-solana-250ms-slot-time-mainnet-20260918",
+      "version": 1,
+      "publishedAt": "2026-09-22T06:42:35.000Z",
+      "updatedAt": "2026-09-22T06:42:35.000Z",
+      "observedAt": "2026-09-18T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-22T06:42:35.000Z",
+      "title": {
+        "en": "Solana cut its target slot time to 250ms, making network state update more often.",
+        "ru": "Solana сократила целевое время слота до 250 мс, ускорив обновление состояния сети."
+      },
+      "summary": {
+        "en": "On September 18, Solana activated a mainnet reduction in target slot time from 300ms to 250ms under SIMD-0525. Blocks are targeted more frequently, but compute and data limits per slot were reduced proportionally, so the change is mainly about latency and fresher state rather than a 17% increase in raw throughput. Why it matters for CopyPump: faster state updates can shorten how long automated trading logic waits on account, price and blockhash changes, while the tighter clock means transaction building, signing, retries and expiry handling should be validated against the new cadence.",
+        "ru": "18 сентября Solana активировала в mainnet сокращение целевого времени слота с 300 до 250 мс в рамках SIMD-0525. Слоты теперь должны появляться чаще, но лимиты вычислений и данных на один слот были пропорционально снижены, поэтому изменение касается прежде всего задержки и более свежего состояния сети, а не роста общей пропускной способности на 17%. Почему это важно для CopyPump: более частые обновления состояния могут сократить ожидание изменений аккаунтов, цен и blockhash для автоматической торговли, но более жёсткие временные окна требуют заново проверить сборку и подписание транзакций, повторные отправки и обработку истечения blockhash."
+      },
+      "category": {
+        "en": "NETWORK / 07",
+        "ru": "СЕТЬ / 07"
+      },
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      }
+    },
     {
       "id": "web-switchboard-oracle-shutdown-solana-defi-20260919",
       "version": 1,
@@ -62,9 +88,10 @@
       "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-20T23:58:10.000Z",
       "lastCheckedAt": "2026-09-22T05:20:33.301Z",
+      "cluster": "mainnet-beta",
       "title": {
         "en": "6 token balances changed in one Solana transaction.",
-        "ru": "В одной Solana-транзакции изменились 6 токен-балансов."
+        "ru": "В одной Solana-транзакции изменились 6 токен-баланса."
       },
       "summary": {
         "en": "The transaction finished successfully and paid a 125,000-lamport fee. Why it matters for CopyPump: a success flag is not enough — automation should verify the actual balance changes and fee before recording the result.",
@@ -74,8 +101,7 @@
         "en": "TRANSACTION CHECK / 04",
         "ru": "РАЗБОР ТРАНЗАКЦИИ / 04"
       },
-      "followUps": 1,
-      "cluster": "mainnet-beta"
+      "followUps": 1
     },
     {
       "id": "gross-transfer-net-change",
@@ -84,6 +110,7 @@
       "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-17T02:21:46Z",
       "lastCheckedAt": "2026-09-22T05:20:33.301Z",
+      "cluster": "mainnet-beta",
       "title": {
         "en": "A 5.384 SOL transfer was not a 5.384 SOL loss.",
         "ru": "Перевод 5,384 SOL не означал потерю 5,384 SOL."
@@ -96,8 +123,7 @@
         "en": "TRANSACTION CHECK / 03",
         "ru": "РАЗБОР ТРАНЗАКЦИИ / 03"
       },
-      "followUps": 2,
-      "cluster": "mainnet-beta"
+      "followUps": 2
     },
     {
       "id": "finalized-but-failed",
@@ -106,6 +132,7 @@
       "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-17T02:21:46Z",
       "lastCheckedAt": "2026-09-22T05:20:33.301Z",
+      "cluster": "mainnet-beta",
       "title": {
         "en": "The transaction was finalized — but it still failed.",
         "ru": "Транзакция финализировалась — но всё равно завершилась ошибкой."
@@ -118,8 +145,7 @@
         "en": "FAILED EXECUTION / 01",
         "ru": "ОШИБКА ИСПОЛНЕНИЯ / 01"
       },
-      "followUps": 1,
-      "cluster": "mainnet-beta"
+      "followUps": 1
     },
     {
       "id": "success-without-token-movement",
@@ -128,6 +154,7 @@
       "updatedAt": "2026-09-21T00:02:02.641Z",
       "observedAt": "2026-09-17T02:21:46Z",
       "lastCheckedAt": "2026-09-22T05:20:33.301Z",
+      "cluster": "mainnet-beta",
       "title": {
         "en": "The transaction said success, but the token balances did not move.",
         "ru": "Транзакция получила success, но токен-балансы не изменились."
@@ -140,8 +167,7 @@
         "en": "RESULT CHECK / 02",
         "ru": "ПРОВЕРКА РЕЗУЛЬТАТА / 02"
       },
-      "followUps": 1,
-      "cluster": "mainnet-beta"
+      "followUps": 1
     }
   ]
 }
