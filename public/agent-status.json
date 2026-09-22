@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-22T00:44:15.000Z",
+  "updatedAt": "2026-09-22T05:20:36.538Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
-    "checkedAt": "2026-09-21T22:10:39Z",
+    "checkedAt": "2026-09-22T05:20:32Z",
     "source": "CopyPumpApp/CopyPump/docs/PUBLIC_MILESTONES.json",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-21T22:10:39.475Z",
+    "checkedAt": "2026-09-22T05:20:33.301Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
@@ -27,19 +27,12 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-22T00:44:15.000Z",
-      "source": "ChatGPT Web Radar — verified public sources",
+      "checkedAt": "2026-09-22T05:20:36Z",
+      "source": "Public RSS + Kimi editorial bridge",
       "importanceThreshold": 72,
-      "state": "ok",
-      "published": true,
-      "id": "web-switchboard-oracle-shutdown-solana-defi-20260919",
-      "importanceScore": 90,
-      "topic": "DEFI",
-      "sourceCount": 2,
-      "sourceHosts": [
-        "cryptobriefing.com",
-        "solanacompass.com"
-      ]
+      "state": "pending",
+      "reason": "EXTERNAL_RSS_KIMI_BRIDGE",
+      "published": false
     },
     "changed": true
   },
