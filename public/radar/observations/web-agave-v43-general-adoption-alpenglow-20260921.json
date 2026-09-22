@@ -1,0 +1,107 @@
+{
+  "id": "web-agave-v43-general-adoption-alpenglow-20260921",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "NETWORK / 08",
+    "ru": "СЕТЬ / 08"
+  },
+  "title": {
+    "en": "Agave v4.3 is now recommended for all Solana mainnet validators ahead of Alpenglow activation.",
+    "ru": "Agave v4.3 теперь рекомендована всем валидаторам Solana mainnet перед активацией Alpenglow."
+  },
+  "summary": {
+    "en": "On September 21, Anza marked Agave v4.3 for general adoption on Solana mainnet-beta, completing the planned rollout milestone after earlier 10% and 25% stake phases. The stable v4.3.0 release is suitable for mainnet, while Anza’s schedule targets resuming v4.3 feature activation on September 28. Why it matters for CopyPump: this is the software path toward Alpenglow’s new consensus behavior, so CopyPump should watch actual cluster activation and re-test confirmation, finality and retry assumptions before changing automated trading logic.",
+    "ru": "21 сентября Anza перевела Agave v4.3 в статус общей рекомендации для Solana mainnet-beta после предыдущих этапов с 10% и 25% стейка. Стабильный релиз v4.3.0 подходит для mainnet, а расписание Anza нацелено на возобновление активации функций v4.3 28 сентября. Почему это важно для CopyPump: это программный путь к новой логике консенсуса Alpenglow, поэтому CopyPump должен дождаться фактической активации в кластере и заново проверить предположения о подтверждении, финальности и повторных отправках до изменения логики автоматической торговли."
+  },
+  "facts": [
+    {
+      "en": "Anza’s v4.3 rollout schedule records September 21 as the delivered milestone for recommending v4.3 for general adoption on mainnet-beta.",
+      "ru": "В расписании развёртывания Anza v4.3 21 сентября указано как выполненный этап общей рекомендации v4.3 для mainnet-beta."
+    },
+    {
+      "en": "The official Agave v4.3.0 release was published on September 18 and is labeled stable and suitable for Testnet, Devnet and Mainnet Beta.",
+      "ru": "Официальный релиз Agave v4.3.0 опубликован 18 сентября и обозначен как стабильный и подходящий для Testnet, Devnet и Mainnet Beta."
+    },
+    {
+      "en": "Solana Compass independently reported Anza’s September 21 upgrade call and the September 28 target for the next v4.3 feature-activation stage.",
+      "ru": "Solana Compass независимо сообщил о призыве Anza обновиться 21 сентября и о целевой дате 28 сентября для следующего этапа активации функций v4.3."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a network-readiness milestone, not evidence that Alpenglow is already active across Solana mainnet. For CopyPump, the operational signal is to prepare for changing confirmation/finality behavior while keeping production assumptions tied to observed cluster state rather than the calendar alone.",
+    "ru": "Это этап готовности сети, а не доказательство того, что Alpenglow уже активен во всём Solana mainnet. Для CopyPump практический сигнал — подготовиться к изменению поведения подтверждения и финальности, но привязывать рабочие предположения к наблюдаемому состоянию кластера, а не только к календарной дате."
+  },
+  "unknowns": [
+    {
+      "en": "The September 28 feature-activation date remains part of a tentative schedule and may change.",
+      "ru": "Дата активации функций 28 сентября остаётся частью предварительного расписания и может измениться."
+    },
+    {
+      "en": "The sources reviewed do not establish what share of active mainnet stake is already running v4.3 at publication time.",
+      "ru": "Проверенные источники не устанавливают, какая доля активного стейка mainnet уже работает на v4.3 на момент публикации."
+    },
+    {
+      "en": "The sources do not yet establish the end-to-end confirmation or finality latency that wallets, RPC providers and trading applications will observe after activation.",
+      "ru": "Источники пока не устанавливают фактическую сквозную задержку подтверждения или финальности, которую увидят кошельки, RPC-провайдеры и торговые приложения после активации."
+    }
+  ],
+  "publishedAt": "2026-09-22T08:14:00.000Z",
+  "updatedAt": "2026-09-22T08:14:00.000Z",
+  "observedAt": "2026-09-21T15:37:00.000Z",
+  "lastCheckedAt": "2026-09-22T08:14:00.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Anza — Agave v4.3 Release Schedule",
+        "ru": "Anza — расписание выпуска Agave v4.3"
+      },
+      "url": "https://github.com/anza-xyz/agave/wiki/v4.3-Release-Schedule",
+      "checkedAt": "2026-09-22T08:14:00.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "Anza — Agave v4.3.0 stable release",
+        "ru": "Anza — стабильный релиз Agave v4.3.0"
+      },
+      "url": "https://github.com/anza-xyz/agave/releases/tag/v4.3.0",
+      "checkedAt": "2026-09-22T08:14:00.000Z"
+    },
+    {
+      "id": "web-3",
+      "label": {
+        "en": "Solana Compass — Agave v4.3 recommended for all mainnet-beta validators",
+        "ru": "Solana Compass — Agave v4.3 рекомендована всем валидаторам mainnet-beta"
+      },
+      "url": "https://solanacompass.com/news/anza-issues-live-upgrade-call-agave-v43-is-the-recommended-version-for-all",
+      "checkedAt": "2026-09-22T08:14:00.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-22T08:14:00.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against Anza’s official release schedule and stable release plus independent Solana Compass reporting. The update treats September 21 as a readiness milestone and does not claim that Alpenglow is already active.",
+        "ru": "Перед публикацией событие сверено по официальному расписанию и стабильному релизу Anza, а также по независимому материалу Solana Compass. 21 сентября представлено как этап готовности, а не как уже состоявшаяся активация Alpenglow."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2",
+        "web-3"
+      ]
+    }
+  ]
+}

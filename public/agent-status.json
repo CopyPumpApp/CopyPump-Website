@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-22T06:42:35.000Z",
+  "updatedAt": "2026-09-22T08:14:00.000Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
@@ -14,7 +14,7 @@
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
-    "webObservations": 3,
+    "webObservations": 4,
     "verifiedObservations": 4,
     "mismatches": [],
     "providers": [
@@ -27,18 +27,18 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-22T06:42:35.000Z",
-      "source": "Web search / Solana Foundation + CoinDesk",
+      "checkedAt": "2026-09-22T08:14:00.000Z",
+      "source": "Web search / Anza GitHub + Solana Compass",
       "importanceThreshold": 72,
       "state": "ok",
       "reason": "PUBLISHED_VERIFIED_WEB_STORY",
       "published": true,
-      "id": "web-solana-250ms-slot-time-mainnet-20260918",
-      "importanceScore": 88,
+      "id": "web-agave-v43-general-adoption-alpenglow-20260921",
+      "importanceScore": 92,
       "sourceCount": 2,
       "sourceHosts": [
-        "solana.com",
-        "coindesk.com"
+        "github.com",
+        "solanacompass.com"
       ]
     },
     "changed": true
