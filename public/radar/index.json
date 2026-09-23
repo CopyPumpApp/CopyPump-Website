@@ -1,1 +1,149 @@
-{"schemaVersion":1,"edition":"08","publishedAt":"2026-09-23T00:46:36.000Z","items":[{"id":"web-sofi-mastercard-stablecoin-settlement-solana-20260922","version":1,"publishedAt":"2026-09-23T00:46:36.000Z","updatedAt":"2026-09-23T00:46:36.000Z","observedAt":"2026-09-22T00:00:00.000Z","lastCheckedAt":"2026-09-23T00:46:36.000Z","title":{"en":"SoFi put its Mastercard card program on live stablecoin settlement; SoFiUSD is available on Solana.","ru":"SoFi перевела расчёты по своей карточной программе Mastercard на стейблкоин; SoFiUSD доступен в Solana."},"summary":{"en":"On September 22, SoFi and Mastercard announced that stablecoin settlement is live across SoFi Bank’s debit and credit card program using SoFiUSD, with the full card program expected to process more than $25 billion in annualized volume. SoFiUSD is available on Ethereum and Solana, but the launch announcement does not disclose which chain carries the live card-settlement transactions. Why it matters for CopyPump: this is a real production use of a bank-issued stablecoin that is available on Solana, but CopyPump should not treat the card-program volume as Solana on-chain activity unless chain-level settlement data confirms it.","ru":"22 сентября SoFi и Mastercard объявили, что расчёты в стейблкоине SoFiUSD запущены для дебетовой и кредитной карточной программы SoFi Bank, общий годовой объём которой ожидается более $25 млрд. SoFiUSD доступен в Ethereum и Solana, но в объявлении о запуске не указано, какая именно сеть используется для текущих карточных расчётов. Почему это важно для CopyPump: это реальное промышленное применение банковского стейблкоина, доступного в Solana, но CopyPump не должен считать объём карточной программы ончейн-активностью Solana без подтверждения на уровне конкретной сети."},"category":{"en":"PAYMENTS / 10","ru":"ПЛАТЕЖИ / 10"},"followUps":0,"sourceKind":"web","sourceLabel":{"en":"WEB / VERIFIED SOURCES","ru":"WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}},{"id":"web-moex-solana-perpetual-futures-20260922","version":1,"publishedAt":"2026-09-22T12:48:33.000Z","updatedAt":"2026-09-22T12:48:33.000Z","observedAt":"2026-09-22T00:00:00.000Z","lastCheckedAt":"2026-09-22T12:48:33.000Z","title":{"en":"Moscow Exchange starts Solana-index perpetual futures for qualified investors.","ru":"Московская биржа запускает вечные фьючерсы на индекс Solana для квалифицированных инвесторов."},"summary":{"en":"On September 22, Moscow Exchange scheduled the start of a cash-settled perpetual futures contract linked to its Solana index, alongside similar contracts for Bitcoin, Ether, XRP and Tron. The SOLUSDF contract is quoted in U.S. dollars, settled in Russian rubles and does not deliver SOL; access is limited to qualified investors. Why it matters for CopyPump: this creates another regulated venue for Solana-linked price exposure, but it is an off-chain derivative and does not add Solana liquidity, wallets or on-chain order flow that CopyPump can directly observe.","ru":"22 сентября Московская биржа запланировала начало торгов расчётным вечным фьючерсом, привязанным к её индексу Solana, вместе с аналогичными контрактами на биткоин, эфир, XRP и Tron. Контракт SOLUSDF котируется в долларах США, рассчитывается в российских рублях и не предполагает поставки SOL; доступ разрешён только квалифицированным инвесторам. Почему это важно для CopyPump: появляется ещё одна регулируемая площадка для ценовой экспозиции к Solana, но это внечейновый дериватив, который сам по себе не добавляет ликвидность, кошельки или поток заявок в Solana, наблюдаемые CopyPump."},"category":{"en":"ECOSYSTEM ACCESS / 09","ru":"ДОСТУП К ЭКОСИСТЕМЕ / 09"},"followUps":0,"sourceKind":"web","sourceLabel":{"en":"WEB / VERIFIED SOURCES","ru":"WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}},{"id":"web-agave-v43-general-adoption-alpenglow-20260921","version":1,"publishedAt":"2026-09-22T08:14:00.000Z","updatedAt":"2026-09-22T08:14:00.000Z","observedAt":"2026-09-21T15:37:00.000Z","lastCheckedAt":"2026-09-22T08:14:00.000Z","title":{"en":"Agave v4.3 is now recommended for all Solana mainnet validators ahead of Alpenglow activation.","ru":"Agave v4.3 теперь рекомендована всем валидаторам Solana mainnet перед активацией Alpenglow."},"summary":{"en":"On September 21, Anza marked Agave v4.3 for general adoption on Solana mainnet-beta, completing the planned rollout milestone after earlier 10% and 25% stake phases. The stable v4.3.0 release is suitable for mainnet, while Anza’s schedule targets resuming v4.3 feature activation on September 28. Why it matters for CopyPump: this is the software path toward Alpenglow’s new consensus behavior, so CopyPump should watch actual cluster activation and re-test confirmation, finality and retry assumptions before changing automated trading logic.","ru":"21 сентября Anza перевела Agave v4.3 в статус общей рекомендации для Solana mainnet-beta после предыдущих этапов с 10% и 25% стейка. Стабильный релиз v4.3.0 подходит для mainnet, а расписание Anza нацелено на возобновление активации функций v4.3 28 сентября. Почему это важно для CopyPump: это программный путь к новой логике консенсуса Alpenglow, поэтому CopyPump должен дождаться фактической активации в кластере и заново проверить предположения о подтверждении, финальности и повторных отправках до изменения логики автоматической торговли."},"category":{"en":"NETWORK / 08","ru":"СЕТЬ / 08"},"followUps":0,"sourceKind":"web","sourceLabel":{"en":"WEB / VERIFIED SOURCES","ru":"WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}},{"id":"web-solana-250ms-slot-time-mainnet-20260918","version":1,"publishedAt":"2026-09-22T06:42:35.000Z","updatedAt":"2026-09-22T06:42:35.000Z","observedAt":"2026-09-18T00:00:00.000Z","lastCheckedAt":"2026-09-22T06:42:35.000Z","title":{"en":"Solana cut its target slot time to 250ms, making network state update more often.","ru":"Solana сократила целевое время слота до 250 мс, ускорив обновление состояния сети."},"summary":{"en":"On September 18, Solana activated a mainnet reduction in target slot time from 300ms to 250ms under SIMD-0525. Blocks are targeted more frequently, but compute and data limits per slot were reduced proportionally, so the change is mainly about latency and fresher state rather than a 17% increase in raw throughput. Why it matters for CopyPump: faster state updates can shorten how long automated trading logic waits on account, price and blockhash changes, while the tighter clock means transaction building, signing, retries and expiry handling should be validated against the new cadence.","ru":"18 сентября Solana активировала в mainnet сокращение целевого времени слота с 300 до 250 мс в рамках SIMD-0525. Слоты теперь должны появляться чаще, но лимиты вычислений и данных на один слот были пропорционально снижены, поэтому изменение касается прежде всего задержки и более свежего состояния сети, а не роста общей пропускной способности на 17%. Почему это важно для CopyPump: более частые обновления состояния могут сократить ожидание изменений аккаунтов, цен и blockhash для автоматической торговли, но более жёсткие временные окна требуют заново проверить сборку и подписание транзакций, повторные отправки и обработку истечения blockhash."},"category":{"en":"NETWORK / 07","ru":"СЕТЬ / 07"},"followUps":0,"sourceKind":"web","sourceLabel":{"en":"WEB / VERIFIED SOURCES","ru":"WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}},{"id":"web-switchboard-oracle-shutdown-solana-defi-20260919","version":1,"publishedAt":"2026-09-22T00:44:15.000Z","updatedAt":"2026-09-22T00:44:15.000Z","observedAt":"2026-09-19T00:00:00.000Z","lastCheckedAt":"2026-09-22T00:44:15.000Z","title":{"en":"Switchboard is shutting down its oracle network, giving Solana DeFi days to migrate.","ru":"Switchboard закрывает сеть оракулов, оставляя Solana DeFi несколько дней на миграцию."},"summary":{"en":"Switchboard Technology Labs announced that its oracle implementations are deprecated and remaining support ends on September 25, 2026. Reports identify major Solana applications among the protocols that have used its feeds and now need alternative data sources. Why it matters for CopyPump: automated trading and risk controls depend on fresh, trustworthy prices, so CopyPump should verify each venue’s live oracle source and staleness rules before trusting execution or risk data during the migration window.","ru":"Switchboard Technology Labs объявила о прекращении работы сети оракулов: реализации объявлены устаревшими, а оставшаяся поддержка завершится 25 сентября 2026 года. В материалах среди пользователей её ценовых фидов названы крупные приложения Solana, которым теперь нужны альтернативные источники данных. Почему это важно для CopyPump: автоматическая торговля и риск-контроль зависят от свежих и надёжных цен, поэтому во время миграции CopyPump должен проверять фактический источник оракула и правила устаревания данных на каждой площадке, прежде чем доверять данным исполнения или риска."},"category":{"en":"DEFI / 06","ru":"DEFI / 06"},"followUps":0,"sourceKind":"web","sourceLabel":{"en":"WEB / VERIFIED SOURCES","ru":"WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}},{"id":"web-zetachain-plan-move-zeta-to-solana-20260921","version":1,"publishedAt":"2026-09-21T22:43:00.000Z","updatedAt":"2026-09-21T22:43:00.000Z","observedAt":"2026-09-20T00:00:00.000Z","lastCheckedAt":"2026-09-21T22:43:00.000Z","title":{"en":"ZetaChain holders approved a plan to wind down its L1 and move ZETA to Solana.","ru":"Держатели ZetaChain одобрили план закрыть L1 и перенести ZETA в Solana."},"summary":{"en":"ZetaChain tokenholders approved a proposal to wind down the project’s Layer 1 and move ZETA to Solana. The migration still requires another vote before it can proceed. Why it matters for CopyPump: moves like this can bring new assets and wallet activity onto Solana, but CopyPump should treat that activity as real only once the migration is live and observable on-chain.","ru":"Держатели токена ZetaChain одобрили предложение свернуть собственную Layer 1 и перенести ZETA в Solana. До фактической миграции потребуется ещё одно голосование. Почему это важно для CopyPump: такие переходы могут добавить в Solana новые активы и активность кошельков, но учитывать её как реальную стоит только после запуска миграции и появления данных в сети."},"category":{"en":"ECOSYSTEM / 05","ru":"ЭКОСИСТЕМА / 05"},"followUps":0,"sourceKind":"web","sourceLabel":{"en":"WEB / VERIFIED SOURCES","ru":"WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}},{"id":"one-signature-several-deltas-2gbxavezo8","version":2,"publishedAt":"2026-09-20T23:58:19.072Z","updatedAt":"2026-09-21T00:02:02.641Z","observedAt":"2026-09-20T23:58:10.000Z","lastCheckedAt":"2026-09-22T21:38:35.078Z","cluster":"mainnet-beta","title":{"en":"6 token balances changed in one Solana transaction.","ru":"В одной Solana-транзакции изменились 6 токен-балансов."},"summary":{"en":"The transaction finished successfully and paid a 125,000-lamport fee. Why it matters for CopyPump: a success flag is not enough — automation should verify the actual balance changes and fee before recording the result.","ru":"Транзакция завершилась успешно и списала комиссию 125 000 лампорт. Почему это важно для CopyPump: одного статуса success недостаточно — автоматизация должна проверить реальные изменения балансов и комиссию."},"category":{"en":"TRANSACTION CHECK / 04","ru":"РАЗБОР ТРАНЗАКЦИИ / 04"},"followUps":1},{"id":"gross-transfer-net-change","version":3,"publishedAt":"2026-09-17T02:27:05Z","updatedAt":"2026-09-21T00:02:02.641Z","observedAt":"2026-09-17T02:21:46Z","lastCheckedAt":"2026-09-22T21:38:35.078Z","cluster":"mainnet-beta","title":{"en":"A 5.384 SOL transfer was not a 5.384 SOL loss.","ru":"Перевод 5,384 SOL не означал потерю 5,384 SOL."},"summary":{"en":"The same transaction wrapped SOL, moved funds in both directions and closed accounts. Why it matters for CopyPump: one large transfer cannot be treated as the final result — the whole transaction must be reconciled.","ru":"В той же транзакции SOL оборачивался, средства двигались в обе стороны, а аккаунты закрывались. Почему это важно для CopyPump: один крупный перевод нельзя считать итогом — нужно сверять всю транзакцию."},"category":{"en":"TRANSACTION CHECK / 03","ru":"РАЗБОР ТРАНЗАКЦИИ / 03"},"followUps":2},{"id":"finalized-but-failed","version":2,"publishedAt":"2026-09-17T02:27:05Z","updatedAt":"2026-09-21T00:02:02.641Z","observedAt":"2026-09-17T02:21:46Z","lastCheckedAt":"2026-09-22T21:38:35.078Z","cluster":"mainnet-beta","title":{"en":"The transaction was finalized — but it still failed.","ru":"Транзакция финализировалась — но всё равно завершилась ошибкой."},"summary":{"en":"Solana finalized the transaction, but execution returned an error and the 5,001-lamport fee was still charged. Why it matters for CopyPump: finality and successful execution must be checked separately.","ru":"Solana финализировала транзакцию, но исполнение завершилось ошибкой, а комиссия 5 001 лампорт всё равно списалась. Почему это важно для CopyPump: финальность и успешное исполнение нужно проверять отдельно."},"category":{"en":"FAILED EXECUTION / 01","ru":"ОШИБКА ИСПОЛНЕНИЯ / 01"},"followUps":1},{"id":"success-without-token-movement","version":2,"publishedAt":"2026-09-17T02:27:05Z","updatedAt":"2026-09-21T00:02:02.641Z","observedAt":"2026-09-17T02:21:46Z","lastCheckedAt":"2026-09-22T21:38:35.078Z","cluster":"mainnet-beta","title":{"en":"The transaction said success, but the token balances did not move.","ru":"Транзакция получила success, но токен-балансы не изменились."},"summary":{"en":"The call completed without an execution error, yet all ten matching token balances stayed unchanged. Why it matters for CopyPump: success should be confirmed by the expected outcome, not by the status field alone.","ru":"Вызов завершился без ошибки, но все десять сопоставленных токен-балансов остались прежними. Почему это важно для CopyPump: success нужно подтверждать ожидаемым результатом, а не одним полем статуса."},"category":{"en":"RESULT CHECK / 02","ru":"ПРОВЕРКА РЕЗУЛЬТАТА / 02"},"followUps":1}]}
+{
+  "schemaVersion": 1,
+  "edition": "08",
+  "publishedAt": "2026-09-23T00:46:36.000Z",
+  "items": [
+    {
+      "id": "web-sofi-mastercard-stablecoin-settlement-solana-20260922",
+      "version": 1,
+      "publishedAt": "2026-09-23T00:46:36.000Z",
+      "updatedAt": "2026-09-23T00:46:36.000Z",
+      "observedAt": "2026-09-22T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-23T00:46:36.000Z",
+      "title": {
+        "en": "SoFi put its Mastercard card program on live stablecoin settlement; SoFiUSD is available on Solana.",
+        "ru": "SoFi перевела расчёты по своей карточной программе Mastercard на стейблкоин; SoFiUSD доступен в Solana."
+      },
+      "summary": {
+        "en": "On September 22, SoFi and Mastercard announced that stablecoin settlement is live across SoFi Bank’s debit and credit card program using SoFiUSD, with the full card program expected to process more than $25 billion in annualized volume. SoFiUSD is available on Ethereum and Solana, but the launch announcement does not disclose which chain carries the live card-settlement transactions. Why it matters for CopyPump: this is a real production use of a bank-issued stablecoin that is available on Solana, but CopyPump should not treat the card-program volume as Solana on-chain activity unless chain-level settlement data confirms it.",
+        "ru": "22 сентября SoFi и Mastercard объявили, что расчёты в стейблкоине SoFiUSD запущены для дебетовой и кредитной карточной программы SoFi Bank, общий годовой объём которой ожидается более $25 млрд. SoFiUSD доступен в Ethereum и Solana, но в объявлении о запуске не указано, какая именно сеть используется для текущих карточных расчётов. Почему это важно для CopyPump: это реальное промышленное применение банковского стейблкоина, доступного в Solana, но CopyPump не должен считать объём карточной программы ончейн-активностью Solana без подтверждения на уровне конкретной сети."
+      },
+      "category": {"en": "PAYMENTS / 10", "ru": "ПЛАТЕЖИ / 10"},
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {"en": "WEB / VERIFIED SOURCES", "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}
+    },
+    {
+      "id": "web-moex-solana-perpetual-futures-20260922",
+      "version": 1,
+      "publishedAt": "2026-09-22T12:48:33.000Z",
+      "updatedAt": "2026-09-22T12:48:33.000Z",
+      "observedAt": "2026-09-22T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-22T12:48:33.000Z",
+      "title": {"en": "Moscow Exchange starts Solana-index perpetual futures for qualified investors.", "ru": "Московская биржа запускает вечные фьючерсы на индекс Solana для квалифицированных инвесторов."},
+      "summary": {"en": "On September 22, Moscow Exchange scheduled the start of a cash-settled perpetual futures contract linked to its Solana index, alongside similar contracts for Bitcoin, Ether, XRP and Tron. The SOLUSDF contract is quoted in U.S. dollars, settled in Russian rubles and does not deliver SOL; access is limited to qualified investors. Why it matters for CopyPump: this creates another regulated venue for Solana-linked price exposure, but it is an off-chain derivative and does not add Solana liquidity, wallets or on-chain order flow that CopyPump can directly observe.", "ru": "22 сентября Московская биржа запланировала начало торгов расчётным вечным фьючерсом, привязанным к её индексу Solana, вместе с аналогичными контрактами на биткоин, эфир, XRP и Tron. Контракт SOLUSDF котируется в долларах США, рассчитывается в российских рублях и не предполагает поставки SOL; доступ разрешён только квалифицированным инвесторам. Почему это важно для CopyPump: появляется ещё одна регулируемая площадка для ценовой экспозиции к Solana, но это внечейновый дериватив, который сам по себе не добавляет ликвидность, кошельки или поток заявок в Solana, наблюдаемые CopyPump."},
+      "category": {"en": "ECOSYSTEM ACCESS / 09", "ru": "ДОСТУП К ЭКОСИСТЕМЕ / 09"},
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {"en": "WEB / VERIFIED SOURCES", "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}
+    },
+    {
+      "id": "web-agave-v43-general-adoption-alpenglow-20260921",
+      "version": 1,
+      "publishedAt": "2026-09-22T08:14:00.000Z",
+      "updatedAt": "2026-09-22T08:14:00.000Z",
+      "observedAt": "2026-09-21T15:37:00.000Z",
+      "lastCheckedAt": "2026-09-22T08:14:00.000Z",
+      "title": {"en": "Agave v4.3 is now recommended for all Solana mainnet validators ahead of Alpenglow activation.", "ru": "Agave v4.3 теперь рекомендована всем валидаторам Solana mainnet перед активацией Alpenglow."},
+      "summary": {"en": "On September 21, Anza marked Agave v4.3 for general adoption on Solana mainnet-beta, completing the planned rollout milestone after earlier 10% and 25% stake phases. The stable v4.3.0 release is suitable for mainnet, while Anza’s schedule targets resuming v4.3 feature activation on September 28. Why it matters for CopyPump: this is the software path toward Alpenglow’s new consensus behavior, so CopyPump should watch actual cluster activation and re-test confirmation, finality and retry assumptions before changing automated trading logic.", "ru": "21 сентября Anza перевела Agave v4.3 в статус общей рекомендации для Solana mainnet-beta после предыдущих этапов с 10% и 25% стейка. Стабильный релиз v4.3.0 подходит для mainnet, а расписание Anza нацелено на возобновление активации функций v4.3 28 сентября. Почему это важно для CopyPump: это программный путь к новой логике консенсуса Alpenglow, поэтому CopyPump должен дождаться фактической активации в кластере и заново проверить предположения о подтверждении, финальности и повторных отправках до изменения логики автоматической торговли."},
+      "category": {"en": "NETWORK / 08", "ru": "СЕТЬ / 08"},
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {"en": "WEB / VERIFIED SOURCES", "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}
+    },
+    {
+      "id": "web-solana-250ms-slot-time-mainnet-20260918",
+      "version": 1,
+      "publishedAt": "2026-09-22T06:42:35.000Z",
+      "updatedAt": "2026-09-22T06:42:35.000Z",
+      "observedAt": "2026-09-18T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-22T06:42:35.000Z",
+      "title": {"en": "Solana cut its target slot time to 250ms, making network state update more often.", "ru": "Solana сократила целевое время слота до 250 мс, ускорив обновление состояния сети."},
+      "summary": {"en": "On September 18, Solana activated a mainnet reduction in target slot time from 300ms to 250ms under SIMD-0525. Blocks are targeted more frequently, but compute and data limits per slot were reduced proportionally, so the change is mainly about latency and fresher state rather than a 17% increase in raw throughput. Why it matters for CopyPump: faster state updates can shorten how long automated trading logic waits on account, price and blockhash changes, while the tighter clock means transaction building, signing, retries and expiry handling should be validated against the new cadence.", "ru": "18 сентября Solana активировала в mainnet сокращение целевого времени слота с 300 до 250 мс в рамках SIMD-0525. Слоты теперь должны появляться чаще, но лимиты вычислений и данных на один слот были пропорционально снижены, поэтому изменение касается прежде всего задержки и более свежего состояния сети, а не роста общей пропускной способности на 17%. Почему это важно для CopyPump: более частые обновления состояния могут сократить ожидание изменений аккаунтов, цен и blockhash для автоматической торговли, но более жёсткие временные окна требуют заново проверить сборку и подписание транзакций, повторные отправки и обработку истечения blockhash."},
+      "category": {"en": "NETWORK / 07", "ru": "СЕТЬ / 07"},
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {"en": "WEB / VERIFIED SOURCES", "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}
+    },
+    {
+      "id": "web-switchboard-oracle-shutdown-solana-defi-20260919",
+      "version": 1,
+      "publishedAt": "2026-09-22T00:44:15.000Z",
+      "updatedAt": "2026-09-22T00:44:15.000Z",
+      "observedAt": "2026-09-19T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-22T00:44:15.000Z",
+      "title": {"en": "Switchboard is shutting down its oracle network, giving Solana DeFi days to migrate.", "ru": "Switchboard закрывает сеть оракулов, оставляя Solana DeFi несколько дней на миграцию."},
+      "summary": {"en": "Switchboard Technology Labs announced that its oracle implementations are deprecated and remaining support ends on September 25, 2026. Reports identify major Solana applications among the protocols that have used its feeds and now need alternative data sources. Why it matters for CopyPump: automated trading and risk controls depend on fresh, trustworthy prices, so CopyPump should verify each venue’s live oracle source and staleness rules before trusting execution or risk data during the migration window.", "ru": "Switchboard Technology Labs объявила о прекращении работы сети оракулов: реализации объявлены устаревшими, а оставшаяся поддержка завершится 25 сентября 2026 года. В материалах среди пользователей её ценовых фидов названы крупные приложения Solana, которым теперь нужны альтернативные источники данных. Почему это важно для CopyPump: автоматическая торговля и риск-контроль зависят от свежих и надёжных цен, поэтому во время миграции CopyPump должен проверять фактический источник оракула и правила устаревания данных на каждой площадке, прежде чем доверять данным исполнения или риска."},
+      "category": {"en": "DEFI / 06", "ru": "DEFI / 06"},
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {"en": "WEB / VERIFIED SOURCES", "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}
+    },
+    {
+      "id": "web-zetachain-plan-move-zeta-to-solana-20260921",
+      "version": 1,
+      "publishedAt": "2026-09-21T22:43:00.000Z",
+      "updatedAt": "2026-09-21T22:43:00.000Z",
+      "observedAt": "2026-09-20T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-21T22:43:00.000Z",
+      "title": {"en": "ZetaChain holders approved a plan to wind down its L1 and move ZETA to Solana.", "ru": "Держатели ZetaChain одобрили план закрыть L1 и перенести ZETA в Solana."},
+      "summary": {"en": "ZetaChain tokenholders approved a proposal to wind down the project’s Layer 1 and move ZETA to Solana. The migration still requires another vote before it can proceed. Why it matters for CopyPump: moves like this can bring new assets and wallet activity onto Solana, but CopyPump should treat that activity as real only once the migration is live and observable on-chain.", "ru": "Держатели токена ZetaChain одобрили предложение свернуть собственную Layer 1 и перенести ZETA в Solana. До фактической миграции потребуется ещё одно голосование. Почему это важно для CopyPump: такие переходы могут добавить в Solana новые активы и активность кошельков, но учитывать её как реальную стоит только после запуска миграции и появления данных в сети."},
+      "category": {"en": "ECOSYSTEM / 05", "ru": "ЭКОСИСТЕМА / 05"},
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {"en": "WEB / VERIFIED SOURCES", "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"}
+    },
+    {
+      "id": "one-signature-several-deltas-2gbxavezo8",
+      "version": 2,
+      "publishedAt": "2026-09-20T23:58:19.072Z",
+      "updatedAt": "2026-09-21T00:02:02.641Z",
+      "observedAt": "2026-09-20T23:58:10.000Z",
+      "lastCheckedAt": "2026-09-22T21:38:35.078Z",
+      "cluster": "mainnet-beta",
+      "title": {"en": "6 token balances changed in one Solana transaction.", "ru": "В одной Solana-транзакции изменились 6 токен-балансов."},
+      "summary": {"en": "The transaction finished successfully and paid a 125,000-lamport fee. Why it matters for CopyPump: a success flag is not enough — automation should verify the actual balance changes and fee before recording the result.", "ru": "Транзакция завершилась успешно и списала комиссию 125 000 лампорт. Почему это важно для CopyPump: одного статуса success недостаточно — автоматизация должна проверить реальные изменения балансов и комиссию."},
+      "category": {"en": "TRANSACTION CHECK / 04", "ru": "РАЗБОР ТРАНЗАКЦИИ / 04"},
+      "followUps": 1
+    },
+    {
+      "id": "gross-transfer-net-change",
+      "version": 3,
+      "publishedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-21T00:02:02.641Z",
+      "observedAt": "2026-09-17T02:21:46Z",
+      "lastCheckedAt": "2026-09-22T21:38:35.078Z",
+      "cluster": "mainnet-beta",
+      "title": {"en": "A 5.384 SOL transfer was not a 5.384 SOL loss.", "ru": "Перевод 5,384 SOL не означал потерю 5,384 SOL."},
+      "summary": {"en": "The same transaction wrapped SOL, moved funds in both directions and closed accounts. Why it matters for CopyPump: one large transfer cannot be treated as the final result — the whole transaction must be reconciled.", "ru": "В той же транзакции SOL оборачивался, средства двигались в обе стороны, а аккаунты закрывались. Почему это важно для CopyPump: один крупный перевод нельзя считать итогом — нужно сверять всю транзакцию."},
+      "category": {"en": "TRANSACTION CHECK / 03", "ru": "РАЗБОР ТРАНЗАКЦИИ / 03"},
+      "followUps": 2
+    },
+    {
+      "id": "finalized-but-failed",
+      "version": 2,
+      "publishedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-21T00:02:02.641Z",
+      "observedAt": "2026-09-17T02:21:46Z",
+      "lastCheckedAt": "2026-09-22T21:38:35.078Z",
+      "cluster": "mainnet-beta",
+      "title": {"en": "The transaction was finalized — but it still failed.", "ru": "Транзакция финализировалась — но всё равно завершилась ошибкой."},
+      "summary": {"en": "Solana finalized the transaction, but execution returned an error and the 5,001-lamport fee was still charged. Why it matters for CopyPump: finality and successful execution must be checked separately.", "ru": "Solana финализировала транзакцию, но исполнение завершилось ошибкой, а комиссия 5 001 лампорт всё равно списалась. Почему это важно для CopyPump: финальность и успешное исполнение нужно проверять отдельно."},
+      "category": {"en": "FAILED EXECUTION / 01", "ru": "ОШИБКА ИСПОЛНЕНИЯ / 01"},
+      "followUps": 1
+    },
+    {
+      "id": "success-without-token-movement",
+      "version": 2,
+      "publishedAt": "2026-09-17T02:27:05Z",
+      "updatedAt": "2026-09-21T00:02:02.641Z",
+      "observedAt": "2026-09-17T02:21:46Z",
+      "lastCheckedAt": "2026-09-22T21:38:35.078Z",
+      "cluster": "mainnet-beta",
+      "title": {"en": "The transaction said success, but the token balances did not move.", "ru": "Транзакция получила success, но токен-балансы не изменились."},
+      "summary": {"en": "The call completed without an execution error, yet all ten matching token balances stayed unchanged. Why it matters for CopyPump: success should be confirmed by the expected outcome, not by the status field alone.", "ru": "Вызов завершился без ошибки, но все десять сопоставленных токен-балансов остались прежними. Почему это важно для CopyPump: success нужно подтверждать ожидаемым результатом, а не одним полем статуса."},
+      "category": {"en": "RESULT CHECK / 02", "ru": "ПРОВЕРКА РЕЗУЛЬТАТА / 02"},
+      "followUps": 1
+    }
+  ]
+}
