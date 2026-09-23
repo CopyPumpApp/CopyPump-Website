@@ -1,0 +1,97 @@
+{
+  "id": "web-sofi-mastercard-stablecoin-settlement-solana-20260922",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "PAYMENTS / 10",
+    "ru": "ПЛАТЕЖИ / 10"
+  },
+  "title": {
+    "en": "SoFi put its Mastercard card program on live stablecoin settlement; SoFiUSD is available on Solana.",
+    "ru": "SoFi перевела расчёты по своей карточной программе Mastercard на стейблкоин; SoFiUSD доступен в Solana."
+  },
+  "summary": {
+    "en": "On September 22, SoFi and Mastercard announced that stablecoin settlement is live across SoFi Bank’s debit and credit card program using SoFiUSD, with the full card program expected to process more than $25 billion in annualized volume. SoFiUSD is available on Ethereum and Solana, but the launch announcement does not disclose which chain carries the live card-settlement transactions. Why it matters for CopyPump: this is a real production use of a bank-issued stablecoin that is available on Solana, but CopyPump should not treat the card-program volume as Solana on-chain activity unless chain-level settlement data confirms it.",
+    "ru": "22 сентября SoFi и Mastercard объявили, что расчёты в стейблкоине SoFiUSD запущены для дебетовой и кредитной карточной программы SoFi Bank, общий годовой объём которой ожидается более $25 млрд. SoFiUSD доступен в Ethereum и Solana, но в объявлении о запуске не указано, какая именно сеть используется для текущих карточных расчётов. Почему это важно для CopyPump: это реальное промышленное применение банковского стейблкоина, доступного в Solana, но CopyPump не должен считать объём карточной программы ончейн-активностью Solana без подтверждения на уровне конкретной сети."
+  },
+  "facts": [
+    {
+      "en": "SoFi and Mastercard announced on September 22 that stablecoin settlement is live across SoFi Bank’s debit and credit card program using SoFiUSD.",
+      "ru": "22 сентября SoFi и Mastercard объявили о запуске расчётов в SoFiUSD для дебетовой и кредитной карточной программы SoFi Bank."
+    },
+    {
+      "en": "SoFi says it is migrating its entire card program, expected to process more than $25 billion in annualized volume, to blockchain-based settlement.",
+      "ru": "SoFi сообщает о переводе всей карточной программы, ожидаемый годовой объём которой превышает $25 млрд, на расчёты с использованием блокчейна."
+    },
+    {
+      "en": "The Block independently reports the same launch and states that SoFiUSD is available on both Ethereum and Solana.",
+      "ru": "The Block независимо подтверждает запуск и указывает, что SoFiUSD доступен одновременно в Ethereum и Solana."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a payments-infrastructure milestone, not proof that Mastercard settlement volume is flowing through Solana. For CopyPump, the useful signal is that a regulated bank-issued stablecoin with Solana availability is now part of live card settlement, while any Solana-specific liquidity, wallet activity or transaction flow must be verified separately.",
+    "ru": "Это важный этап платёжной инфраструктуры, но не доказательство того, что объём расчётов Mastercard проходит через Solana. Для CopyPump полезный сигнал состоит в том, что регулируемый банковский стейблкоин, доступный в Solana, теперь используется в реальных карточных расчётах; любую связанную с Solana ликвидность, активность кошельков или поток транзакций необходимо подтверждать отдельно."
+  },
+  "unknowns": [
+    {
+      "en": "The launch materials reviewed do not disclose which blockchain or blockchains carry the live SoFiUSD card-settlement transactions.",
+      "ru": "Проверенные материалы о запуске не раскрывают, какая блокчейн-сеть или несколько сетей используются для текущих карточных расчётов в SoFiUSD."
+    },
+    {
+      "en": "The sources do not establish what share, if any, of the card-settlement volume is currently settled on Solana rather than Ethereum or another supported rail.",
+      "ru": "Источники не устанавливают, какая доля карточных расчётов, если она вообще есть, сейчас проходит через Solana, а не Ethereum или другую поддерживаемую инфраструктуру."
+    },
+    {
+      "en": "The more-than-$25-billion figure is an expected annualized card-program volume, not a measured amount of SoFiUSD or Solana settlement already completed.",
+      "ru": "Показатель более $25 млрд — это ожидаемый годовой объём карточной программы, а не измеренный объём уже завершённых расчётов в SoFiUSD или Solana."
+    }
+  ],
+  "publishedAt": "2026-09-23T00:46:36.000Z",
+  "updatedAt": "2026-09-23T00:46:36.000Z",
+  "observedAt": "2026-09-22T00:00:00.000Z",
+  "lastCheckedAt": "2026-09-23T00:46:36.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "SoFi — live SoFiUSD settlement across Mastercard’s global payments network",
+        "ru": "SoFi — запуск расчётов SoFiUSD в глобальной платёжной сети Mastercard"
+      },
+      "url": "https://investors.sofi.com/news/news-details/2026/SoFi-Becomes-First-National-Bank-to-Go-Live-with-Stablecoin-Settlement-across-Mastercards-Global-Payments-Network/default.aspx",
+      "checkedAt": "2026-09-23T00:46:36.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "The Block — SoFi begins stablecoin settlement on Mastercard network",
+        "ru": "The Block — SoFi запускает расчёты в стейблкоине в сети Mastercard"
+      },
+      "url": "https://www.theblock.co/news/business/2026-09-22-sofi-begins-stablecoin-settlement-on-mastercard-network-for-program-expected-to-exceed-25-billion-in-annualized-volume-416035",
+      "checkedAt": "2026-09-23T00:46:36.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-23T00:46:36.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against SoFi’s official launch announcement and independent reporting from The Block. The update does not claim that the newly live Mastercard settlement itself runs on Solana because the reviewed launch materials do not disclose the settlement chain.",
+        "ru": "Перед публикацией событие сверено по официальному объявлению SoFi и независимому материалу The Block. Обновление не утверждает, что запущенные расчёты Mastercard проходят именно через Solana, поскольку проверенные материалы не раскрывают сеть расчётов."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2"
+      ]
+    }
+  ]
+}
