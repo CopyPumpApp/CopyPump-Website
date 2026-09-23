@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-23T00:46:36.000Z",
+  "updatedAt": "2026-09-23T05:08:00.402Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
-    "checkedAt": "2026-09-22T21:38:34Z",
+    "checkedAt": "2026-09-23T05:07:58Z",
     "source": "CopyPumpApp/CopyPump/docs/PUBLIC_MILESTONES.json",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-22T21:38:35.078Z",
+    "checkedAt": "2026-09-23T05:07:58.602Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
@@ -27,19 +27,12 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-23T00:46:36.000Z",
-      "source": "Web search / SoFi + The Block",
+      "checkedAt": "2026-09-23T05:08:00Z",
+      "source": "Public RSS + Kimi editorial bridge",
       "importanceThreshold": 72,
-      "state": "ok",
-      "reason": "PUBLISHED_VERIFIED_WEB_STORY",
-      "published": true,
-      "id": "web-sofi-mastercard-stablecoin-settlement-solana-20260922",
-      "importanceScore": 86,
-      "sourceCount": 2,
-      "sourceHosts": [
-        "investors.sofi.com",
-        "theblock.co"
-      ]
+      "state": "pending",
+      "reason": "EXTERNAL_RSS_KIMI_BRIDGE",
+      "published": false
     },
     "changed": true
   },
