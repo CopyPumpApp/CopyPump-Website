@@ -1,0 +1,111 @@
+{
+  "id": "web-alpenglow-formal-testnet-rollout-pending-20260922",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "NETWORK / 11",
+    "ru": "СЕТЬ / 11"
+  },
+  "title": {
+    "en": "Alpenglow entered its formal Solana testnet rollout, but the feature gate is still pending.",
+    "ru": "Alpenglow перешёл к формальному развёртыванию в тестнете Solana, но feature gate пока не активирован."
+  },
+  "summary": {
+    "en": "On September 22, Anza said Alpenglow was moving from its smaller community cluster into Solana’s formal public-testnet rollout. CoinDesk and ForkLog report that the testing rollout has begun, while Anza’s official feature-gate tracker still lists SIMD-0326 as Pending Testnet Activation with no testnet activation epoch or date filled in. Why it matters for CopyPump: Alpenglow changes consensus confirmation and finality behavior, so CopyPump should prepare and run compatibility tests for status handling, retries and event streams, but should not change production assumptions until the feature gate is actually active.",
+    "ru": "22 сентября Anza сообщила, что Alpenglow переходит из отдельного community cluster к формальному развёртыванию в публичном тестнете Solana. CoinDesk и ForkLog сообщают о начале этого этапа тестирования, однако официальный трекер feature gate Anza по-прежнему показывает SIMD-0326 в статусе Pending Testnet Activation без указанной эпохи или даты активации тестнета. Почему это важно для CopyPump: Alpenglow меняет поведение подтверждения и финальности консенсуса, поэтому CopyPump следует подготовить и провести проверки обработки статусов, повторных отправок и потоков событий, но не менять рабочие предположения до фактической активации feature gate."
+  },
+  "facts": [
+    {
+      "en": "Anza’s feature-gate tracker, edited September 22, lists SIMD-0326 Alpenglow under Pending Testnet Activation, tied to Agave v4.3.0; the testnet activation fields are still blank.",
+      "ru": "Трекер feature gate Anza, обновлённый 22 сентября, показывает SIMD-0326 Alpenglow в разделе Pending Testnet Activation для Agave v4.3.0; поля активации тестнета пока пусты."
+    },
+    {
+      "en": "CoinDesk reported on September 23 that Alpenglow has moved into Solana’s public-testnet testing process and that the initial migration requires Agave 4.3, while Firedancer and Frankendancer do not support this test.",
+      "ru": "23 сентября CoinDesk сообщил, что Alpenglow перешёл к процессу тестирования в публичном тестнете Solana; для начальной миграции требуется Agave 4.3, а Firedancer и Frankendancer этот тест пока не поддерживают."
+    },
+    {
+      "en": "ForkLog independently reported that Anza announced the start of the formal testnet activation process on September 22 and also noted that the official tracker still showed the gate as pending.",
+      "ru": "ForkLog независимо сообщил, что 22 сентября Anza объявила о начале формальной процедуры активации в тестнете, и отдельно отметил, что официальный трекер всё ещё показывает gate как pending."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a controlled rollout milestone, not proof that Alpenglow is already active on public testnet or ready on mainnet. The useful signal for CopyPump is that confirmation/finality and validator-event semantics are approaching a real compatibility test, so production logic should remain tied to observed cluster state rather than announcement dates.",
+    "ru": "Это этап контролируемого развёртывания, а не доказательство того, что Alpenglow уже активен в публичном тестнете или готов для mainnet. Для CopyPump важен сигнал о приближении реальной проверки совместимости логики подтверждения, финальности и событий валидаторов; рабочая логика должна опираться на наблюдаемое состояние кластера, а не на даты объявлений."
+  },
+  "unknowns": [
+    {
+      "en": "The official tracker does not yet provide the public-testnet activation epoch or activation date for SIMD-0326.",
+      "ru": "Официальный трекер пока не указывает эпоху или дату активации SIMD-0326 в публичном тестнете."
+    },
+    {
+      "en": "The 150ms finality figure is a design target; the reviewed sources do not establish measured public-testnet finality after activation.",
+      "ru": "150 мс — это целевой показатель конструкции; проверенные источники пока не устанавливают измеренную финальность в публичном тестнете после активации."
+    },
+    {
+      "en": "A mainnet Alpenglow activation date is not confirmed; September 28 remains a tentative Agave v4.3 feature-activation milestone rather than a guaranteed Alpenglow launch.",
+      "ru": "Дата активации Alpenglow в mainnet не подтверждена; 28 сентября остаётся предварительным этапом активации функций Agave v4.3, а не гарантированной датой запуска Alpenglow."
+    },
+    {
+      "en": "The sources do not establish when Firedancer or Frankendancer will support the Alpenglow migration path.",
+      "ru": "Источники не устанавливают, когда Firedancer или Frankendancer получат поддержку пути миграции Alpenglow."
+    }
+  ],
+  "publishedAt": "2026-09-23T12:44:16.000Z",
+  "updatedAt": "2026-09-23T12:44:16.000Z",
+  "observedAt": "2026-09-22T00:00:00.000Z",
+  "lastCheckedAt": "2026-09-23T12:44:16.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Anza — Feature Gate Tracker Schedule",
+        "ru": "Anza — трекер расписания feature gate"
+      },
+      "url": "https://github.com/anza-xyz/agave/wiki/feature-gate-tracker-schedule",
+      "checkedAt": "2026-09-23T12:44:16.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "CoinDesk — Solana starts testing upgrade that could cut finality from 12.8 seconds to 150 milliseconds",
+        "ru": "CoinDesk — Solana начинает тестировать обновление, которое может сократить финальность с 12,8 секунды до 150 мс"
+      },
+      "url": "https://www.coindesk.com/tech/2026/09/23/solana-starts-testing-upgrade-that-could-cut-finality-from-12-8-seconds-to-150-milliseconds",
+      "checkedAt": "2026-09-23T12:44:16.000Z"
+    },
+    {
+      "id": "web-3",
+      "label": {
+        "en": "ForkLog — Alpenglow begins activation phase in Solana testnet",
+        "ru": "ForkLog — Alpenglow вышел на этап активации в тестнете Solana"
+      },
+      "url": "https://forklog.com/en/alpenglow-begins-activation-phase-in-solana-testnet/",
+      "checkedAt": "2026-09-23T12:44:16.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-23T12:44:16.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against Anza’s official feature-gate tracker plus independent CoinDesk and ForkLog reporting. The story describes the start of the formal rollout process and explicitly does not claim that the pending testnet feature gate or mainnet Alpenglow activation is complete.",
+        "ru": "Перед публикацией событие сверено по официальному трекеру feature gate Anza и независимым материалам CoinDesk и ForkLog. Материал описывает начало формального процесса развёртывания и прямо не утверждает, что ожидающая активация feature gate в тестнете или запуск Alpenglow в mainnet уже завершены."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2",
+        "web-3"
+      ]
+    }
+  ]
+}

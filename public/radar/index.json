@@ -1,8 +1,34 @@
 {
   "schemaVersion": 1,
-  "edition": "08",
-  "publishedAt": "2026-09-23T00:46:36.000Z",
+  "edition": "09",
+  "publishedAt": "2026-09-23T12:44:16.000Z",
   "items": [
+    {
+      "id": "web-alpenglow-formal-testnet-rollout-pending-20260922",
+      "version": 1,
+      "publishedAt": "2026-09-23T12:44:16.000Z",
+      "updatedAt": "2026-09-23T12:44:16.000Z",
+      "observedAt": "2026-09-22T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-23T12:44:16.000Z",
+      "title": {
+        "en": "Alpenglow entered its formal Solana testnet rollout, but the feature gate is still pending.",
+        "ru": "Alpenglow перешёл к формальному развёртыванию в тестнете Solana, но feature gate пока не активирован."
+      },
+      "summary": {
+        "en": "On September 22, Anza said Alpenglow was moving from its smaller community cluster into Solana’s formal public-testnet rollout. CoinDesk and ForkLog report that the testing rollout has begun, while Anza’s official feature-gate tracker still lists SIMD-0326 as Pending Testnet Activation with no testnet activation epoch or date filled in. Why it matters for CopyPump: Alpenglow changes consensus confirmation and finality behavior, so CopyPump should prepare and run compatibility tests for status handling, retries and event streams, but should not change production assumptions until the feature gate is actually active.",
+        "ru": "22 сентября Anza сообщила, что Alpenglow переходит из отдельного community cluster к формальному развёртыванию в публичном тестнете Solana. CoinDesk и ForkLog сообщают о начале этого этапа тестирования, однако официальный трекер feature gate Anza по-прежнему показывает SIMD-0326 в статусе Pending Testnet Activation без указанной эпохи или даты активации тестнета. Почему это важно для CopyPump: Alpenglow меняет поведение подтверждения и финальности консенсуса, поэтому CopyPump следует подготовить и провести проверки обработки статусов, повторных отправок и потоков событий, но не менять рабочие предположения до фактической активации feature gate."
+      },
+      "category": {
+        "en": "NETWORK / 11",
+        "ru": "СЕТЬ / 11"
+      },
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      }
+    },
     {
       "id": "web-sofi-mastercard-stablecoin-settlement-solana-20260922",
       "version": 1,
