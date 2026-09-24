@@ -1,0 +1,107 @@
+{
+  "id": "web-cadd-regulated-cad-stablecoin-solana-20260923",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "PAYMENTS / 12",
+    "ru": "ПЛАТЕЖИ / 12"
+  },
+  "title": {
+    "en": "CADD, a regulated Canadian-dollar stablecoin, is now live on Solana.",
+    "ru": "CADD, регулируемый стейблкоин канадского доллара, теперь работает в Solana."
+  },
+  "summary": {
+    "en": "On September 23, Tetra Digital Group said CADD went live on Solana, adding the network to CADD's existing deployments. CADD is issued through CAD Digital as agent for Tetra Trust Company and is designed to be redeemable 1:1 for Canadian dollars held in reserve. Why it matters for CopyPump: Solana now has a regulated CAD-denominated settlement asset that can be used by applications for payments, transfers and treasury flows, but CopyPump should treat it as infrastructure availability rather than evidence of meaningful liquidity or trading activity until on-chain usage develops.",
+    "ru": "23 сентября Tetra Digital Group сообщила, что CADD запущен в Solana, добавив сеть к уже существующим развёртываниям CADD. CADD выпускается через CAD Digital как агента Tetra Trust Company и рассчитан на погашение 1:1 в канадские доллары, обеспеченные резервами. Почему это важно для CopyPump: в Solana появился регулируемый расчётный актив, номинированный в CAD, который приложения могут использовать для платежей, переводов и казначейских операций, но CopyPump следует считать это доступностью инфраструктуры, а не доказательством значимой ликвидности или торговой активности, пока реальное ончейн-использование не вырастет."
+  },
+  "facts": [
+    {
+      "en": "Tetra Digital Group announced on September 23 that CADD is live on Solana and described it as a Canadian-dollar stablecoin issued by a regulated financial institution for payments, transfers, treasury and settlement.",
+      "ru": "23 сентября Tetra Digital Group объявила, что CADD работает в Solana, и описала его как стейблкоин канадского доллара, выпускаемый регулируемым финансовым учреждением для платежей, переводов, казначейских операций и расчётов."
+    },
+    {
+      "en": "Solana Compass independently reported the same September 23 launch and identified Solana as CADD's fourth supported network after its earlier launch on Ethereum, Base and Tempo.",
+      "ru": "Solana Compass независимо сообщил о том же запуске 23 сентября и указал Solana как четвёртую поддерживаемую сеть CADD после более раннего запуска в Ethereum, Base и Tempo."
+    },
+    {
+      "en": "Tetra's earlier launch materials state that CADD is issued through CAD Digital as agent for Tetra Trust Company and is backed 1:1 by Canadian-dollar reserves under Canadian regulatory oversight.",
+      "ru": "В более ранних материалах Tetra о запуске указано, что CADD выпускается через CAD Digital как агента Tetra Trust Company и обеспечивается резервами в канадских долларах 1:1 под канадским регуляторным надзором."
+    }
+  ],
+  "interpretation": {
+    "en": "This expands Solana's payment and treasury asset set with a regulated non-USD stablecoin. It does not by itself show deep liquidity, broad merchant adoption or significant trading demand, so CopyPump should verify mint identity, live liquidity and venue support before using CADD in automated workflows.",
+    "ru": "Это расширяет набор платёжных и казначейских активов Solana регулируемым стейблкоином не в долларах США. Сам по себе запуск не доказывает глубокую ликвидность, широкое принятие торговцами или значимый торговый спрос, поэтому CopyPump должен проверять адрес mint, фактическую ликвидность и поддержку площадками перед использованием CADD в автоматизированных сценариях."
+  },
+  "unknowns": [
+    {
+      "en": "The reviewed sources do not establish how much sustained CADD liquidity or transaction volume will develop on Solana after launch.",
+      "ru": "Проверенные источники не устанавливают, какой устойчивый объём ликвидности или транзакций CADD сформируется в Solana после запуска."
+    },
+    {
+      "en": "The sources do not establish which Solana trading venues, wallets or payment applications will support CADD in production, or on what timetable.",
+      "ru": "Источники не устанавливают, какие торговые площадки, кошельки или платёжные приложения Solana будут поддерживать CADD в production и в какие сроки."
+    },
+    {
+      "en": "The launch does not establish that CADD is available to every user or jurisdiction; access can remain subject to issuer, platform and regulatory restrictions.",
+      "ru": "Запуск не означает, что CADD доступен каждому пользователю и в каждой юрисдикции; доступ может зависеть от ограничений эмитента, платформ и регуляторов."
+    }
+  ],
+  "publishedAt": "2026-09-24T12:46:31.000Z",
+  "updatedAt": "2026-09-24T12:46:31.000Z",
+  "observedAt": "2026-09-23T13:30:00.000Z",
+  "lastCheckedAt": "2026-09-24T12:46:31.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Tetra Digital Group — CADD is now live on Solana",
+        "ru": "Tetra Digital Group — CADD теперь работает в Solana"
+      },
+      "url": "https://www.linkedin.com/company/tetra-digital-group",
+      "checkedAt": "2026-09-24T12:46:31.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "Solana Compass — Tetra's CADD Canadian Dollar Stablecoin Goes Live on Solana",
+        "ru": "Solana Compass — стейблкоин канадского доллара CADD от Tetra запущен в Solana"
+      },
+      "url": "https://solanacompass.com/news/tetras-cadd-canadian-dollar-stablecoin-goes-live-on-solana",
+      "checkedAt": "2026-09-24T12:46:31.000Z"
+    },
+    {
+      "id": "web-3",
+      "label": {
+        "en": "Morningstar / Business Wire — Tetra Digital Group launches CADD",
+        "ru": "Morningstar / Business Wire — Tetra Digital Group запускает CADD"
+      },
+      "url": "https://www.morningstar.com/news/business-wire/20260504197679/tetra-digital-group-launches-cadd-canadas-first-cad-backed-stablecoin-issued-by-a-financial-institution",
+      "checkedAt": "2026-09-24T12:46:31.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-24T12:46:31.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against Tetra Digital Group's official announcement and independent Solana Compass reporting, with earlier issuer launch materials used for regulatory and reserve structure. The story does not infer adoption, liquidity or trading demand from the network launch.",
+        "ru": "Перед публикацией событие сверено по официальному объявлению Tetra Digital Group и независимому материалу Solana Compass; более ранние материалы эмитента использованы для проверки регуляторной и резервной структуры. Материал не выводит принятие, ликвидность или торговый спрос из самого факта запуска в сети."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2",
+        "web-3"
+      ]
+    }
+  ]
+}
