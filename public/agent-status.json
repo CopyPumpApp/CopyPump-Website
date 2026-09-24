@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-24T05:19:59.635Z",
+  "updatedAt": "2026-09-24T06:45:11.000Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
@@ -27,11 +27,11 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-24T05:19:59Z",
-      "source": "Public RSS + Kimi editorial bridge",
+      "checkedAt": "2026-09-24T06:45:11.000Z",
+      "source": "Current web search / primary and reputable reporting",
       "importanceThreshold": 72,
-      "state": "pending",
-      "reason": "EXTERNAL_RSS_KIMI_BRIDGE",
+      "state": "ok",
+      "reason": "NO_STORY_ABOVE_THRESHOLD",
       "published": false
     },
     "changed": true
