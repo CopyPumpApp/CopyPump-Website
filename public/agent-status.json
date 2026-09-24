@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-23T21:45:22.597Z",
+  "updatedAt": "2026-09-24T00:42:49.595Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
@@ -27,14 +27,14 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-23T21:45:22Z",
-      "source": "Public RSS + Kimi editorial bridge",
+      "checkedAt": "2026-09-24T00:42:49.595Z",
+      "source": "Current web search / Solana infrastructure + security + payments + DeFi",
       "importanceThreshold": 72,
-      "state": "pending",
-      "reason": "EXTERNAL_RSS_KIMI_BRIDGE",
+      "state": "ok",
+      "reason": "NO_STORY_ABOVE_THRESHOLD",
       "published": false
     },
-    "changed": true
+    "changed": false
   },
   "guard": {
     "coreUiFrozen": true,
