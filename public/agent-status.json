@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-25T00:45:32.000Z",
+  "updatedAt": "2026-09-25T05:20:50.505Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
-    "checkedAt": "2026-09-24T21:46:04Z",
+    "checkedAt": "2026-09-25T05:20:49Z",
     "source": "CopyPumpApp/CopyPump/docs/PUBLIC_MILESTONES.json",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-09-24T21:46:05.329Z",
+    "checkedAt": "2026-09-25T05:20:49.709Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
@@ -27,19 +27,12 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-09-25T00:45:32.000Z",
-      "source": "Web search / Kamino + Solana Compass",
+      "checkedAt": "2026-09-25T05:20:50Z",
+      "source": "Public RSS + Kimi editorial bridge",
       "importanceThreshold": 72,
-      "state": "ok",
-      "reason": "PUBLISHED_VERIFIED_WEB_STORY",
-      "published": true,
-      "id": "web-kamino-tgbp-sterling-lending-solana-20260923",
-      "importanceScore": 78,
-      "sourceCount": 2,
-      "sourceHosts": [
-        "kamino.com",
-        "solanacompass.com"
-      ]
+      "state": "pending",
+      "reason": "EXTERNAL_RSS_KIMI_BRIDGE",
+      "published": false
     },
     "changed": true
   },
