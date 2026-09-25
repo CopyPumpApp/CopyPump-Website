@@ -1,0 +1,97 @@
+{
+  "id": "web-kamino-tgbp-sterling-lending-solana-20260923",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "DEFI / 13",
+    "ru": "DEFI / 13"
+  },
+  "title": {
+    "en": "Kamino opened a live tGBP lending market on Solana for sterling-denominated borrowing.",
+    "ru": "Kamino запустила в Solana рынок кредитования tGBP для займов, номинированных в фунтах."
+  },
+  "summary": {
+    "en": "On September 23, Kamino opened an isolated lending market for tGBP on Solana. The pound-pegged token is issued by BCP Technologies, and the new market lets users supply tGBP or borrow it against USDC, cbBTC and JitoSOL. Why it matters for CopyPump: this adds a live sterling-denominated credit market inside Solana DeFi, but CopyPump should treat it as a new market to verify rather than proof of deep liquidity, broad institutional use or reliable execution conditions.",
+    "ru": "23 сентября Kamino запустила в Solana изолированный рынок кредитования tGBP. Токен, привязанный к британскому фунту, выпускается BCP Technologies, а новый рынок позволяет размещать tGBP или занимать его под залог USDC, cbBTC и JitoSOL. Почему это важно для CopyPump: в Solana DeFi появился действующий кредитный рынок, номинированный в фунтах, но CopyPump следует считать его новым рынком, который нужно проверять, а не доказательством глубокой ликвидности, широкого институционального использования или надёжных условий исполнения."
+  },
+  "facts": [
+    {
+      "en": "Kamino announced on September 23 that tGBP is live in an isolated Solana lending market curated by Steakhouse Financial.",
+      "ru": "23 сентября Kamino объявила, что tGBP запущен в изолированном кредитном рынке Solana под управлением Steakhouse Financial."
+    },
+    {
+      "en": "Kamino says users can supply tGBP or borrow it against USDC, cbBTC and JitoSOL in the new market.",
+      "ru": "По данным Kamino, в новом рынке пользователи могут размещать tGBP или занимать его под залог USDC, cbBTC и JitoSOL."
+    },
+    {
+      "en": "Solana Compass independently reported the same launch and identified BCP Technologies as the issuer of the pound-pegged token.",
+      "ru": "Solana Compass независимо сообщил о том же запуске и указал BCP Technologies как эмитента токена, привязанного к фунту."
+    }
+  ],
+  "interpretation": {
+    "en": "The launch adds a non-USD borrowing and lending rail to Solana DeFi, which could matter for treasury, collateral and FX-aware automation. It does not establish that the market has durable depth or low slippage. Before CopyPump treats it as usable infrastructure, the live mint, oracle source and freshness, market caps, liquidation parameters and venue liquidity should be checked directly.",
+    "ru": "Запуск добавляет в Solana DeFi кредитование и займы не в долларах США, что может быть полезно для казначейских операций, залога и автоматизации с учётом валютного риска. Он не доказывает устойчивую глубину рынка или низкое проскальзывание. Прежде чем CopyPump будет считать этот рынок пригодной инфраструктурой, нужно напрямую проверить mint, источник и свежесть оракула, лимиты рынка, параметры ликвидации и фактическую ликвидность."
+  },
+  "unknowns": [
+    {
+      "en": "The reviewed sources do not establish how much sustained tGBP supply, borrowing demand or trading liquidity will develop on Solana after launch.",
+      "ru": "Проверенные источники не устанавливают, какой устойчивый объём предложения tGBP, спроса на займы или торговой ликвидности сформируется в Solana после запуска."
+    },
+    {
+      "en": "The sources do not establish how stable the market's caps, interest-rate settings, oracle configuration or liquidation parameters will remain as usage grows.",
+      "ru": "Источники не устанавливают, насколько стабильными останутся лимиты рынка, настройки процентных ставок, конфигурация оракула и параметры ликвидации по мере роста использования."
+    },
+    {
+      "en": "The launch does not establish that tGBP or the Kamino market is available to every user or jurisdiction, and issuer or platform restrictions may apply.",
+      "ru": "Запуск не означает, что tGBP или рынок Kamino доступны каждому пользователю и в каждой юрисдикции; могут действовать ограничения эмитента или платформы."
+    }
+  ],
+  "publishedAt": "2026-09-25T00:45:32.000Z",
+  "updatedAt": "2026-09-25T00:45:32.000Z",
+  "observedAt": "2026-09-23T00:00:00.000Z",
+  "lastCheckedAt": "2026-09-25T00:45:32.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Kamino — Tokenised GBP Brings Sterling Lending to Solana on Kamino",
+        "ru": "Kamino — Tokenised GBP запускает кредитование в фунтах в Solana через Kamino"
+      },
+      "url": "https://kamino.com/blog/tokenised-gbp-brings-sterling-lending-to-solana-on-kamino",
+      "checkedAt": "2026-09-25T00:45:32.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "Solana Compass — Kamino Launches tGBP Market on Solana, Bringing Sterling Lending Onchain",
+        "ru": "Solana Compass — Kamino запускает рынок tGBP в Solana и переносит кредитование в фунтах ончейн"
+      },
+      "url": "https://solanacompass.com/news/kamino-launches-tgbp-market-on-solana-bringing-sterling-lending-onchain",
+      "checkedAt": "2026-09-25T00:45:32.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-25T00:45:32.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against Kamino's official launch post and independent Solana Compass reporting. The update describes a live lending market but does not infer durable liquidity, institutional adoption or execution quality from the launch.",
+        "ru": "Перед публикацией событие сверено по официальному сообщению Kamino и независимому материалу Solana Compass. Обновление описывает действующий кредитный рынок, но не выводит устойчивую ликвидность, институциональное принятие или качество исполнения из самого факта запуска."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2"
+      ]
+    }
+  ]
+}

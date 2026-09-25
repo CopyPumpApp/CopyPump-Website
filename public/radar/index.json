@@ -1,8 +1,34 @@
 {
   "schemaVersion": 1,
-  "edition": "10",
-  "publishedAt": "2026-09-24T12:46:31.000Z",
+  "edition": "11",
+  "publishedAt": "2026-09-25T00:45:32.000Z",
   "items": [
+    {
+      "id": "web-kamino-tgbp-sterling-lending-solana-20260923",
+      "version": 1,
+      "publishedAt": "2026-09-25T00:45:32.000Z",
+      "updatedAt": "2026-09-25T00:45:32.000Z",
+      "observedAt": "2026-09-23T00:00:00.000Z",
+      "lastCheckedAt": "2026-09-25T00:45:32.000Z",
+      "title": {
+        "en": "Kamino opened a live tGBP lending market on Solana for sterling-denominated borrowing.",
+        "ru": "Kamino запустила в Solana рынок кредитования tGBP для займов, номинированных в фунтах."
+      },
+      "summary": {
+        "en": "On September 23, Kamino opened an isolated lending market for tGBP on Solana. The pound-pegged token is issued by BCP Technologies, and the new market lets users supply tGBP or borrow it against USDC, cbBTC and JitoSOL. Why it matters for CopyPump: this adds a live sterling-denominated credit market inside Solana DeFi, but CopyPump should treat it as a new market to verify rather than proof of deep liquidity, broad institutional use or reliable execution conditions.",
+        "ru": "23 сентября Kamino запустила в Solana изолированный рынок кредитования tGBP. Токен, привязанный к британскому фунту, выпускается BCP Technologies, а новый рынок позволяет размещать tGBP или занимать его под залог USDC, cbBTC и JitoSOL. Почему это важно для CopyPump: в Solana DeFi появился действующий кредитный рынок, номинированный в фунтах, но CopyPump следует считать его новым рынком, который нужно проверять, а не доказательством глубокой ликвидности, широкого институционального использования или надёжных условий исполнения."
+      },
+      "category": {
+        "en": "DEFI / 13",
+        "ru": "DEFI / 13"
+      },
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      }
+    },
     {
       "id": "web-cadd-regulated-cad-stablecoin-solana-20260923",
       "version": 1,
