@@ -1,0 +1,101 @@
+{
+  "id": "web-alpenglow-active-solana-testnet-20260924",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "NETWORK / 14",
+    "ru": "СЕТЬ / 14"
+  },
+  "title": {
+    "en": "Alpenglow is now active on Solana testnet; mainnet is still on TowerBFT.",
+    "ru": "Alpenglow теперь активен в тестнете Solana; mainnet всё ещё работает на TowerBFT."
+  },
+  "summary": {
+    "en": "On September 24, Solana's Alpenglow consensus switch completed on the public testnet. The Solana Foundation's upgrade page now marks Testnet as Active while Devnet and Mainnet remain Not activated, and Solana Compass reports that the handoff completed at slot 444625255, where the Alpenglow genesis block formed and TowerBFT was retired for testnet. Why it matters for CopyPump: this gives CopyPump a real public cluster for testing finality, retry and streaming assumptions against Alpenglow, but production logic must keep following current mainnet behavior until mainnet activation is actually observed.",
+    "ru": "24 сентября переключение консенсуса Alpenglow завершилось в публичном тестнете Solana. Страница обновления Solana Foundation теперь показывает Testnet в статусе Active, тогда как Devnet и Mainnet остаются Not activated, а Solana Compass сообщает, что переход завершился на слоте 444625255: сформировался genesis-блок Alpenglow, и TowerBFT был отключён в тестнете. Почему это важно для CopyPump: у CopyPump появился реальный публичный кластер для проверки логики финальности, повторных отправок и потоков данных с Alpenglow, но production-логика должна продолжать опираться на текущее поведение mainnet до фактически наблюдаемой активации там."
+  },
+  "facts": [
+    {
+      "en": "The Solana Foundation's Alpenglow upgrade page currently lists the feature gate as Active on Testnet and Not activated on both Devnet and Mainnet.",
+      "ru": "Страница обновления Alpenglow от Solana Foundation сейчас показывает feature gate как Active в Testnet и Not activated одновременно в Devnet и Mainnet."
+    },
+    {
+      "en": "Solana Compass reports that the testnet handoff completed on September 24 at slot 444625255, forming the Alpenglow genesis block and retiring TowerBFT on that cluster.",
+      "ru": "Solana Compass сообщает, что переход тестнета завершился 24 сентября на слоте 444625255: был сформирован genesis-блок Alpenglow, а TowerBFT перестал использоваться в этом кластере."
+    },
+    {
+      "en": "The official migration guidance says Alpenglow changes consensus and data-streaming semantics rather than transaction execution: Geyser events become bank-aware, vote transactions leave blocks, and confirmed and finalized converge after activation.",
+      "ru": "В официальном руководстве по миграции указано, что Alpenglow меняет консенсус и семантику потоков данных, а не исполнение транзакций: события Geyser становятся bank-aware, vote-транзакции исчезают из блоков, а confirmed и finalized сходятся после активации."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a confirmed testnet state change, not a mainnet launch. For CopyPump, the useful signal is that compatibility work can now be validated against an actually migrated public cluster instead of a planned feature gate. Mainnet assumptions, commitment handling and automation timing should not change until the mainnet cluster itself reports an Alpenglow genesis certificate.",
+    "ru": "Это подтверждённое изменение состояния тестнета, а не запуск в mainnet. Для CopyPump важный сигнал в том, что совместимость теперь можно проверять на реально мигрировавшем публичном кластере, а не на запланированном feature gate. Предположения для mainnet, обработку commitment и тайминги автоматизации нельзя менять, пока сам mainnet-кластер не начнёт возвращать genesis certificate Alpenglow."
+  },
+  "unknowns": [
+    {
+      "en": "The reviewed sources do not establish a confirmed mainnet Alpenglow activation date; the official status still says Mainnet is Not activated.",
+      "ru": "Проверенные источники не устанавливают подтверждённую дату активации Alpenglow в mainnet; официальный статус по-прежнему показывает Mainnet как Not activated."
+    },
+    {
+      "en": "The roughly 150ms finality figure remains a protocol target; the reviewed sources do not provide sustained public-testnet measurements across realistic application and RPC workloads.",
+      "ru": "Показатель финальности около 150 мс остаётся целевым параметром протокола; проверенные источники не приводят устойчивых измерений публичного тестнета под реалистичной нагрузкой приложений и RPC."
+    },
+    {
+      "en": "Solana Compass says the initial testnet switch involved Agave 4.3 validators; the reviewed sources do not establish when Firedancer or Frankendancer will support this Alpenglow migration path.",
+      "ru": "Solana Compass сообщает, что первоначальное переключение тестнета прошло с валидаторами Agave 4.3; проверенные источники не устанавливают, когда Firedancer или Frankendancer будут поддерживать этот путь миграции Alpenglow."
+    },
+    {
+      "en": "The sources do not establish that every RPC, gRPC, indexer or trading-infrastructure provider has already completed the required bank-aware streaming changes.",
+      "ru": "Источники не устанавливают, что каждый RPC-, gRPC-, индексатор или провайдер торговой инфраструктуры уже завершил необходимые изменения для bank-aware потоков данных."
+    }
+  ],
+  "publishedAt": "2026-09-25T06:47:31.000Z",
+  "updatedAt": "2026-09-25T06:47:31.000Z",
+  "observedAt": "2026-09-24T18:12:00.000Z",
+  "lastCheckedAt": "2026-09-25T06:47:31.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Solana Foundation — Alpenglow upgrade status and migration guide",
+        "ru": "Solana Foundation — статус обновления Alpenglow и руководство по миграции"
+      },
+      "url": "https://solana.com/upgrades/alpenglow",
+      "checkedAt": "2026-09-25T06:47:31.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "Solana Compass — Alpenglow Is Live on Solana Testnet as Anza Retires TowerBFT and Votor Takes",
+        "ru": "Solana Compass — Alpenglow активирован в тестнете Solana: TowerBFT отключён, Votor вступил в работу"
+      },
+      "url": "https://solanacompass.com/news/alpenglow-is-live-on-solana-testnet-as-anza-retires-towerbft-and-votor-takes",
+      "checkedAt": "2026-09-25T06:47:31.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-09-25T06:47:31.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against the Solana Foundation's live upgrade status and independent Solana Compass reporting. This update records the change from pending rollout to active Alpenglow consensus on public testnet and does not claim mainnet activation or measured 150ms finality.",
+        "ru": "Перед публикацией событие сверено по актуальному статусу обновления Solana Foundation и независимому материалу Solana Compass. Обновление фиксирует переход от ожидающей активации к работающему консенсусу Alpenglow в публичном тестнете и не утверждает, что mainnet уже активирован или что финальность 150 мс фактически измерена."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2"
+      ]
+    }
+  ]
+}

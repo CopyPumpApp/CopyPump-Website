@@ -1,8 +1,34 @@
 {
   "schemaVersion": 1,
-  "edition": "11",
-  "publishedAt": "2026-09-25T00:45:32.000Z",
+  "edition": "12",
+  "publishedAt": "2026-09-25T06:47:31.000Z",
   "items": [
+    {
+      "id": "web-alpenglow-active-solana-testnet-20260924",
+      "version": 1,
+      "publishedAt": "2026-09-25T06:47:31.000Z",
+      "updatedAt": "2026-09-25T06:47:31.000Z",
+      "observedAt": "2026-09-24T18:12:00.000Z",
+      "lastCheckedAt": "2026-09-25T06:47:31.000Z",
+      "title": {
+        "en": "Alpenglow is now active on Solana testnet; mainnet is still on TowerBFT.",
+        "ru": "Alpenglow теперь активен в тестнете Solana; mainnet всё ещё работает на TowerBFT."
+      },
+      "summary": {
+        "en": "On September 24, Solana's Alpenglow consensus switch completed on the public testnet. The Solana Foundation's upgrade page now marks Testnet as Active while Devnet and Mainnet remain Not activated, and Solana Compass reports that the handoff completed at slot 444625255, where the Alpenglow genesis block formed and TowerBFT was retired for testnet. Why it matters for CopyPump: this gives CopyPump a real public cluster for testing finality, retry and streaming assumptions against Alpenglow, but production logic must keep following current mainnet behavior until mainnet activation is actually observed.",
+        "ru": "24 сентября переключение консенсуса Alpenglow завершилось в публичном тестнете Solana. Страница обновления Solana Foundation теперь показывает Testnet в статусе Active, тогда как Devnet и Mainnet остаются Not activated, а Solana Compass сообщает, что переход завершился на слоте 444625255: сформировался genesis-блок Alpenglow, и TowerBFT был отключён в тестнете. Почему это важно для CopyPump: у CopyPump появился реальный публичный кластер для проверки логики финальности, повторных отправок и потоков данных с Alpenglow, но production-логика должна продолжать опираться на текущее поведение mainnet до фактически наблюдаемой активации там."
+      },
+      "category": {
+        "en": "NETWORK / 14",
+        "ru": "СЕТЬ / 14"
+      },
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      }
+    },
     {
       "id": "web-kamino-tgbp-sterling-lending-solana-20260923",
       "version": 1,
