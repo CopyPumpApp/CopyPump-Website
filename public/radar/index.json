@@ -1,8 +1,34 @@
 {
   "schemaVersion": 1,
-  "edition": "13",
-  "publishedAt": "2026-10-09T04:54:00.000Z",
+  "edition": "14",
+  "publishedAt": "2026-10-09T06:45:11.147Z",
   "items": [
+    {
+      "id": "web-securitize-tokenized-us-equities-solana-20261008",
+      "version": 1,
+      "publishedAt": "2026-10-09T06:45:11.147Z",
+      "updatedAt": "2026-10-09T06:45:11.147Z",
+      "observedAt": "2026-10-08T13:00:00.000Z",
+      "lastCheckedAt": "2026-10-09T06:45:11.147Z",
+      "title": {
+        "en": "Securitize launches share-backed U.S. stock tokens on Solana.",
+        "ru": "Securitize запустила в Solana токены американских акций, обеспеченные реальными акциями."
+      },
+      "summary": {
+        "en": "On October 8, Securitize launched tokenized U.S. stocks including Apple and Nvidia on Solana through its regulated brokerage. Tokens are backed one-for-one by shares, trades settle in USDC, and access is limited to eligible investors. Why it matters for CopyPump: this introduces a regulated securities market on Solana, but it does not prove deep liquidity or that CopyPump can trade these assets.",
+        "ru": "8 октября Securitize запустила в Solana токенизированные американские акции, включая Apple и Nvidia, через регулируемую брокерскую платформу. Токены обеспечены акциями в соотношении 1:1, расчёты проходят в USDC, а доступ ограничен подходящими инвесторами. Почему это важно для CopyPump: в Solana появился рынок регулируемых ценных бумаг, но запуск не доказывает глубокую ликвидность или возможность торговать этими активами через CopyPump."
+      },
+      "category": {
+        "en": "TRADING INFRASTRUCTURE / 16",
+        "ru": "ТОРГОВАЯ ИНФРАСТРУКТУРА / 16"
+      },
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      }
+    },
     {
       "id": "web-samsung-wallet-usdc-solana-support-20261007",
       "version": 1,

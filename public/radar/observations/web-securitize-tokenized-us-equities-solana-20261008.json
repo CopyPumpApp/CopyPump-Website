@@ -1,0 +1,111 @@
+{
+  "id": "web-securitize-tokenized-us-equities-solana-20261008",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "TRADING INFRASTRUCTURE / 16",
+    "ru": "ТОРГОВАЯ ИНФРАСТРУКТУРА / 16"
+  },
+  "title": {
+    "en": "Securitize launches share-backed U.S. stock tokens on Solana.",
+    "ru": "Securitize запустила в Solana токены американских акций, обеспеченные реальными акциями."
+  },
+  "summary": {
+    "en": "On October 8, Securitize launched tokenized U.S. stocks including Apple and Nvidia on Solana through its regulated brokerage. Tokens are backed one-for-one by shares, trades settle in USDC, and access is limited to eligible investors. Why it matters for CopyPump: this introduces a regulated securities market on Solana, but it does not prove deep liquidity or that CopyPump can trade these assets.",
+    "ru": "8 октября Securitize запустила в Solana токенизированные американские акции, включая Apple и Nvidia, через регулируемую брокерскую платформу. Токены обеспечены акциями в соотношении 1:1, расчёты проходят в USDC, а доступ ограничен подходящими инвесторами. Почему это важно для CopyPump: в Solana появился рынок регулируемых ценных бумаг, но запуск не доказывает глубокую ликвидность или возможность торговать этими активами через CopyPump."
+  },
+  "facts": [
+    {
+      "en": "Securitize announced Securitize Stocks on October 8, initially on Solana and on its registered broker-dealer platform for eligible investors in permitted jurisdictions.",
+      "ru": "8 октября Securitize объявила о запуске Securitize Stocks сначала в Solana через зарегистрированную брокерскую платформу для подходящих инвесторов в разрешённых юрисдикциях."
+    },
+    {
+      "en": "The offering includes security entitlements tied to shares of Apple, Microsoft, Nvidia and other companies, with backing described as one underlying share per token.",
+      "ru": "Предложение включает права на ценные бумаги Apple, Microsoft, Nvidia и других компаний; заявлено обеспечение каждого токена одной базовой акцией."
+    },
+    {
+      "en": "Securitize says transactions settle in USDC, initial trading follows extended U.S. trading hours, and broader 24/7 trading and future NYSE/OKXICE venues remain plans.",
+      "ru": "Securitize сообщает, что расчёты проходят в USDC, сначала доступны расширенные часы американских торгов, а круглосуточная торговля и будущие площадки NYSE/OKXICE пока остаются планами."
+    },
+    {
+      "en": "Reuters and CoinDesk independently reported the same October 8 launch and confirmed Solana as the initial network.",
+      "ru": "Reuters и CoinDesk независимо сообщили о том же запуске 8 октября и подтвердили выбор Solana в качестве первоначальной сети."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a concrete development in regulated trading infrastructure on Solana, not evidence of CopyPump integration. Any practical relevance depends on venue eligibility, permissioned assets, observable liquidity and execution testing.",
+    "ru": "Это конкретное развитие регулируемой торговой инфраструктуры Solana, но не доказательство интеграции с CopyPump. Практическая применимость зависит от условий доступа, разрешений для активов, проверенной ликвидности и тестов исполнения."
+  },
+  "unknowns": [
+    {
+      "en": "The reviewed sources do not establish sustained onchain trading volume, spreads or market depth for the newly launched stock tokens.",
+      "ru": "Проверенные источники не устанавливают устойчивый объём ончейн-торговли, спреды или глубину рынка новых токенов акций."
+    },
+    {
+      "en": "Availability across ordinary Solana wallets and decentralized swap venues is not established; investors must meet onboarding, KYC/AML and securities-law requirements.",
+      "ru": "Доступность через обычные Solana-кошельки и децентрализованные обменники не подтверждена; инвесторы должны проходить регистрацию, KYC/AML и соблюдать законодательные ограничения."
+    },
+    {
+      "en": "No launch date or final approval for planned 24/7 NYSE/OKXICE trading venues is established by these sources.",
+      "ru": "Эти источники не устанавливают подтверждённую дату запуска или окончательные разрешения для планируемой круглосуточной торговли через NYSE/OKXICE."
+    }
+  ],
+  "publishedAt": "2026-10-09T06:45:11.147Z",
+  "updatedAt": "2026-10-09T06:45:11.147Z",
+  "observedAt": "2026-10-08T13:00:00.000Z",
+  "lastCheckedAt": "2026-10-09T06:45:11.147Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Securitize — official launch announcement",
+        "ru": "Securitize — официальное сообщение о запуске"
+      },
+      "url": "https://www.prnewswire.com/news-releases/securitize-launches-global-onchain-trading-of-us-stocks-with-security-entitlements-302902107.html",
+      "checkedAt": "2026-10-09T06:45:11.147Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "Reuters — Securitize launches blockchain-based stocks",
+        "ru": "Reuters — запуск акций на блокчейне"
+      },
+      "url": "https://www.reuters.com/legal/government/securitize-launches-blockchain-based-stocks-2026-10-08/",
+      "checkedAt": "2026-10-09T06:45:11.147Z"
+    },
+    {
+      "id": "web-3",
+      "label": {
+        "en": "CoinDesk — Securitize brings Apple, Nvidia and Tesla to Solana",
+        "ru": "CoinDesk — акции Apple, Nvidia и Tesla в Solana"
+      },
+      "url": "https://www.coindesk.com/business/2026/10/08/securitize-brings-apple-nvidia-and-tesla-to-solana-with-nyse-trading-in-the-works",
+      "checkedAt": "2026-10-09T06:45:11.147Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-10-09T06:45:11.147Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Verified with Securitize's October 8 announcement and independent reporting by Reuters and CoinDesk. No claims of measured liquidity, unrestricted access or future venue activation.",
+        "ru": "Сверено с объявлением Securitize от 8 октября и независимыми материалами Reuters и CoinDesk. Не утверждаются измеренная ликвидность, неограниченный доступ или запуск будущих площадок."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2",
+        "web-3"
+      ]
+    }
+  ]
+}
