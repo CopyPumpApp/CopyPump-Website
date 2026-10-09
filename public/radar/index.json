@@ -1,8 +1,34 @@
 {
   "schemaVersion": 1,
-  "edition": "14",
-  "publishedAt": "2026-10-09T06:45:11.147Z",
+  "edition": "15",
+  "publishedAt": "2026-10-09T12:47:46.000Z",
   "items": [
+    {
+      "id": "web-solana-dvp-atomic-settlement-standard-20261006",
+      "version": 1,
+      "publishedAt": "2026-10-09T12:47:46.000Z",
+      "updatedAt": "2026-10-09T12:47:46.000Z",
+      "observedAt": "2026-10-06T00:00:00.000Z",
+      "lastCheckedAt": "2026-10-09T12:47:46.000Z",
+      "title": {
+        "en": "Solana Foundation releases an open-source standard for atomic asset-and-payment settlement.",
+        "ru": "Solana Foundation выпустила открытый стандарт одновременных расчётов активами и платежами."
+      },
+      "summary": {
+        "en": "On October 6, the Solana Foundation introduced Solana DvP, open-source software for exchanging tokenized assets and payment tokens in one transaction. Both sides must provide the agreed tokens; then both transfers succeed together or neither does. J.P. Morgan advised on settlement requirements but did not build, operate or endorse the program. Why it matters for CopyPump: this expands Solana's settlement infrastructure, especially for tokenized assets, but is not evidence that banks already use it or that trading volume has increased.",
+        "ru": "6 октября Solana Foundation представила Solana DvP — открытое ПО для обмена токенизированного актива и платёжного токена в одной транзакции. Обе стороны должны предоставить согласованные токены; затем оба перевода выполняются вместе либо не выполняется ни один. J.P. Morgan консультировал по требованиям к расчётам, но не разрабатывал, не эксплуатирует и не одобрял программу. Почему это важно для CopyPump: расширяется расчётная инфраструктура Solana, особенно для токенизированных активов, но нет подтверждений, что банки уже её используют или что вырос торговый объём."
+      },
+      "category": {
+        "en": "TRADING INFRASTRUCTURE / 17",
+        "ru": "ТОРГОВАЯ ИНФРАСТРУКТУРА / 17"
+      },
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      }
+    },
     {
       "id": "web-securitize-tokenized-us-equities-solana-20261008",
       "version": 1,

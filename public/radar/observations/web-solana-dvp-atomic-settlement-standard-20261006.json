@@ -1,0 +1,111 @@
+{
+  "id": "web-solana-dvp-atomic-settlement-standard-20261006",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "TRADING INFRASTRUCTURE / 17",
+    "ru": "ТОРГОВАЯ ИНФРАСТРУКТУРА / 17"
+  },
+  "title": {
+    "en": "Solana Foundation releases an open-source standard for atomic asset-and-payment settlement.",
+    "ru": "Solana Foundation выпустила открытый стандарт одновременных расчётов активами и платежами."
+  },
+  "summary": {
+    "en": "On October 6, the Solana Foundation introduced Solana DvP, open-source software for exchanging tokenized assets and payment tokens in one transaction. Both sides must provide the agreed tokens; then both transfers succeed together or neither does. J.P. Morgan advised on settlement requirements but did not build, operate or endorse the program. Why it matters for CopyPump: this expands Solana's settlement infrastructure, especially for tokenized assets, but is not evidence that banks already use it or that trading volume has increased.",
+    "ru": "6 октября Solana Foundation представила Solana DvP — открытое ПО для обмена токенизированного актива и платёжного токена в одной транзакции. Обе стороны должны предоставить согласованные токены; затем оба перевода выполняются вместе либо не выполняется ни один. J.P. Morgan консультировал по требованиям к расчётам, но не разрабатывал, не эксплуатирует и не одобрял программу. Почему это важно для CopyPump: расширяется расчётная инфраструктура Solana, особенно для токенизированных активов, но нет подтверждений, что банки уже её используют или что вырос торговый объём."
+  },
+  "facts": [
+    {
+      "en": "The Solana Foundation announced an MIT-licensed delivery-versus-payment escrow program and API on October 6.",
+      "ru": "6 октября Solana Foundation объявила о программе условного хранения и API для расчётов «поставка против платежа» под лицензией MIT."
+    },
+    {
+      "en": "Solana DvP atomically exchanges two pre-funded token legs in one transaction or neither; it supports SPL Token and Token-2022.",
+      "ru": "Solana DvP атомарно обменивает две предварительно обеспеченные токенами стороны в одной транзакции либо не выполняет ни одну; поддерживает SPL Token и Token-2022."
+    },
+    {
+      "en": "J.P. Morgan contributed settlement-practice input only and did not develop, operate, approve, endorse or guarantee the program.",
+      "ru": "J.P. Morgan предоставил лишь консультации по практике расчётов, но не разрабатывал, не эксплуатирует, не утверждал, не одобрял и не гарантировал программу."
+    },
+    {
+      "en": "CoinDesk confirmed the release; CryptoSlate independently examined its requirement for fully funded escrows and the exclusion of financing and netting.",
+      "ru": "CoinDesk подтвердил выпуск, а CryptoSlate независимо разобрал требование полного обеспечения и отсутствие встроенного финансирования и взаимозачёта."
+    }
+  ],
+  "interpretation": {
+    "en": "A reusable atomic settlement program could simplify integrations compared with bespoke contracts. For CopyPump this is a development to track, not proof of institutional adoption, increased liquidity, profit or CopyPump integration. Actual flows and risks need independent checks.",
+    "ru": "Повторно используемая программа атомарных расчётов может упростить интеграции по сравнению с разовыми контрактами. Для CopyPump это событие для наблюдения, а не доказательство институционального внедрения, роста ликвидности, прибыли или интеграции с CopyPump. Реальные потоки и риски нужно проверять отдельно."
+  },
+  "unknowns": [
+    {
+      "en": "The production-release date and any named institution using Solana DvP for live commercial settlement remain unconfirmed.",
+      "ru": "Дата промышленного релиза и наличие конкретной организации, уже проводящей коммерческие расчёты через Solana DvP, не подтверждены."
+    },
+    {
+      "en": "No verified commercial volume, cost savings or performance statistics are reported.",
+      "ru": "Нет подтверждённой статистики коммерческих объёмов, экономии или производительности."
+    },
+    {
+      "en": "Both assets must be fully funded; issuer restrictions, settlement-agent availability and legal finality differ by context.",
+      "ru": "Обе стороны должны быть полностью обеспечены; ограничения эмитентов, доступность расчётного агента и юридическая окончательность зависят от обстоятельств."
+    }
+  ],
+  "publishedAt": "2026-10-09T12:47:46.000Z",
+  "updatedAt": "2026-10-09T12:47:46.000Z",
+  "observedAt": "2026-10-06T00:00:00.000Z",
+  "lastCheckedAt": "2026-10-09T12:47:46.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Solana Foundation — official announcement",
+        "ru": "Solana Foundation — официальное объявление"
+      },
+      "url": "https://solana.com/news/solana-foundation-launches-solana-dv-p-an-atomic-settlement-program-built-for-financial-institutions",
+      "checkedAt": "2026-10-09T12:47:46.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "CoinDesk — DvP program release",
+        "ru": "CoinDesk — выпуск программы DvP"
+      },
+      "url": "https://www.coindesk.com/markets/2026/10/06/solana-foundation-unveils-a-program-to-settle-institutional-trades-in-seconds-with-jpmorgan-s-inputs",
+      "checkedAt": "2026-10-09T12:47:46.000Z"
+    },
+    {
+      "id": "web-3",
+      "label": {
+        "en": "CryptoSlate — design and funding constraints",
+        "ru": "CryptoSlate — устройство и ограничения финансирования"
+      },
+      "url": "https://cryptoslate.com/solana-dvp-settlement-requires-100-upfront-cash-for-every-trade/",
+      "checkedAt": "2026-10-09T12:47:46.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-10-09T12:47:46.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked using the Solana Foundation announcement and independent CoinDesk and CryptoSlate reporting; no claim of production adoption or J.P. Morgan endorsement.",
+        "ru": "Сверено по официальному заявлению Solana Foundation и независимым материалам CoinDesk и CryptoSlate; внедрение в production и одобрение со стороны J.P. Morgan не заявляются."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2",
+        "web-3"
+      ]
+    }
+  ]
+}

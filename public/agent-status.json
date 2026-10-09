@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-09T06:45:11.147Z",
+  "updatedAt": "2026-10-09T12:47:46.000Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
     "state": "ok",
@@ -14,7 +14,7 @@
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
-    "webObservations": 12,
+    "webObservations": 13,
     "verifiedObservations": 4,
     "mismatches": [],
     "providers": [
@@ -27,18 +27,18 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-10-09T06:45:11.147Z",
-      "source": "Securitize primary announcement + Reuters + CoinDesk",
+      "checkedAt": "2026-10-09T12:47:46.000Z",
+      "source": "Solana Foundation + CoinDesk + CryptoSlate",
       "importanceThreshold": 72,
       "state": "ok",
       "reason": "PUBLISHED_VERIFIED_WEB_STORY",
       "published": true,
-      "id": "web-securitize-tokenized-us-equities-solana-20261008",
+      "id": "web-solana-dvp-atomic-settlement-standard-20261006",
       "sourceCount": 3,
       "sourceHosts": [
-        "prnewswire.com",
-        "reuters.com",
-        "coindesk.com"
+        "solana.com",
+        "coindesk.com",
+        "cryptoslate.com"
       ]
     },
     "changed": true
