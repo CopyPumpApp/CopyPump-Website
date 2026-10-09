@@ -1,0 +1,93 @@
+{
+  "id": "web-solana-200ms-slot-time-mainnet-20261009",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "NETWORK / 18",
+    "ru": "СЕТЬ / 18"
+  },
+  "title": {
+    "en": "Solana activates 200ms slots on mainnet.",
+    "ru": "Solana активировала слоты 200 мс в mainnet."
+  },
+  "summary": {
+    "en": "On October 9, Solana's final slot-time reduction went live at epoch 1053, cutting the target from 250ms to 200ms. The recent-blockhash lifetime is now about 30 seconds at the target rate. Why it matters for CopyPump: faster blocks leave less time for wallet signing and transaction submission. CopyPump must check block heights and confirmed results rather than rely on fixed countdowns.",
+    "ru": "9 октября Solana завершила последний этап ускорения слотов в эпохе 1053: целевой интервал сократился с 250 до 200 мс. Номинальное время действия недавнего blockhash теперь около 30 секунд. Почему это важно для CopyPump: более частые блоки оставляют меньше времени для подписи кошелька и отправки транзакции. CopyPump должен проверять высоту блока и подтверждённый результат вместо фиксированных таймеров."
+  },
+  "facts": [
+    {
+      "en": "Solana Foundation confirms 200ms target slots went live on mainnet-beta on October 9 at epoch 1053.",
+      "ru": "Solana Foundation подтверждает запуск слотов с целью 200 мс в mainnet-beta 9 октября на эпохе 1053."
+    },
+    {
+      "en": "Solana Compass independently reports that Anza confirmed activation at 14:42 UTC; the 200ms target is not a measured average.",
+      "ru": "Solana Compass независимо сообщает, что Anza подтвердила активацию в 14:42 UTC; цель 200 мс ещё не означает измеренное среднее."
+    }
+  ],
+  "interpretation": {
+    "en": "The change shortens the target block-production interval, not transaction finality. CopyPump should validate blockhash expiry and confirmation handling against live chain state.",
+    "ru": "Изменение сокращает целевой интервал выпуска блоков, а не финальность транзакций. CopyPump следует проверять истечение blockhash и подтверждения по текущему состоянию сети."
+  },
+  "unknowns": [
+    {
+      "en": "Actual average mainnet slot time for a full 200ms-target epoch is not yet measured.",
+      "ru": "Фактическое среднее время слота за полную эпоху с целью 200 мс пока не измерено."
+    },
+    {
+      "en": "The effect on RPC delays, skipped blocks and wallet signing success is not yet established.",
+      "ru": "Влияние на задержки RPC, пропуски блоков и успешность подписи кошельков пока не установлено."
+    },
+    {
+      "en": "This does not confirm Alpenglow mainnet activation or 200ms finality.",
+      "ru": "Это не подтверждает запуск Alpenglow в mainnet или финальность за 200 мс."
+    }
+  ],
+  "publishedAt": "2026-10-09T18:46:00.000Z",
+  "updatedAt": "2026-10-09T18:46:00.000Z",
+  "observedAt": "2026-10-09T14:42:00.000Z",
+  "lastCheckedAt": "2026-10-09T18:46:00.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "url": "https://solana.com/upgrades/reduced-slot-times",
+      "label": {
+        "en": "Solana Foundation — live upgrade status",
+        "ru": "Solana Foundation — статус обновления"
+      },
+      "checkedAt": "2026-10-09T18:46:00.000Z"
+    },
+    {
+      "id": "web-2",
+      "url": "https://solanacompass.com/news/solanas-200ms-slot-time-is-live-on-mainnet-at-epoch-1053-completing-simd-0525",
+      "label": {
+        "en": "Solana Compass — October 9 verification",
+        "ru": "Solana Compass — подтверждение 9 октября"
+      },
+      "checkedAt": "2026-10-09T18:46:00.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-10-09T18:46:00.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Checked against Solana Foundation and independent Solana Compass reporting.",
+        "ru": "Сверено по Solana Foundation и независимому материалу Solana Compass."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2"
+      ]
+    }
+  ]
+}
