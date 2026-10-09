@@ -1,0 +1,115 @@
+{
+  "id": "web-samsung-wallet-usdc-solana-support-20261007",
+  "version": 1,
+  "sourceKind": "web",
+  "sourceLabel": {
+    "en": "WEB / VERIFIED SOURCES",
+    "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+  },
+  "category": {
+    "en": "PAYMENTS / 15",
+    "ru": "ПЛАТЕЖИ / 15"
+  },
+  "title": {
+    "en": "Samsung Wallet will add USDC transfers with Solana support for eligible U.S. Galaxy devices.",
+    "ru": "Samsung Wallet добавит переводы USDC с поддержкой Solana для подходящих устройств Galaxy в США."
+  },
+  "summary": {
+    "en": "On October 7, Samsung announced that stablecoin functionality will launch in Samsung Wallet in the last week of October for eligible U.S. Galaxy users. USDC will be the first supported stablecoin; users will be able to send it to compatible crypto wallets internationally or to eligible bank accounts in more than 60 countries, while Samsung names Solana and Sui among the blockchain-network partners. Why it matters for CopyPump: this gives Solana a new consumer-facing access path inside a mainstream mobile wallet, but CopyPump should not count 82 million compatible devices as active users or assume that every Samsung Wallet transfer will use Solana.",
+    "ru": "7 октября Samsung объявила, что в последнюю неделю октября в Samsung Wallet для подходящих пользователей Galaxy в США появится функциональность стейблкоинов. Первым поддерживаемым стейблкоином станет USDC: его можно будет отправлять в совместимые криптокошельки за рубежом или на подходящие банковские счета более чем в 60 странах, а среди партнёров по блокчейн-инфраструктуре Samsung называет Solana и Sui. Почему это важно для CopyPump: у Solana появляется новый пользовательский канал доступа внутри массового мобильного кошелька, но CopyPump не должен считать 82 миллиона совместимых устройств активными пользователями или предполагать, что каждый перевод Samsung Wallet будет проходить через Solana."
+  },
+  "facts": [
+    {
+      "en": "Samsung announced on October 7 that stablecoin wallet functionality is scheduled to launch in the last week of October for eligible U.S. Galaxy users, with USDC as the first supported stablecoin.",
+      "ru": "7 октября Samsung объявила, что функциональность стейблкоинов должна появиться в Samsung Wallet в последнюю неделю октября для подходящих пользователей Galaxy в США, а первым поддерживаемым стейблкоином станет USDC."
+    },
+    {
+      "en": "Samsung says eligible users will be able to send USDC to compatible crypto wallets internationally and to eligible bank accounts in more than 60 countries, where recipients may receive local currency.",
+      "ru": "Samsung сообщает, что подходящие пользователи смогут отправлять USDC в совместимые криптокошельки за рубежом и на подходящие банковские счета более чем в 60 странах, где получатель сможет получить местную валюту."
+    },
+    {
+      "en": "Samsung names Solana and Sui among the partners providing blockchain-network support; the Solana Foundation separately says Samsung Wallet and Samsung Pay will support stablecoins on Solana.",
+      "ru": "Samsung называет Solana и Sui среди партнёров, обеспечивающих поддержку блокчейн-сетей; Solana Foundation отдельно сообщает, что Samsung Wallet и Samsung Pay будут поддерживать стейблкоины в Solana."
+    },
+    {
+      "en": "Samsung says the 82 million figure refers to U.S. Galaxy devices compatible with Samsung Wallet, not a measured number of users who will activate the stablecoin feature.",
+      "ru": "Samsung уточняет, что показатель 82 миллиона относится к устройствам Galaxy в США, совместимым с Samsung Wallet, а не к измеренному числу пользователей, которые активируют функцию стейблкоинов."
+    }
+  ],
+  "interpretation": {
+    "en": "This is a meaningful ecosystem-access and payments-infrastructure development, but it is not yet evidence of live Solana transaction volume or broad adoption. For CopyPump, the useful signal is that Solana will be one of the supported blockchain rails inside a mainstream wallet, while actual routing, usage and liquidity must be verified after launch.",
+    "ru": "Это значимое событие для доступа к экосистеме и платёжной инфраструктуры, но пока не доказательство реального объёма транзакций в Solana или массового использования. Для CopyPump важен сам факт, что Solana станет одной из поддерживаемых блокчейн-инфраструктур внутри массового кошелька, тогда как фактическую маршрутизацию, использование и ликвидность нужно проверять уже после запуска."
+  },
+  "unknowns": [
+    {
+      "en": "The feature is not yet live as of this check; the announced launch window is the last week of October and could still change.",
+      "ru": "На момент этой проверки функция ещё не запущена; объявленное окно запуска — последняя неделя октября — всё ещё может измениться."
+    },
+    {
+      "en": "The reviewed sources do not establish what share of Samsung Wallet transfers will use Solana rather than Sui or another supported route, or whether users will choose the network directly.",
+      "ru": "Проверенные источники не устанавливают, какая доля переводов Samsung Wallet будет проходить через Solana, а не Sui или другой поддерживаемый маршрут, и смогут ли пользователи выбирать сеть напрямую."
+    },
+    {
+      "en": "There is no post-launch public data yet for active users, transfer volume, failure rates, latency or Solana-specific on-chain activity from the feature.",
+      "ru": "Пока нет публичных данных после запуска о числе активных пользователей, объёме переводов, доле ошибок, задержке или конкретной ончейн-активности Solana от этой функции."
+    },
+    {
+      "en": "Samsung has not announced a fixed timetable for expansion beyond eligible U.S. users; future availability depends on local regulatory requirements.",
+      "ru": "Samsung не объявила фиксированный график расширения за пределы подходящих пользователей в США; дальнейшая доступность зависит от местных регуляторных требований."
+    }
+  ],
+  "publishedAt": "2026-10-09T04:54:00.000Z",
+  "updatedAt": "2026-10-09T04:54:00.000Z",
+  "observedAt": "2026-10-07T00:00:00.000Z",
+  "lastCheckedAt": "2026-10-09T04:54:00.000Z",
+  "followUps": 0,
+  "sources": [
+    {
+      "id": "web-1",
+      "label": {
+        "en": "Samsung Newsroom — Samsung Wallet to Bring Stablecoin Access to Eligible Galaxy Users in the US",
+        "ru": "Samsung Newsroom — доступ к стейблкоинам в Samsung Wallet для подходящих пользователей Galaxy в США"
+      },
+      "url": "https://news.samsung.com/us/samsung-wallet-bring-stablecoin-access-eligible-galaxy-users-us/",
+      "checkedAt": "2026-10-09T04:54:00.000Z"
+    },
+    {
+      "id": "web-2",
+      "label": {
+        "en": "Solana Foundation — Samsung Partners with Solana to Natively Deliver Stablecoins in Samsung Wallet",
+        "ru": "Solana Foundation — Samsung добавляет поддержку стейблкоинов Solana в Samsung Wallet"
+      },
+      "url": "https://solana.com/news/samsung-wallet",
+      "checkedAt": "2026-10-09T04:54:00.000Z"
+    },
+    {
+      "id": "web-3",
+      "label": {
+        "en": "The Block — Samsung to launch USDC transfers on Solana for US Galaxy users",
+        "ru": "The Block — Samsung запустит переводы USDC с поддержкой Solana для пользователей Galaxy в США"
+      },
+      "url": "https://www.theblock.co/news/business/2026-10-07-samsung-to-launch-usdc-transfers-on-solana-for-us-galaxy-users-418004",
+      "checkedAt": "2026-10-09T04:54:00.000Z"
+    }
+  ],
+  "revisions": [
+    {
+      "version": 1,
+      "at": "2026-10-09T04:54:00.000Z",
+      "kind": "initial",
+      "title": {
+        "en": "Verified web update",
+        "ru": "Проверенное веб-обновление"
+      },
+      "text": {
+        "en": "Cross-checked against Samsung's official announcement, the Solana Foundation and independent reporting from The Block. The story describes an announced late-October launch and does not treat 82 million compatible devices as active users or claim that every transfer will route through Solana.",
+        "ru": "Перед публикацией событие сверено по официальному объявлению Samsung, материалу Solana Foundation и независимому сообщению The Block. Карточка описывает объявленный запуск в конце октября и не считает 82 миллиона совместимых устройств активными пользователями и не утверждает, что каждый перевод будет проходить через Solana."
+      },
+      "sourceIds": [
+        "web-1",
+        "web-2",
+        "web-3"
+      ]
+    }
+  ]
+}

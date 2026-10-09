@@ -1,8 +1,34 @@
 {
   "schemaVersion": 1,
-  "edition": "12",
-  "publishedAt": "2026-09-25T06:47:31.000Z",
+  "edition": "13",
+  "publishedAt": "2026-10-09T04:54:00.000Z",
   "items": [
+    {
+      "id": "web-samsung-wallet-usdc-solana-support-20261007",
+      "version": 1,
+      "publishedAt": "2026-10-09T04:54:00.000Z",
+      "updatedAt": "2026-10-09T04:54:00.000Z",
+      "observedAt": "2026-10-07T00:00:00.000Z",
+      "lastCheckedAt": "2026-10-09T04:54:00.000Z",
+      "title": {
+        "en": "Samsung Wallet will add USDC transfers with Solana support for eligible U.S. Galaxy devices.",
+        "ru": "Samsung Wallet добавит переводы USDC с поддержкой Solana для подходящих устройств Galaxy в США."
+      },
+      "summary": {
+        "en": "On October 7, Samsung announced that stablecoin functionality will launch in Samsung Wallet in the last week of October for eligible U.S. Galaxy users. USDC will be the first supported stablecoin; users will be able to send it to compatible crypto wallets internationally or to eligible bank accounts in more than 60 countries, while Samsung names Solana and Sui among the blockchain-network partners. Why it matters for CopyPump: this gives Solana a new consumer-facing access path inside a mainstream mobile wallet, but CopyPump should not count 82 million compatible devices as active users or assume that every Samsung Wallet transfer will use Solana.",
+        "ru": "7 октября Samsung объявила, что в последнюю неделю октября в Samsung Wallet для подходящих пользователей Galaxy в США появится функциональность стейблкоинов. Первым поддерживаемым стейблкоином станет USDC: его можно будет отправлять в совместимые криптокошельки за рубежом или на подходящие банковские счета более чем в 60 странах, а среди партнёров по блокчейн-инфраструктуре Samsung называет Solana и Sui. Почему это важно для CopyPump: у Solana появляется новый пользовательский канал доступа внутри массового мобильного кошелька, но CopyPump не должен считать 82 миллиона совместимых устройств активными пользователями или предполагать, что каждый перевод Samsung Wallet будет проходить через Solana."
+      },
+      "category": {
+        "en": "PAYMENTS / 15",
+        "ru": "ПЛАТЕЖИ / 15"
+      },
+      "followUps": 0,
+      "sourceKind": "web",
+      "sourceLabel": {
+        "en": "WEB / VERIFIED SOURCES",
+        "ru": "WEB / ПРОВЕРЕННЫЕ ИСТОЧНИКИ"
+      }
+    },
     {
       "id": "web-alpenglow-active-solana-testnet-20260924",
       "version": 1,
