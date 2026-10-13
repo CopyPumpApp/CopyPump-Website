@@ -1,17 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-12T16:03:18.772Z",
+  "updatedAt": "2026-10-13T00:57:23.084Z",
   "mode": "AUTONOMOUS_DATA_ONLY",
   "project": {
-    "state": "unavailable",
-    "checkedAt": "2026-10-12T16:03:15Z",
+    "state": "ok",
+    "checkedAt": "2026-10-13T00:57:21Z",
     "source": "CopyPumpApp/CopyPump/docs/PUBLIC_MILESTONES.json",
-    "detail": "GitHub HTTP 403",
     "changed": false
   },
   "radar": {
     "schemaVersion": 1,
-    "checkedAt": "2026-10-12T16:03:15.681Z",
+    "checkedAt": "2026-10-13T00:57:22.188Z",
     "source": "Solana getSignatureStatuses",
     "state": "ok",
     "checkedObservations": 4,
@@ -28,7 +27,7 @@
     ],
     "discovery": {
       "schemaVersion": 1,
-      "checkedAt": "2026-10-12T16:03:18Z",
+      "checkedAt": "2026-10-13T00:57:23Z",
       "source": "Public RSS + Kimi editorial bridge",
       "importanceThreshold": 72,
       "state": "pending",
